@@ -446,9 +446,40 @@
       </tags>
   </entry>
   <entry>
-    <title>test</title>
-    <url>/2023/07/22/test/</url>
-    <content><![CDATA[<p><img src="/.%5Ctest%5Ctest.png" alt="test"></p>
+    <title>在Hexo博客中插入图片</title>
+    <url>/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
+    <content><![CDATA[<h3 id="绝对路径本地引用"><a href="#绝对路径本地引用" class="headerlink" title="绝对路径本地引用"></a>绝对路径本地引用</h3><p>当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。</p>
+<img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/1.png" class>
+
+<h3 id="相对路径本地引用"><a href="#相对路径本地引用" class="headerlink" title="相对路径本地引用"></a>相对路径本地引用</h3><p>图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过站点配置文件_config.yml来生成。</p>
+<p>将_config.yml文件中的配置项post_asset_folder设为true后，执行命令$ hexo new post_name，在source&#x2F;_posts中会生成文章post_name.md和同名文件夹post_name。将图片资源放在post_name中，文章就可以使用相对路径引用图片资源了。</p>
+<img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/2.png" class>
+
+<h3 id="标签插件语法引用"><a href="#标签插件语法引用" class="headerlink" title="标签插件语法引用"></a>标签插件语法引用</h3><p>这种相对路径的图片显示方法在博文详情页面显示没有问题，但是在首页预览页面图片将显示不出来。如果希望<strong>图片在文章和首页中同时显示</strong>，可以使用标签插件语法。</p>
+<img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/3.png" class>
+
+<h3 id="HTML语法引用"><a href="#HTML语法引用" class="headerlink" title="HTML语法引用"></a>HTML语法引用</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;SpellCheck.png&quot;</span> <span class="attr">width</span>=<span class="string">&quot;50%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50%&quot;</span> <span class="attr">title</span>=<span class="string">&quot;拼写检查工具Grammarly.&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;拼写检查工具Grammarly.&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="启用fancybox：点击查看图片大图"><a href="#启用fancybox：点击查看图片大图" class="headerlink" title="启用fancybox：点击查看图片大图"></a>启用fancybox：点击查看图片大图</h3><p>我这里使用的是Hexo的NexT主题，NexT主题中提供了fancybox的方便接口。</p>
+<p>Usage：<a href="https://github.com/theme-next/theme-next-fancybox3">https://github.com/theme-next/theme-next-fancybox3</a><br>markdown用法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% img http://www.viemu.com/vi-vim-cheat-sheet.gif 600 600 &quot;点击查看大图:vi/vim-cheat-sheet&quot; %&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Hexo部分图片禁用fancybox</strong></p>
+<p>hexo在使用fancybox插件时，图片的效果还是很可观的，但是我们往往是不需要所有的图片都用fancybox；<br>例如：hexo next主题下，添加某些图片的时候，有些事不需要可点击的<br>修改<code>theme\next\source\js\src\utils.js</code> 红色字体部分；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">diff --git a/source/js/src/utils.js b/source/js/src/utils.js</span><br><span class="line">index 0f3704e..8516665 100644</span><br><span class="line">--- a/source/js/src/utils.js</span><br><span class="line">+++ b/source/js/src/utils.js</span><br><span class="line">@@ -11,6 +11,7 @@ NexT.utils = NexT.$u = &#123;</span><br><span class="line">       .not(&#x27;.group-picture img, .post-gallery img&#x27;)</span><br><span class="line">       .each(function() &#123;</span><br><span class="line">         var $image = $(this);</span><br><span class="line">+        if ($(this).hasClass(&#x27;nofancybox&#x27;)) return;</span><br><span class="line">         var imageTitle = $image.attr(&#x27;title&#x27;);</span><br><span class="line">         var $imageWrapLink = $image.parent(&#x27;a&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>在img标签使用的时候加上class&#x3D;”nofancybox”即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;img src=&quot;http://www.viemu.com/vi-vim-cheat-sheet.gif&quot; class=&quot;nofancybox&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
+      <categories>
+        <category>网站搭建</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>个人博客</tag>
+        <tag>学习笔记</tag>
+      </tags>
   </entry>
 </search>
