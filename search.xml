@@ -490,7 +490,10 @@
 <p>发布之后，我们看一下效果如何：</p>
 <img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/3.png" class>
 
-<h2 id="3-参考文章"><a href="#3-参考文章" class="headerlink" title="3 参考文章"></a>3 参考文章</h2><p><a href="https://cloud.tencent.com/developer/article/1481858">https://cloud.tencent.com/developer/article/1481858</a></p>
+<h2 id="3-关闭"><a href="#3-关闭" class="headerlink" title="3 关闭"></a>3 关闭</h2><p>可以单独关闭某个页面的评论，在页面的 Front-matter 中添加 comments 字段，设为 false。比如标签页不想要评论，则在标签页面中做如下设置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: xxxxxxxxx</span><br><span class="line">date: 2022-03-06 17:05:24</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-参考文章"><a href="#4-参考文章" class="headerlink" title="4 参考文章"></a>4 参考文章</h2><p><a href="https://cloud.tencent.com/developer/article/1481858">https://cloud.tencent.com/developer/article/1481858</a></p>
 ]]></content>
       <categories>
         <category>网站搭建-hexo</category>
