@@ -470,6 +470,39 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo 为Next主题添加评论功能</title>
+    <url>/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<h1 id="1-创建账号"><a href="#1-创建账号" class="headerlink" title="1 创建账号"></a>1 创建账号</h1><p>这个评论系统是基于 LeanCloud 进行的，先去注册一个账号，点这里进行注册。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://leancloud.cn/</span><br></pre></td></tr></table></figure>
+
+<p>点这里创建应用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://leancloud.cn/dashboard/applist.html#/newapp</span><br></pre></td></tr></table></figure>
+
+<p>应用名看个人喜好。选择刚刚创建的应用，点击设置按钮，再点击应用Key按钮，你就能看到你的APP ID和APP KEY了：</p>
+<img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/1.png" class>
+
+<p>为了您的数据安全，请填写应用&gt;设置&gt;安全设置中的Web 安全域名，如下图：</p>
+<img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/2.png" class>
+
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置</h2><p>修改你主题目录下的_config.yml文件：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">valine:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">appid:</span>  <span class="comment"># 你的 App ID</span></span><br><span class="line">  <span class="attr">appkey:</span> <span class="comment"># 你的 App Key</span></span><br><span class="line">  <span class="attr">notify:</span> <span class="literal">false</span> <span class="comment"># mail notifier , https://github.com/xCss/Valine/wiki</span></span><br><span class="line">  <span class="attr">verify:</span> <span class="literal">false</span> <span class="comment"># Verification code</span></span><br><span class="line">  <span class="attr">placeholder:</span> <span class="string">有什么问题，欢迎留言指正与交流...</span> <span class="comment"># comment box placeholder</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">robohash</span> <span class="comment"># gravatar style</span></span><br><span class="line">  <span class="attr">guest_info:</span> <span class="string">nick,mail,link</span> <span class="comment"># custom comment header</span></span><br><span class="line">  <span class="attr">pageSize:</span> <span class="number">10</span> <span class="comment"># pagination size</span></span><br></pre></td></tr></table></figure>
+
+<p>发布之后，我们看一下效果如何：</p>
+<img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/3.png" class>
+
+<h2 id="3-参考文章"><a href="#3-参考文章" class="headerlink" title="3 参考文章"></a>3 参考文章</h2><p><a href="https://cloud.tencent.com/developer/article/1481858">https://cloud.tencent.com/developer/article/1481858</a></p>
+]]></content>
+      <categories>
+        <category>网站搭建-hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>个人博客</tag>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在Hexo博客中插入图片</title>
     <url>/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<h3 id="绝对路径本地引用"><a href="#绝对路径本地引用" class="headerlink" title="绝对路径本地引用"></a>绝对路径本地引用</h3><p>当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。</p>
