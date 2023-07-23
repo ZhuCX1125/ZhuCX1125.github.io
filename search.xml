@@ -7,6 +7,30 @@
 ]]></content>
   </entry>
   <entry>
+    <title>hexo配置-站点内容搜索</title>
+    <url>/2023/07/23/hexo%E9%85%8D%E7%BD%AE-%E7%AB%99%E7%82%B9%E5%86%85%E5%AE%B9%E6%90%9C%E7%B4%A2/</url>
+    <content><![CDATA[<h1 id="安装-hexo-generator-searchdb"><a href="#安装-hexo-generator-searchdb" class="headerlink" title="安装 hexo-generator-searchdb"></a>安装 hexo-generator-searchdb</h1><p>在站点的根目录下执行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+<h1 id="编辑-站点配置文件，新增以下内容到任意位置："><a href="#编辑-站点配置文件，新增以下内容到任意位置：" class="headerlink" title="编辑 站点配置文件，新增以下内容到任意位置："></a>编辑 站点配置文件，新增以下内容到任意位置：</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br></pre></td></tr></table></figure>
+
+<p>编辑 主题配置文件，启用本地搜索功能：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure>
+
+<p>请注意：主题为：next</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="http://theme-next.iissnan.com/third-party-services.html#local-search">http://theme-next.iissnan.com/third-party-services.html#local-search</a></p>
+]]></content>
+      <categories>
+        <category>网站搭建-hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>个人博客</tag>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo+github page搭建自己的个人博客-笔记01</title>
     <url>/2023/04/27/page%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2-%E7%AC%94%E8%AE%B001/</url>
     <content><![CDATA[<h1 id="Hexo使用方法"><a href="#Hexo使用方法" class="headerlink" title="Hexo使用方法"></a>Hexo使用方法</h1><h2 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述"></a>1、概述</h2><p><a href="https://hexo.io/zh-cn/docs/">Hexo</a> 是一个快速、简洁且高效的博客框架。Hexo 使用 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
