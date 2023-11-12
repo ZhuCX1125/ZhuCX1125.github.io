@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="绝对路径本地引用当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。   相对路径本地引用图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过站点配置文件_config.yml来生成。 将_config.yml文件中的配置项post_asset_folder设为true后，执行命令">
+<meta name="description" content="绝对路径本地引用当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。  相对路径本地引用图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过站点配置文件_config.yml来生成。 将_config.yml文件中的配置项post_asset_folder设为true后，执行命令$">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Hexo博客中插入图片">
 <meta property="og:url" content="http://example.com/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/index.html">
 <meta property="og:site_name" content="Hlailai&#39;Blog">
-<meta property="og:description" content="绝对路径本地引用当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。   相对路径本地引用图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过站点配置文件_config.yml来生成。 将_config.yml文件中的配置项post_asset_folder设为true后，执行命令">
+<meta property="og:description" content="绝对路径本地引用当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。  相对路径本地引用图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过站点配置文件_config.yml来生成。 将_config.yml文件中的配置项post_asset_folder设为true后，执行命令$">
 <meta property="og:locale">
 <meta property="og:image" content="http://example.com/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/1.png">
 <meta property="og:image" content="http://example.com/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/2.png">
 <meta property="og:image" content="http://example.com/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/3.png">
+<meta property="og:image" content="http://example.com/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/image-20231112182727223.png">
 <meta property="article:published_time" content="2023-07-22T14:47:16.000Z">
-<meta property="article:modified_time" content="2023-07-23T15:23:55.138Z">
+<meta property="article:modified_time" content="2023-11-12T10:35:54.505Z">
 <meta property="article:author" content="Hlailai ZHU">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="hexo">
@@ -412,7 +413,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  551
+                  600
                 </span>
               
 
@@ -438,15 +439,12 @@
 
       
         <h3 id="绝对路径本地引用"><a href="#绝对路径本地引用" class="headerlink" title="绝对路径本地引用"></a>绝对路径本地引用</h3><p>当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。</p>
-<img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/1.png" class>
-
+<p><img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/1.png" alt="1"></p>
 <h3 id="相对路径本地引用"><a href="#相对路径本地引用" class="headerlink" title="相对路径本地引用"></a>相对路径本地引用</h3><p>图片除了可以放在统一的images文件夹中，还可以放在文章自己的目录中。文章的目录可以通过站点配置文件_config.yml来生成。</p>
 <p>将_config.yml文件中的配置项post_asset_folder设为true后，执行命令$ hexo new post_name，在source&#x2F;_posts中会生成文章post_name.md和同名文件夹post_name。将图片资源放在post_name中，文章就可以使用相对路径引用图片资源了。</p>
-<img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/2.png" class>
-
+<p><img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/2.png" alt="2"></p>
 <h3 id="标签插件语法引用"><a href="#标签插件语法引用" class="headerlink" title="标签插件语法引用"></a>标签插件语法引用</h3><p>这种相对路径的图片显示方法在博文详情页面显示没有问题，但是在首页预览页面图片将显示不出来。如果希望<strong>图片在文章和首页中同时显示</strong>，可以使用标签插件语法。</p>
-<img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/3.png" class>
-
+<p><img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/3.png" alt="3"></p>
 <h3 id="HTML语法引用"><a href="#HTML语法引用" class="headerlink" title="HTML语法引用"></a>HTML语法引用</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;SpellCheck.png&quot;</span> <span class="attr">width</span>=<span class="string">&quot;50%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50%&quot;</span> <span class="attr">title</span>=<span class="string">&quot;拼写检查工具Grammarly.&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;拼写检查工具Grammarly.&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="启用fancybox：点击查看图片大图"><a href="#启用fancybox：点击查看图片大图" class="headerlink" title="启用fancybox：点击查看图片大图"></a>启用fancybox：点击查看图片大图</h3><p>我这里使用的是Hexo的NexT主题，NexT主题中提供了fancybox的方便接口。</p>
@@ -460,6 +458,14 @@
 <p>在img标签使用的时候加上class&#x3D;”nofancybox”即可。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;http://www.viemu.com/vi-vim-cheat-sheet.gif&quot; class=&quot;nofancybox&quot; /&gt;</span><br></pre></td></tr></table></figure>
 
+<h2 id="另外比较好用的方法"><a href="#另外比较好用的方法" class="headerlink" title="另外比较好用的方法"></a>另外比较好用的方法</h2><h3 id="根目录下的-config-yml-的配置文件"><a href="#根目录下的-config-yml-的配置文件" class="headerlink" title="根目录下的 _config.yml 的配置文件"></a>根目录下的 _config.yml 的配置文件</h3><p>搜索，修改内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder:true</span><br></pre></td></tr></table></figure>
+
+<p>然后可以将typora的路径改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./$&#123;filename&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如下图</p>
+<p><img src="/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/image-20231112182727223.png" alt="image-20231112182727223"></p>
 
       
     </div>
@@ -618,7 +624,7 @@ var jiathis_config={
               
                 <a href="/archives/%7C%7C%20fa%20fa-archive">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -673,7 +679,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84%E6%9C%AC%E5%9C%B0%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">绝对路径本地引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E6%9C%AC%E5%9C%B0%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">相对路径本地引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6%E8%AF%AD%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">标签插件语法引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML%E8%AF%AD%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">HTML语法引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8fancybox%EF%BC%9A%E7%82%B9%E5%87%BB%E6%9F%A5%E7%9C%8B%E5%9B%BE%E7%89%87%E5%A4%A7%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">启用fancybox：点击查看图片大图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84%E6%9C%AC%E5%9C%B0%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">绝对路径本地引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E6%9C%AC%E5%9C%B0%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">相对路径本地引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6%E8%AF%AD%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">标签插件语法引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTML%E8%AF%AD%E6%B3%95%E5%BC%95%E7%94%A8"><span class="nav-number">4.</span> <span class="nav-text">HTML语法引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8fancybox%EF%BC%9A%E7%82%B9%E5%87%BB%E6%9F%A5%E7%9C%8B%E5%9B%BE%E7%89%87%E5%A4%A7%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">启用fancybox：点击查看图片大图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E5%A4%96%E6%AF%94%E8%BE%83%E5%A5%BD%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number"></span> <span class="nav-text">另外比较好用的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84-config-yml-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">根目录下的 _config.yml 的配置文件</span></a></li></ol></div>
             
 
           </div>
