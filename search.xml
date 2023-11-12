@@ -918,6 +918,17 @@
 <p><strong>3. 写完文章之后使用如下页面生成静态页面然后上传git</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 我们可以写成一条命令</span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
+<p><strong>4. 登录部署网站，更新内容</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://vercel.com/</span><br></pre></td></tr></table></figure>
+
+<p>登录之后如下内容</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112190856269.png" alt="image-20231112190856269"></p>
+<p>进入项目，然后点击部署，可以看到刚刚上传的最新页面，</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191008812.png" alt="image-20231112191008812"></p>
+<p>然后点进去，推进到生产。</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191220182.png" alt="image-20231112191220182"></p>
+<p>可以看到最新页面已经到域名地址了</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191346558.png" alt="image-20231112191346558"></p>
 ]]></content>
       <categories>
         <category>网站搭建-hexo</category>
