@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="docker,学习笔记,Dockerfile," />
 
 
 
@@ -79,16 +79,19 @@
 
 
 
-<meta name="description" content="欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。">
+<meta name="description" content="常见的指令记录FROM两种形式如下： 12FROM &lt;IMAGE&gt;FROM &lt;IMAGE&gt;:&lt;TAG&gt;   通过FROM指定的镜像名称必须是一个已经存在的镜像，这个镜像称之为基础镜像，必须位于第一条非注释指令  MAINTAINER1MAINTAINER &lt;NAME&gt;   指定镜像的作者信息，包含镜像的所有者和联系人信息  RUN12RUN &lt;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="你好，这是我的首页。">
-<meta property="og:url" content="http://example.com/2023/04/27/hello-world/index.html">
+<meta property="og:title" content="Dockerfile 详解01">
+<meta property="og:url" content="http://example.com/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/index.html">
 <meta property="og:site_name" content="Hlailai&#39;Blog">
-<meta property="og:description" content="欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。">
+<meta property="og:description" content="常见的指令记录FROM两种形式如下： 12FROM &lt;IMAGE&gt;FROM &lt;IMAGE&gt;:&lt;TAG&gt;   通过FROM指定的镜像名称必须是一个已经存在的镜像，这个镜像称之为基础镜像，必须位于第一条非注释指令  MAINTAINER1MAINTAINER &lt;NAME&gt;   指定镜像的作者信息，包含镜像的所有者和联系人信息  RUN12RUN &lt;">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-04-27T09:21:43.728Z">
-<meta property="article:modified_time" content="2023-07-24T14:31:19.505Z">
+<meta property="article:published_time" content="2023-11-12T14:23:06.000Z">
+<meta property="article:modified_time" content="2023-11-12T14:45:39.764Z">
 <meta property="article:author" content="Hlailai ZHU">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="Dockerfile">
 <meta name="twitter:card" content="summary">
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2023/04/27/hello-world/"/>
+  <link rel="canonical" href="http://example.com/2023/11/12/Dockerfile 详解01/"/>
 
 
 
 
 
-  <title>你好，这是我的首页。 | Hlailai'Blog</title>
+  <title>Dockerfile 详解01 | Hlailai'Blog</title>
   
 
 
@@ -306,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/27/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -323,7 +326,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">你好，这是我的首页。</h1>
+          <h1 class="post-title" itemprop="name headline">Dockerfile 详解01</h1>
         
 
         <div class="post-meta">
@@ -335,8 +338,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-04-27T17:21:43+08:00">
-                2023-04-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-11-12T22:23:06+08:00">
+                2023-11-12
               </time>
             
 
@@ -346,6 +349,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">docker学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -354,8 +379,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2023/04/27/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2023/04/27/hello-world/" itemprop="commentCount"></span>
+                <a href="/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +407,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  61
+                  1.3k
                 </span>
               
 
@@ -407,7 +432,98 @@
       
 
       
-        <p>欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。</p>
+        <h1 id="常见的指令记录"><a href="#常见的指令记录" class="headerlink" title="常见的指令记录"></a>常见的指令记录</h1><h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>两种形式如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;</span><br><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;:&lt;TAG&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>通过FROM指定的镜像名称必须是一个已经存在的镜像，这个镜像称之为基础镜像，必须位于第一条非注释指令</p>
+</blockquote>
+<h2 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">MAINTAINER</span> &lt;NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>指定镜像的作者信息，包含镜像的所有者和联系人信息</p>
+</blockquote>
+<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在shell模式下，是使用&#x2F;bin&#x2F;sh -c COMMAND来运行命令的<br>在exec模式下可以指定其他的shell来运行命令RUN [“&#x2F;bin&#x2F;bash”, “-c”, “echo hello”]</p>
+</blockquote>
+<p>多条RUN指令可以合并为一条：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN yum install httpd &amp;&amp; yum install ftp</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样在构建的时候会减少产生中间层镜像</p>
+</blockquote>
+<h2 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a><strong>EXPOSE</strong></h2><blockquote>
+<p>指定运行该镜像的容器使用的端口，可以是多个。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPOSE</span> &lt;PORT&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用这个指令的目的是告诉应用程序容器内应用程序会使用的端口，在运行时还需要使用-p参数指定映射端口。这是docker处于安全的目的，不会自动打开端口。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -p 80 -d dockertest/dockerfile_build nginx -g <span class="string">&quot;daemon off&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a><strong>CMD</strong></h2><p>用于提供容器运行的默认命令，如果在<code>docker run</code>时指定了运行的命令，则CMD命令不会执行。CMD有三种模式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&#x27;param1&#x27;</span>, <span class="string">&#x27;param2&#x27;</span>] (通常与ENTRYPOINT搭配指定ENTRYPOINT的默认参数)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a><strong>ENTRYPOINT</strong></h2><p>与CMD类似，ENTRYPOINT不会被<code>docker run</code>中指定的命令覆盖，如果想覆盖ENTRYPOINT，则需要在<code>docker run</code>中指定<code>--entrypoint</code>选项</p>
+<p>它有两种模式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ADD和COPY"><a href="#ADD和COPY" class="headerlink" title="ADD和COPY"></a><strong>ADD和COPY</strong></h2><p>作用都是将文件或目录复制到Dockerfile构建的镜像中</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ADD</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ADD包含了类似tar的解压功能，如果只是单纯复制文件，建议使用COPY，而且，两者的源文件路径使用Dockerfile相对路径，目标路径使用绝对路径。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a><strong>VOLUME</strong></h2><p>用于向容器添加卷，可以提供共享存储等功能</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">VOLUME</span><span class="language-bash"> [<span class="string">&#x27;/data&#x27;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a><strong>WORKDIR</strong></h2><p>在容器内部设置工作目录，这样ENTRYPOINT和CMD指定的命令都会在容器中这个目录下进行。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /path/to/workdir</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a><strong>ENV</strong></h2><p>用于设置环境变量</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt; &lt;VALUE&gt;</span><br><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt;=&lt;VALUE&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="USER"><a href="#USER" class="headerlink" title="USER"></a><strong>USER</strong></h2><p>用于指定镜像为什么用户去运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USER nginx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>镜像就会以nginx身份运行，可以使用uid，gid等各种组合使用</p>
+</blockquote>
+<h2 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a><strong>ONBUILD</strong></h2><p>为镜像创建触发器，当一个镜像被用作其他镜像的基础镜像时，这个触发器会被执行。当子镜像被构建时会插入触发器中的指令</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ONBUILD</span> <span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Dockerfile的构建过程"><a href="#Dockerfile的构建过程" class="headerlink" title="Dockerfile的构建过程"></a><strong>Dockerfile的构建过程</strong></h2><ol>
+<li>docker会从Dockerfile文件头FROM指定的基础镜像运行一个容器</li>
+<li>然后执行一条指令，对容器修改</li>
+<li>接着执行类似docker commit的操作，创建新的镜像层</li>
+<li>在基于刚创建的镜像运行一个新的容器</li>
+<li>执行Dockerfile下一条指令，直到所有指令执行完毕</li>
+</ol>
+<blockquote>
+<p>docker会删除中间层创建的容器，但不会删除中间层镜像，所以可以使用docker run运行一个中间层容器，从而查看每一步构建后的镜像状态，这样就可以进行调试。</p>
+</blockquote>
+<h2 id="构建缓存"><a href="#构建缓存" class="headerlink" title="构建缓存"></a><strong>构建缓存</strong></h2><p>docker在构建过程中会将之前构建的镜像看做缓存。</p>
+<p>当第一次构建的时候，构建过程会比较慢，而在此进行相同的构建的时候，会看见using cache字样，表示使用了缓存，构建过程也非常快。</p>
+<p>如果不想使用构建缓存，则在docker build中使用—no-cache选项。</p>
+<p>还可以在Dockerfile中使用ENV REFRESH_DATE 2018-01-01来制定缓存刷新时间，更改这个时间，就会让后面的命令不使用缓存。</p>
+<p><code>Dockerfile</code> 简单列举几个指令:</p>
+<ul>
+<li><code>FROM</code> : 指定基础镜像</li>
+<li><code>WORKDIR</code> : 指定工作目录</li>
+<li><code>COPY</code> : 将文件或者目录从构建上下文复制到容器中(推荐)</li>
+<li><code>ADD</code> : 将文件或者目录从构建上下文复制到容器中,并且会将压缩文件解压缩,支持 <code>URL</code></li>
+<li><code>RUN</code> : 在容器中执行命令</li>
+<li><code>CMD</code> : 容器启动时执行的命令</li>
+<li><code>EXPOSE</code> : 指定要监听的端口以实现与外部通信</li>
+</ul>
+<p>简单的例子：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nodejs server Dockerfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># FROM node</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /nodeApp</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># COPY &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./package.json .</span></span><br><span class="line"><span class="comment"># ADD &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="comment"># ADD ./package.json .</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># shell格式：就像在命令行中输入的Shell脚本命令一样。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./src ./server</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;./server/index.js&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+
+
 
       
     </div>
@@ -423,6 +539,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+          
+            <a href="/tags/Dockerfile/" rel="tag"># Dockerfile</a>
+          
+        </div>
+      
 
       
       
@@ -432,14 +558,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2023/11/12/poetry-%E5%85%A5%E9%97%A8%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/" rel="next" title="poetry 入门完全指南">
+                <i class="fa fa-chevron-left"></i> poetry 入门完全指南
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2023/04/27/page%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2-%E7%AC%94%E8%AE%B001/" rel="prev" title="hexo+github page搭建自己的个人博客-笔记01">
-                hexo+github page搭建自己的个人博客-笔记01 <i class="fa fa-chevron-right"></i>
+              <a href="/2023/11/12/Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" rel="prev" title="Docker 常用命令记录">
+                Docker 常用命令记录 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -521,8 +651,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -586,6 +725,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%8C%87%E4%BB%A4%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">常见的指令记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FROM"><span class="nav-number">1.1.</span> <span class="nav-text">FROM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAINTAINER"><span class="nav-number">1.2.</span> <span class="nav-text">MAINTAINER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN"><span class="nav-number">1.3.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXPOSE"><span class="nav-number">1.4.</span> <span class="nav-text">EXPOSE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMD"><span class="nav-number">1.5.</span> <span class="nav-text">CMD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENTRYPOINT"><span class="nav-number">1.6.</span> <span class="nav-text">ENTRYPOINT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADD%E5%92%8CCOPY"><span class="nav-number">1.7.</span> <span class="nav-text">ADD和COPY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VOLUME"><span class="nav-number">1.8.</span> <span class="nav-text">VOLUME</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WORKDIR"><span class="nav-number">1.9.</span> <span class="nav-text">WORKDIR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENV"><span class="nav-number">1.10.</span> <span class="nav-text">ENV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#USER"><span class="nav-number">1.11.</span> <span class="nav-text">USER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ONBUILD"><span class="nav-number">1.12.</span> <span class="nav-text">ONBUILD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile%E7%9A%84%E6%9E%84%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="nav-number">1.13.</span> <span class="nav-text">Dockerfile的构建过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E7%BC%93%E5%AD%98"><span class="nav-number">1.14.</span> <span class="nav-text">构建缓存</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

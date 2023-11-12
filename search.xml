@@ -1,6 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker 常用命令记录</title>
+    <url>/2023/11/12/Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="docker-常用命令记录"><a href="#docker-常用命令记录" class="headerlink" title="docker 常用命令记录"></a>docker 常用命令记录</h1><h2 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h2><h3 id="搜索镜像"><a href="#搜索镜像" class="headerlink" title="搜索镜像"></a>搜索镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker search tomcat</span><br></pre></td></tr></table></figure>
+
+<h3 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker pull tomcat:tag</span><br></pre></td></tr></table></figure>
+
+<p>不加 <code>tag</code> 的情况下, 默认拉取的就是 <code>latest</code>(最新版本)</p>
+<h3 id="使用Dockerfile构建镜像"><a href="#使用Dockerfile构建镜像" class="headerlink" title="使用Dockerfile构建镜像"></a>使用<code>Dockerfile</code>构建镜像</h3><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># docker build -t 镜像名:版本号 .  注意最后边的点 `.` 表示当前目录, 别丢了.</span></span><br><span class="line">docker build -t my_image:<span class="number">1.0</span> .</span><br></pre></td></tr></table></figure>
+
+<p><code>Docker</code> <code>build</code> 命令可以使用 <code>Dockerfile</code> 来构建镜像。默认情况下，<code>Dockerfile</code> 文件位于构建上下文的根目录下，因此 <code>docker build</code> 命令会自动读取上下文根路径下名为 <code>Dockerfile</code> 的文件。如果 <code>Dockerfile</code> 文件不在根目录下，可以使用 <code>-f</code> 选项来指定 <code>Dockerfile</code> 文件的路径。例如，以下命令将使用 <code>/path/to/Dockerfile</code> 文件构建镜像：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build -f /path/to/Dockerfile -t image_name:tag .</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看本地镜像-ID"><a href="#查看本地镜像-ID" class="headerlink" title="查看本地镜像 ID"></a>查看本地镜像 <code>ID</code></h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker images -q</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi mysql:5.7</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"></span><br><span class="line">docker rmi 2be84dd575ee</span><br></pre></td></tr></table></figure>
+
+<p>删除<code>tag</code>为<code>none</code>的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi `docker images -f &quot;dangling=true&quot; -q`</span><br></pre></td></tr></table></figure>
+
+<p>全部删除本地镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker rmi `docker images -q`</span><br></pre></td></tr></table></figure>
+
+<h3 id="导出镜像"><a href="#导出镜像" class="headerlink" title="导出镜像"></a>导出镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># docker save -o 给导出的镜像压缩包起个文件名 要导出的镜像名:版本号</span><br><span class="line">docker save -o image.tar target_image:tag</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入镜像"><a href="#导入镜像" class="headerlink" title="导入镜像"></a>导入镜像</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># docker load -i 指定要导入的镜像压缩包文件名</span><br><span class="line">docker load -i image.tar</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>TIP:<br>如果用镜像 <code>ID</code> 导出的镜像在导入之后是没有名字和<code>tag</code>的, 这种情况我们可以使用 <code>docker tag</code> 给镜像改名字</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker tag image_id new_image_name:tag</span><br></pre></td></tr></table></figure>
+
+<h2 id="容器相关命令"><a href="#容器相关命令" class="headerlink" title="容器相关命令"></a><strong>容器相关命令</strong></h2><h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run -d --name=my_container -p 8080:8080 tomcat:latest</span><br></pre></td></tr></table></figure>
+
+<p><code>Docker</code> 创建容器的命令是 <code>docker run</code>。以下是一些常用的参数：</p>
+<ul>
+<li><code>-d</code>: 后台运行容器，并返回容器<code>ID</code>；</li>
+<li><code>-p</code>: 指定端口映射，格式为：主机(宿主)端口:容器端口；</li>
+<li><code>-i</code>: 以交互模式运行容器，通常与 <code>-t</code> 同时使用；</li>
+<li><code>-t</code>: 为容器重新分配一个伪输入终端，通常与 <code>-i</code> 同时使用；</li>
+<li><code>--name=my_container</code>: 为容器指定一个名称；</li>
+<li><code>--dns 8.8.8.8</code>: 指定容器使用的<code>DNS</code>服务器，默认和宿主一致；</li>
+</ul>
+<p>你可以根据你的需求来选择相应的参数。最后是使用的镜像名和版本号</p>
+<blockquote>
+<p>tip:<br>使用交互模式运行容器时, 会直接进入容器内部, 退出交互模式后, 该容器自动停止运行</p>
+</blockquote>
+<h3 id="查看容器列表"><a href="#查看容器列表" class="headerlink" title="查看容器列表"></a>查看容器列表</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看正在运行的容器列表</span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line"># 查看最近一次创建的容器</span><br><span class="line">docker ps -l</span><br><span class="line"></span><br><span class="line"># 查看正在运行的容器ID列表</span><br><span class="line">docker ps -q</span><br><span class="line"></span><br><span class="line"># 查看全部容器(包括已经停止的容器)</span><br><span class="line">docker ps -a</span><br><span class="line"></span><br><span class="line"># 查看全部容器ID列表</span><br><span class="line">docker ps -aq</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="停止运行的容器"><a href="#停止运行的容器" class="headerlink" title="停止运行的容器"></a>停止运行的容器</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用容器名停止</span><br><span class="line">docker stop my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 使用容器ID停止</span><br><span class="line">docker stop container_id</span><br><span class="line"></span><br><span class="line"># 使用容器ID停止多个正在运行的容器</span><br><span class="line">docker stop `docker ps -q`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="启动已停止的容器"><a href="#启动已停止的容器" class="headerlink" title="启动已停止的容器"></a>启动已停止的容器</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 容器名</span><br><span class="line">docker start my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 容器ID</span><br><span class="line">docker start container_id</span><br><span class="line"></span><br><span class="line"># 使用容器ID启动多个已停止的容器</span><br><span class="line">docker start `docker ps -aq`</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 用容器名删除</span><br><span class="line">docker rm my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 用容器ID删除</span><br><span class="line">docker rm container_id</span><br><span class="line"></span><br><span class="line"># 删除多个未运行的容器, 运行中的无法删除</span><br><span class="line">docker rm `docker ps -aq`</span><br></pre></td></tr></table></figure>
+
+<h3 id="进入容器-正在运行的容器才可以进入"><a href="#进入容器-正在运行的容器才可以进入" class="headerlink" title="进入容器(正在运行的容器才可以进入)"></a>进入容器(正在运行的容器才可以进入)</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用容器名</span><br><span class="line">docker exec -it my_container /bin/bash</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 使用容器ID</span><br><span class="line">docker exec -it container_id /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 容器名</span><br><span class="line">docker inspect my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 容器ID</span><br><span class="line">docker inspect container_id</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器与宿主机之间的数据拷贝"><a href="#容器与宿主机之间的数据拷贝" class="headerlink" title="容器与宿主机之间的数据拷贝"></a>容器与宿主机之间的数据拷贝</h3><h4 id="将容器中目录或文件拷贝到宿主机"><a href="#将容器中目录或文件拷贝到宿主机" class="headerlink" title="将容器中目录或文件拷贝到宿主机"></a>将容器中目录或文件拷贝到宿主机</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 将容器中 /app/html 目录拷贝到宿主机 /mnt/ 目录中</span><br><span class="line">docker cp container_id:/app/html /mnt/</span><br><span class="line"># 将容器中 /app/html/index.html 文件拷贝到宿主机 /mnt/dist/ 目录中</span><br><span class="line">docker cp container_id:/app/html/index.html /mnt/dist/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="将宿主机目录或文件拷贝到容器中"><a href="#将宿主机目录或文件拷贝到容器中" class="headerlink" title="将宿主机目录或文件拷贝到容器中"></a>将宿主机目录或文件拷贝到容器中</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 将宿主机 /mnt/dist 目录拷贝到容器的 /app 目录中</span><br><span class="line">docker cp /mnt/dist container_id:/app/</span><br><span class="line"># 将宿主机 /mnt/dist/index.html 文件拷贝到容器的 /app/html 目录中</span><br><span class="line">docker cp /mnt/dist/index.html container_id:/app/html/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="将宿主机-mnt-dist目录拷贝到容器中-并重命名为html"><a href="#将宿主机-mnt-dist目录拷贝到容器中-并重命名为html" class="headerlink" title="将宿主机/mnt/dist目录拷贝到容器中, 并重命名为html"></a>将宿主机<code>/mnt/dist</code>目录拷贝到容器中, 并重命名为<code>html</code></h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 将宿主机 /mnt/dist 目录拷贝到容器的 /app/ 中重命名为 html</span><br><span class="line">docker cp /mnt/dist container_id:/app/html</span><br><span class="line"># 将宿主机 /mnt/dist/index1.html 文件拷贝到容器的 /app/html/ 中重命名为 index.html</span><br><span class="line">docker cp /mnt/dist/index1.html container_id:/app/html/index.html</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 导出的容器快照文件可以再导入为镜像</span><br><span class="line">docker logs [容器ID]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个命令有以下常用参数 -f : 跟踪日志输出</p>
+<p>–since :显示某个开始时间的所有日志 -t : 显示时间戳 –tail :仅列出最新N条容器日志</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>docker学习笔记</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>学习笔记</tag>
+        <tag>命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dockerfile 详解01</title>
+    <url>/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/</url>
+    <content><![CDATA[<h1 id="常见的指令记录"><a href="#常见的指令记录" class="headerlink" title="常见的指令记录"></a>常见的指令记录</h1><h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>两种形式如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;</span><br><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;:&lt;TAG&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>通过FROM指定的镜像名称必须是一个已经存在的镜像，这个镜像称之为基础镜像，必须位于第一条非注释指令</p>
+</blockquote>
+<h2 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">MAINTAINER</span> &lt;NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>指定镜像的作者信息，包含镜像的所有者和联系人信息</p>
+</blockquote>
+<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在shell模式下，是使用&#x2F;bin&#x2F;sh -c COMMAND来运行命令的<br>在exec模式下可以指定其他的shell来运行命令RUN [“&#x2F;bin&#x2F;bash”, “-c”, “echo hello”]</p>
+</blockquote>
+<p>多条RUN指令可以合并为一条：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">RUN yum install httpd &amp;&amp; yum install ftp</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样在构建的时候会减少产生中间层镜像</p>
+</blockquote>
+<h2 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a><strong>EXPOSE</strong></h2><blockquote>
+<p>指定运行该镜像的容器使用的端口，可以是多个。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">EXPOSE</span> &lt;PORT&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用这个指令的目的是告诉应用程序容器内应用程序会使用的端口，在运行时还需要使用-p参数指定映射端口。这是docker处于安全的目的，不会自动打开端口。</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -p 80 -d dockertest/dockerfile_build nginx -g <span class="string">&quot;daemon off&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a><strong>CMD</strong></h2><p>用于提供容器运行的默认命令，如果在<code>docker run</code>时指定了运行的命令，则CMD命令不会执行。CMD有三种模式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&#x27;param1&#x27;</span>, <span class="string">&#x27;param2&#x27;</span>] (通常与ENTRYPOINT搭配指定ENTRYPOINT的默认参数)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a><strong>ENTRYPOINT</strong></h2><p>与CMD类似，ENTRYPOINT不会被<code>docker run</code>中指定的命令覆盖，如果想覆盖ENTRYPOINT，则需要在<code>docker run</code>中指定<code>--entrypoint</code>选项</p>
+<p>它有两种模式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ADD和COPY"><a href="#ADD和COPY" class="headerlink" title="ADD和COPY"></a><strong>ADD和COPY</strong></h2><p>作用都是将文件或目录复制到Dockerfile构建的镜像中</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ADD</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ADD包含了类似tar的解压功能，如果只是单纯复制文件，建议使用COPY，而且，两者的源文件路径使用Dockerfile相对路径，目标路径使用绝对路径。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a><strong>VOLUME</strong></h2><p>用于向容器添加卷，可以提供共享存储等功能</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">VOLUME</span><span class="language-bash"> [<span class="string">&#x27;/data&#x27;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a><strong>WORKDIR</strong></h2><p>在容器内部设置工作目录，这样ENTRYPOINT和CMD指定的命令都会在容器中这个目录下进行。</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /path/to/workdir</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a><strong>ENV</strong></h2><p>用于设置环境变量</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt; &lt;VALUE&gt;</span><br><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt;=&lt;VALUE&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="USER"><a href="#USER" class="headerlink" title="USER"></a><strong>USER</strong></h2><p>用于指定镜像为什么用户去运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USER nginx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>镜像就会以nginx身份运行，可以使用uid，gid等各种组合使用</p>
+</blockquote>
+<h2 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a><strong>ONBUILD</strong></h2><p>为镜像创建触发器，当一个镜像被用作其他镜像的基础镜像时，这个触发器会被执行。当子镜像被构建时会插入触发器中的指令</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ONBUILD</span> <span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Dockerfile的构建过程"><a href="#Dockerfile的构建过程" class="headerlink" title="Dockerfile的构建过程"></a><strong>Dockerfile的构建过程</strong></h2><ol>
+<li>docker会从Dockerfile文件头FROM指定的基础镜像运行一个容器</li>
+<li>然后执行一条指令，对容器修改</li>
+<li>接着执行类似docker commit的操作，创建新的镜像层</li>
+<li>在基于刚创建的镜像运行一个新的容器</li>
+<li>执行Dockerfile下一条指令，直到所有指令执行完毕</li>
+</ol>
+<blockquote>
+<p>docker会删除中间层创建的容器，但不会删除中间层镜像，所以可以使用docker run运行一个中间层容器，从而查看每一步构建后的镜像状态，这样就可以进行调试。</p>
+</blockquote>
+<h2 id="构建缓存"><a href="#构建缓存" class="headerlink" title="构建缓存"></a><strong>构建缓存</strong></h2><p>docker在构建过程中会将之前构建的镜像看做缓存。</p>
+<p>当第一次构建的时候，构建过程会比较慢，而在此进行相同的构建的时候，会看见using cache字样，表示使用了缓存，构建过程也非常快。</p>
+<p>如果不想使用构建缓存，则在docker build中使用—no-cache选项。</p>
+<p>还可以在Dockerfile中使用ENV REFRESH_DATE 2018-01-01来制定缓存刷新时间，更改这个时间，就会让后面的命令不使用缓存。</p>
+<p><code>Dockerfile</code> 简单列举几个指令:</p>
+<ul>
+<li><code>FROM</code> : 指定基础镜像</li>
+<li><code>WORKDIR</code> : 指定工作目录</li>
+<li><code>COPY</code> : 将文件或者目录从构建上下文复制到容器中(推荐)</li>
+<li><code>ADD</code> : 将文件或者目录从构建上下文复制到容器中,并且会将压缩文件解压缩,支持 <code>URL</code></li>
+<li><code>RUN</code> : 在容器中执行命令</li>
+<li><code>CMD</code> : 容器启动时执行的命令</li>
+<li><code>EXPOSE</code> : 指定要监听的端口以实现与外部通信</li>
+</ul>
+<p>简单的例子：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nodejs server Dockerfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># FROM node</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /nodeApp</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># COPY &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./package.json .</span></span><br><span class="line"><span class="comment"># ADD &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="comment"># ADD ./package.json .</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># shell格式：就像在命令行中输入的Shell脚本命令一样。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./src ./server</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;./server/index.js&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>docker学习笔记</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>学习笔记</tag>
+        <tag>Dockerfile</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hive优化(一)</title>
     <url>/2023/07/24/Hive%E4%BC%98%E5%8C%96-%E4%B8%80/</url>
     <content><![CDATA[<blockquote>
@@ -132,11 +320,17 @@
         <category>hive学习笔记</category>
       </categories>
       <tags>
+        <tag>学习笔记</tag>
         <tag>hive</tag>
         <tag>大数据</tag>
         <tag>调优</tag>
-        <tag>学习笔记</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>你好，这是我的首页。</title>
+    <url>/2023/04/27/hello-world/</url>
+    <content><![CDATA[<p>欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。</p>
+]]></content>
   </entry>
   <entry>
     <title>Namesilo域名购买及使用教程</title>
@@ -179,12 +373,6 @@
       <tags>
         <tag>域名</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>你好，这是我的首页。</title>
-    <url>/2023/04/27/hello-world/</url>
-    <content><![CDATA[<p>欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。</p>
-]]></content>
   </entry>
   <entry>
     <title>hexo配置-站点内容搜索</title>
@@ -650,6 +838,190 @@
       </tags>
   </entry>
   <entry>
+    <title>poetry 入门完全指南</title>
+    <url>/2023/11/12/poetry-%E5%85%A5%E9%97%A8%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/</url>
+    <content><![CDATA[<h1 id="poetry-是什么"><a href="#poetry-是什么" class="headerlink" title="poetry 是什么"></a>poetry 是什么</h1><blockquote>
+<p><a href="https://python-poetry.org/">https://python-poetry.org/</a><br>Poetry 差不多是 pip + venv，的结合体。可以类似 pip 用于管理第三方模块的管理，但是比 pip 的功能强大许多，同时还包含 venv 的虚拟环境管理功能。大致的功能如下：</p>
+</blockquote>
+<ol>
+<li>管理第三方模块的安装与卸载</li>
+<li>管理虚拟环境</li>
+<li>管理虚拟环境的依赖</li>
+<li>管理打包与发布 其中最重要的是 虚拟环境的依赖，意识本文的重点。至于 打包与发布 对于开发者用的不是很多，在这里就不介绍了。</li>
+</ol>
+<h1 id="虚拟环境"><a href="#虚拟环境" class="headerlink" title="虚拟环境"></a>虚拟环境</h1><p>虚拟环境是指内建的 venv 或 virtualenv 、 conda 以及其他用来创建与管理 Python 虚拟环境的工具，不同的虚拟环境各自独立，存放的位置、安装的模块也都不一样。</p>
+<h1 id="模块管理、模块依赖管理"><a href="#模块管理、模块依赖管理" class="headerlink" title="模块管理、模块依赖管理"></a>模块管理、模块依赖管理</h1><p>模块是指虚拟环境中安装的第三方模块及其版本。大多数项目对第三方库的版本都是有特定要求，如果对旧版本的项目使用新版本的依赖，可能会报很奇怪的错误。</p>
+<p>当安装第三方模块时，第三方模块可能会安装自己依赖的模块。当安装两个以上模块时，就可能出现第三方模块的依赖出现冲突。这种情况一般是依赖的版本冲突。这种就叫做相关性依赖</p>
+<h1 id="pip-的不足"><a href="#pip-的不足" class="headerlink" title="pip 的不足"></a>pip 的不足</h1><p>pip 是 python 内置的依赖管理工具，而它最大的不足在于 第三方模块的相关性依赖管理 的能力不足。尤其是在删除第三方模块是的依赖解析， 可以说是不会分析依赖。这也是我选择 poetry 的一个重要原因。<br>下来我们看一个案例：<br>1、创建虚拟环境</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">D:\code_demo&gt; python -m venv venv</span><br><span class="line">D:\code_demo&gt; venv\Script\active</span><br><span class="line">(venv) D:\code_demo&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2、安装 flask 并查看安装好的第三方模块（依赖）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) D:\code_demo&gt;pip install flask</span><br><span class="line">(venv) D:\code_demo&gt;pip list</span><br><span class="line">Package      Version</span><br><span class="line">------------ -------</span><br><span class="line">blinker      1.6.2</span><br><span class="line">click        8.1.3</span><br><span class="line">colorama     0.4.6</span><br><span class="line">Flask        2.3.2</span><br><span class="line">itsdangerous 2.1.2</span><br><span class="line">Jinja2       3.1.2</span><br><span class="line">MarkupSafe   2.1.2</span><br><span class="line">pip          22.3.1</span><br><span class="line">setuptools   65.5.0</span><br><span class="line">Werkzeug     2.3.6</span><br></pre></td></tr></table></figure>
+
+<p>3、然后删除 flask 模块</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(venv) D:\code_demo&gt;pip uninstall flask</span><br><span class="line">Found existing installation: Flask 2.3.2</span><br><span class="line">Uninstalling Flask-2.3.2:</span><br><span class="line">  Would remove:</span><br><span class="line">    d:\code_demo\venv\lib\site-packages\flask-2.3.2.dist-info\*</span><br><span class="line">    d:\code_demo\venv\lib\site-packages\flask\*</span><br><span class="line">    d:\code_demo\venv\scripts\flask.exe</span><br><span class="line">Proceed (Y/n)? y</span><br><span class="line">  Successfully uninstalled Flask-2.3.2</span><br><span class="line"></span><br><span class="line">(venv) D:\code_demo&gt;pip list</span><br><span class="line">Package      Version</span><br><span class="line">------------ -------</span><br><span class="line">blinker      1.6.2[pyproject.toml](..%2F..%2F..%2Fpoetry-demo%2Fpyproject.toml)</span><br><span class="line">click        8.1.3</span><br><span class="line">colorama     0.4.6</span><br><span class="line">itsdangerous 2.1.2</span><br><span class="line">Jinja2       3.1.2</span><br><span class="line">MarkupSafe   2.1.2</span><br><span class="line">pip          22.3.1</span><br><span class="line">setuptools   65.5.0</span><br><span class="line">Werkzeug     2.3.6</span><br></pre></td></tr></table></figure>
+
+<p>然后就会发现，只少了 flask 模块，而安装 flask 时顺带安装的依赖全部被留下了。也就是说 pip 安装模块是，相关的依赖都会被下载安装。但是在删除是，pip 就不会进行管理了，而是直接把指定的模块移除，留下一堆依赖。</p>
+<h1 id="开始使用-Poetry"><a href="#开始使用-Poetry" class="headerlink" title="开始使用 Poetry"></a>开始使用 Poetry</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install poetry</span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化-poetry-项目"><a href="#初始化-poetry-项目" class="headerlink" title="初始化 poetry 项目"></a>初始化 poetry 项目</h2><p>1、初始化项目</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">X:\&gt;mkdir poetry-demo</span><br><span class="line">X:\&gt;cd poetry-demo</span><br><span class="line">X:\poetry-demo&gt;poetry init</span><br></pre></td></tr></table></figure>
+
+<p>然后会跳出来一连串的互动对话，用于创建项目的配置文件，这里我就直接全部一路回车，然后看一下生成的 <code>pyproject.toml</code> 配置文件：</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[tool.poetry]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;poetry-demo&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">description</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">&quot;zhengxinonly &lt;pyxxponly@gmail.com&gt;&quot;</span>]</span><br><span class="line"><span class="attr">readme</span> = <span class="string">&quot;README.md&quot;</span></span><br><span class="line"><span class="attr">packages</span> = [&#123;include = <span class="string">&quot;poetry_demo&quot;</span>&#125;]</span><br><span class="line"></span><br><span class="line"><span class="section">[tool.poetry.dependencies]</span></span><br><span class="line"><span class="attr">python</span> = <span class="string">&quot;^3.10&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">[build-system]</span></span><br><span class="line"><span class="attr">requires</span> = [<span class="string">&quot;poetry-core&quot;</span>]</span><br><span class="line"><span class="attr">build-backend</span> = <span class="string">&quot;poetry.core.masonry.api&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时项目的目录接口如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">poetry-demo</span><br><span class="line">└── pyproject.toml</span><br><span class="line"></span><br><span class="line">0 directories, 1 file</span><br></pre></td></tr></table></figure>
+
+<h2 id="管理虚拟环境"><a href="#管理虚拟环境" class="headerlink" title="管理虚拟环境"></a>管理虚拟环境</h2><p>poetry 预设了很多自己的虚拟环境配置，这些配置可以通过 <code>poetry config</code> 进行修改。</p>
+<p>Windows 系统下 poetry 预设是将虚拟环境创建在 <code>C:\Users\&lt;用户名&gt;\AppData\Local\pypoetry\Cache\virtualenvs</code> 目录下，当用户在执行 <code>poetry add</code> 等指令时，poetry 都会自动检查当下是否正在使用虚拟环境：</p>
+<ul>
+<li>如果是，则会直接安装模块到当前的虚拟环境下</li>
+<li>如果否，则会自动帮你创建一个新的虚拟环境，然后再安装模块</li>
+</ul>
+<blockquote>
+<p>如果之前使用过 venv 、 virtualenv 或者其他的虚拟环境，poetry 默认的虚拟环境跟他们的有一点不一样，不过后面可以通过 poetry config 修改配置解决这个问题。</p>
+</blockquote>
+<h3 id="创建虚拟环境"><a href="#创建虚拟环境" class="headerlink" title="创建虚拟环境"></a>创建虚拟环境</h3><p>使用指令 <code>poetry env use python</code>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">X:\poetry-demo&gt;poetry env use python</span><br><span class="line">Creating virtualenv poetry-demo-Ut74gzEx-py3.10 in C:\Users\xxp\AppData\Local\pypoetry\Cache\virtualenvs</span><br><span class="line">Using virtualenv: C:\Users\xxp\AppData\Local\pypoetry\Cache\virtualenvs\poetry-demo-Ut74gzEx-py3.10</span><br></pre></td></tr></table></figure>
+
+<p><strong>重点说明</strong></p>
+<ul>
+<li><p>poetry env use python是使用当前命令行下激活的 python 解释器创建虚拟环境</p>
+</li>
+<li><p>也可以将指令最后的 <code>python</code> ，改为 <code>python3</code>、<code>python3.8</code>，之类的，甚至只要需要 <code>3.8</code>，只要确保对于的解释器能够在环境变量中找到。</p>
+</li>
+<li><p>更多的配置可以查看 <a href="https://python-poetry.org/docs/managing-environments/">官方文档</a></p>
+</li>
+<li><p>poetry 默认会将虚拟环境统一放在指定目录，例如刚刚创建的项目就放在 <code>C:\Users\xxp\AppData\Local\pypoetry\Cache\virtualenvs\</code> 目录当中</p>
+</li>
+<li><p>虚拟环境的命名模式为 <code>项目名-随机数-python版本</code></p>
+</li>
+</ul>
+<h3 id="在当前项目下创建虚拟环境"><a href="#在当前项目下创建虚拟环境" class="headerlink" title="在当前项目下创建虚拟环境"></a>在当前项目下创建虚拟环境</h3><p>我们可以使用 <code>poetry config --list</code> 指令来查看 poetry 的几个主要设定，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">X:\poetry-demo&gt;poetry config --list</span><br><span class="line">cache-dir = &quot;C:\\Users\\xxp\\AppData\\Local\\pypoetry\\Cache&quot;</span><br><span class="line">experimental.new-installer = true</span><br><span class="line">experimental.system-git-client = false</span><br><span class="line">installer.max-workers = null</span><br><span class="line">installer.modern-installation = true</span><br><span class="line">installer.no-binary = null</span><br><span class="line">installer.parallel = true</span><br><span class="line">virtualenvs.create = true</span><br><span class="line">virtualenvs.in-project = null</span><br><span class="line">virtualenvs.options.always-copy = false</span><br><span class="line">virtualenvs.options.no-pip = false</span><br><span class="line">virtualenvs.options.no-setuptools = false</span><br><span class="line">virtualenvs.options.system-site-packages = false</span><br><span class="line">virtualenvs.path = &quot;C:\\Users\\xxp\\AppData\\Local\\pypoetry\\Cache\\virtualenvs&quot;</span><br><span class="line">virtualenvs.prefer-active-python = false</span><br><span class="line">virtualenvs.prompt = &quot;&#123;project_name&#125;-py&#123;python_version&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>virtualenvs.create = true</code> 若改为 <code>false</code>，则可以停止 poetry 在检查不到虚拟环境是自动创建的行为模式，但是建议不要改动。</p>
+<p>而 <code>virtualenvs.in-project = false</code> 就是我们要修改的目标，使用指令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">poetry config virtualenvs.in-project true</span><br></pre></td></tr></table></figure>
+
+<p>先把之前创建的虚拟环境删除</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">X:\poetry-demo&gt;poetry env remove python</span><br><span class="line">Deleted virtualenv: C:\Users\xxp\AppData\Local\pypoetry\Cache\virtualenvs\poetry-demo-Ut74gzEx-py3.10</span><br></pre></td></tr></table></figure>
+
+<p>重新创建虚拟环境，看一下差异：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">X:\poetry-demo&gt;poetry env use python</span><br><span class="line">Creating virtualenv poetry-demo in X:\poetry-demo\.venv</span><br><span class="line">Using virtualenv: X:\poetry-demo\.venv</span><br></pre></td></tr></table></figure>
+
+<p>可以看出：</p>
+<ul>
+<li>虚拟环境的路径改为项目的根目录下了</li>
+<li>名称固定位 <code>.venv</code></li>
+</ul>
+<h3 id="启动与退出虚拟环境"><a href="#启动与退出虚拟环境" class="headerlink" title="启动与退出虚拟环境"></a>启动与退出虚拟环境</h3><p>在项目的根目录下使用 <code>poetry shell</code> 就可以进入到虚拟环境</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">X:\poetry-demo&gt;poetry shell</span><br><span class="line">Spawning shell within X:\poetry-demo\.venv</span><br><span class="line"></span><br><span class="line">(poetry-demo-py3.10) X:\poetry-demo&gt;</span><br></pre></td></tr></table></figure>
+
+<p>poetry shell 指令会检查当前目录或上层目录是否存在 <code>pyproject，toml</code> 来确定需要启动的虚拟环境，所以如果不移动到项目的目录下，则会出现错误。</p>
+<p>退出虚拟环境就更简单了，只要输入 <code>exit</code> 就可以了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(poetry-demo-py3.10) X:\poetry-demo&gt;exit</span><br><span class="line"></span><br><span class="line">X:\poetry-demo&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="poetry-指令"><a href="#poetry-指令" class="headerlink" title="poetry 指令"></a>poetry 指令</h1><p>poetry 是一个独立的命令行工具，他有自己的指令，需要花费额外的时间与精力学习，相较 pip 更加复杂，这个能是使用 poetry 的一道关卡。好在常用指令其实不超过 10 个，下面就来一一介绍。</p>
+<h2 id="安装模块"><a href="#安装模块" class="headerlink" title="安装模块"></a>安装模块</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">poetry add</span><br></pre></td></tr></table></figure>
+
+<p>相较于 <code>pip install</code>，我们试试安装 flask 看看会有什么样的变化</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">(poetry-demo-py3.10) X:\poetry-demo&gt;poetry add flask</span><br><span class="line">Using version ^2.3.2 for flask</span><br><span class="line"></span><br><span class="line">Updating dependencies</span><br><span class="line">Resolving dependencies...</span><br><span class="line"></span><br><span class="line">Writing lock file</span><br><span class="line"></span><br><span class="line">Package operations: 8 installs, 0 updates, 0 removals</span><br><span class="line"></span><br><span class="line">  • Installing colorama (0.4.6)</span><br><span class="line">  • Installing markupsafe (2.1.3)</span><br><span class="line">  • Installing blinker (1.6.2)</span><br><span class="line">  • Installing click (8.1.6)</span><br><span class="line">  • Installing itsdangerous (2.1.2)</span><br><span class="line">  • Installing jinja2 (3.1.2)</span><br><span class="line">  • Installing werkzeug (2.3.6)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 poetry 会将所有的信息全部列出来，并且清楚的告知了新增了那些第三方模块。</p>
+<p>此时项目中的 <code>pyproject.toml</code> 也发生了变化</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[tool.poetry.dependencies]</span><br><span class="line">python = &quot;^3.10&quot;</span><br><span class="line">flask = &quot;^2.3.2&quot;  # 新增部分</span><br></pre></td></tr></table></figure>
+
+<p>这里要说明，安装 flask ，则 <code>pyproject.toml</code> 只会新增 <code>flask = &quot;^2.3.2&quot;</code> 这个字段的第三方模块，其余依赖不会出现在 <code>toml</code> 文件中。</p>
+<h2 id="poetry-lock-与更新顺序"><a href="#poetry-lock-与更新顺序" class="headerlink" title="poetry.lock 与更新顺序"></a><code>poetry.lock</code> 与更新顺序</h2><p>除了更新 <code>pyproject.toml</code> ，此时项目中还会新增一个文件，名为 <code>poetry.lock</code> ，它实际上就相当于 <code>pip</code> 的 <code>requirements.txt</code> ，详细记录了所有安装的模块与版本。</p>
+<p>当使用 <code>poetry add</code> 指令时，<code>poetry</code> 会自动依序帮你做完这三件事：</p>
+<ol>
+<li>更新 <code>pyproject.toml</code>。</li>
+<li>依照 <code>pyproject.toml</code> 的内容，更新 <code>poetry.lock</code> 。</li>
+<li>依照 <code>poetry.lock</code> 的内容，更新虚拟环境。</li>
+</ol>
+<p>由此可见， <code>poetry.lock</code> 的内容是取决于 <code>pyproject.toml</code> ，但两者并不会自己连动，一定要基于特定指令才会进行同步与更新， <code>poetry add</code> 就是一个典型案例。</p>
+<p>此时项目目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">poetry-demo</span><br><span class="line">├── poetry.lock</span><br><span class="line">└── pyproject.toml</span><br><span class="line"></span><br><span class="line">0 directories, 2 files</span><br></pre></td></tr></table></figure>
+
+<h2 id="poetry-lock-：更新-poetry-lock"><a href="#poetry-lock-：更新-poetry-lock" class="headerlink" title="poetry lock ：更新 poetry.lock"></a>poetry lock ：更新 poetry.lock</h2><p>当你自行修改了 <code>pyproject.toml</code> 内容，比如变更特定模块的版本（这是有可能的，尤其在手动处理版本冲突的时候），此时 <code>poetry.lock</code> 的内容与 <code>pyproject.toml</code> 出现了脱钩，必须让它依照新的 <code>pyproject.toml</code> 内容更新、同步，使用指令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">poetry lock</span><br></pre></td></tr></table></figure>
+
+<p>如此一来，才能确保手动修改的内容，也更新到 <code>poetry.lock</code> 中，毕竟虚拟环境如果要重新建立，是基于 <code>poetry.lock</code> 的内容来安装模块，而非 <code>pyproject.toml</code> 。</p>
+<p>还是那句话：</p>
+<blockquote>
+<p>poetry.lock 相当于 Poetry 的 requirements.txt 。</p>
+</blockquote>
+<p>但要特别注意的是， <code>poetry lock</code> 指令，仅会更新 <code>poetry.lock</code> ，不会同时安装模块至虚拟环境</p>
+<p>因此，在执行完 <code>poetry lock</code> 指令后，必须再使用 <code>poetry install</code> 来安装模块。否则就会出现 <code>poetry.lock</code> 和虚拟环境不一致的状况。</p>
+<p>更多 <code>poetry lock</code> 细节可参考 官方文件，其中特别值得注意的是 <code>--no-update</code> 参数。</p>
+<h2 id="新增模块至-dev-dependencies"><a href="#新增模块至-dev-dependencies" class="headerlink" title="新增模块至 dev-dependencies"></a>新增模块至 dev-dependencies</h2><p>有些模块，比如 <code>pytest</code> 、 <code>black</code> 等等，只会在开发环境中使用，产品的部署环境并不需要。</p>
+<p>Poetry 允许你区分这两者，将上述的模块安装至 <code>dev-dependencies</code> 区块，方便让你轻松建立一份「不包含」 <code>dev-dependencies</code> 开发模块的安装清单。</p>
+<p>在此以 Black 为例，安装方式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry add black --group dev</span><br></pre></td></tr></table></figure>
+
+<p>结果的区别显示在 <code>pyproject.toml</code> 里：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[tool.poetry.dependencies]</span><br><span class="line">python = &quot;^3.10&quot;</span><br><span class="line">flask = &quot;^2.3.2&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[tool.poetry.group.dev.dependencies]</span><br><span class="line">black = &quot;^23.7.0&quot;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>black</code> 被列在不同区块： <code>tool.poetry.dev-dependencies</code> 。</p>
+<p><strong>强烈建议善用 dev-dependencies</strong></p>
+<p>善用 <code>--group dev</code> 参数，明确区分开发环境，我认为非常必要。</p>
+<p>首先，这些模块常常属于「检测型」工具，相关的依赖模块着实不少！比如 <code>flake8</code> ，它依赖了 <code>pycodestyle</code> 、 <code>pyflakes</code> 、 <code>mccabe</code> 等等，还有 <code>black</code> 、 <code>pre-commit</code> ，依赖模块数量也都很可观。</p>
+<h2 id="Poetry-更新模块"><a href="#Poetry-更新模块" class="headerlink" title="Poetry 更新模块"></a>Poetry 更新模块</h2><p>这个就很简单了，使用 <code>poetry update</code> 指令即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry update</span><br></pre></td></tr></table></figure>
+
+<p>上面指令会更新全部可能可以更新的模块，也可以仅指定特定模块，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry update requests toml</span><br></pre></td></tr></table></figure>
+
+<h2 id="列出全部模块清单"><a href="#列出全部模块清单" class="headerlink" title="列出全部模块清单"></a>列出全部模块清单</h2><p><strong>树状显示模块依赖层级</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry show --tree</span><br></pre></td></tr></table></figure>
+
+<p>它也可以只显示指定模块的依赖层级，以 <code>celery</code> 为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry show celery --tree</span><br></pre></td></tr></table></figure>
+
+<h2 id="Poetry-移除模块"><a href="#Poetry-移除模块" class="headerlink" title="Poetry 移除模块"></a>Poetry 移除模块</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry remove flask</span><br></pre></td></tr></table></figure>
+
+<h2 id="输出-Poetry-虚拟环境的-requirements-txt"><a href="#输出-Poetry-虚拟环境的-requirements-txt" class="headerlink" title="输出 Poetry 虚拟环境的 requirements.txt"></a>输出 Poetry 虚拟环境的 requirements.txt</h2><p>理论上，全面改用 Poetry 后，项目中是不需要存在 <code>requirements.txt</code> ，因为它的角色已经完全被 <code>poetry.lock</code> 所取代。</p>
+<p>但事实是，你可能还是需要它，甚至希望它随着 <code>poetry.lock</code> 的内容更新！至少对我而言就是如此，我在 Docker 部署环境中并不使用 Poetry，所以我需要一份完全等价于 <code>poetry.lock</code> 的 <code>requirements.txt</code> ，用于 Docker 部署。</p>
+<p>你可能想说，那我就在 Poetry 的虚拟环境下，使用以往熟悉的指令 <code>pip freeze &gt; requirements.txt</code> 来产生一份就可以了吧？我本来也是这么想，但实际的产出却是如此：（提醒：目前 poetry-demo 专案中仅剩下 Black 和它的依赖模块）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">black @ file:///Users/kyo/Library/Caches/pypoetry/artifacts/11/4c/fc/cd6d885e9f5be135b161e365b11312cff5920d7574c8446833d7a9b1a3/black-22.3.0-cp38-cp38-macosx_10_9_x86_64.whl</span><br><span class="line">click @ file:///Users/kyo/Library/Caches/pypoetry/artifacts/f0/23/09/b13d61d1fa8b3cd7c26f67505638d55002e7105849de4c4432c28e1c0d/click-8.1.2-py3-none-any.whl</span><br><span class="line">mypy-extensions @ file:///Users/kyo/Library/Caches/pypoetry/artifacts/b6/a0/b0/a5dc9acd6fd12aba308634f21bb7cf0571448f20848797d7ecb327aa12/mypy_extensions-0.4.3-py2.py3-none-any.whl</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>这呈现好像不是我们以前熟悉的那样：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">black==22.3.0</span><br><span class="line">click==8.1.2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>没错，只要是使用 <code>poetry add</code> 安装的模块，在 <code>pip freeze</code> 就会变成这样。此时想输出类似 <code>requirements.txt</code> 的格式，需要使用 <code>poetry export</code> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry export -f requirements.txt -o requirements.txt --without-hashes --dev</span><br></pre></td></tr></table></figure>
+
+<h1 id="Poetry-常用指令清单"><a href="#Poetry-常用指令清单" class="headerlink" title="Poetry 常用指令清单"></a>Poetry 常用指令清单</h1><ul>
+<li><code>poetry add</code></li>
+<li><code>poetry remove</code></li>
+<li><code>poetry export</code></li>
+<li><code>poetry env use</code></li>
+<li><code>poetry shell</code></li>
+<li><code>poetry show</code></li>
+<li><code>poetry init</code></li>
+<li><code>poetry install</code></li>
+</ul>
+<h2 id="修改-poetry-镜像源"><a href="#修改-poetry-镜像源" class="headerlink" title="修改 poetry 镜像源"></a>修改 poetry 镜像源</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">poetry source add tsinghua https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+
+<h1 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h1><p>参考：</p>
+<ul>
+<li><a href="https://realpython.com/dependency-management-python-poetry/">https://realpython.com/dependency-management-python-poetry/</a></li>
+<li><a href="https://blog.kyomind.tw/python-poetry/">https://blog.kyomind.tw/python-poetry/</a></li>
+<li><a href="https://notes.zhengxinonly.com/environment/use-poetry.html#poetry-lock-%E4%B8%8E%E6%9B%B4%E6%96%B0%E9%A1%BA%E5%BA%8F">https://notes.zhengxinonly.com/environment/use-poetry.html#poetry-lock-%E4%B8%8E%E6%9B%B4%E6%96%B0%E9%A1%BA%E5%BA%8F</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>python三方库学习</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>poetry</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python进度条</title>
     <url>/2023/07/28/python%E8%BF%9B%E5%BA%A6%E6%9D%A1-alive-progress/</url>
     <content><![CDATA[<h1 id="python进度条"><a href="#python进度条" class="headerlink" title="python进度条"></a>python进度条</h1><h3 id="一、普通进度条"><a href="#一、普通进度条" class="headerlink" title="一、普通进度条"></a>一、普通进度条</h3><p><strong>示例代码</strong></p>
@@ -860,6 +1232,44 @@
       </tags>
   </entry>
   <entry>
+    <title>日常使用hexo写文章流程梳理</title>
+    <url>/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/</url>
+    <content><![CDATA[<h1 id="日常使用hexo写文章流程梳理"><a href="#日常使用hexo写文章流程梳理" class="headerlink" title="日常使用hexo写文章流程梳理"></a>日常使用hexo写文章流程梳理</h1><p><strong>1. 首先创建文章</strong></p>
+<p>使用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd 博客目录</span><br><span class="line">hexo n [文章名称]</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 使用typore打开生产的文章.md文件开始编写文章</strong></p>
+<p>这里主要使用.md的语法，当需要插入图片的时候，需要把typore设置成如下图的地方。</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112180625831.png" alt="image-20231112180625831"></p>
+<p>设置之后需要修改语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 复制之前</span><br><span class="line">![image-20231112180625831](%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112180625831.png)</span><br><span class="line">复制之后</span><br><span class="line">&#123;% asset_img image-20231112180625831.png %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此当需要插入图片的时候比较麻烦，我一般都不使用图片。</p>
+<p><strong>3. 写完文章之后使用如下页面生成静态页面然后上传git</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 我们可以写成一条命令</span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 登录部署网站，更新内容</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://vercel.com/</span><br></pre></td></tr></table></figure>
+
+<p>登录之后如下内容</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112190856269.png" alt="image-20231112190856269"></p>
+<p>进入项目，然后点击部署，可以看到刚刚上传的最新页面，</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191008812.png" alt="image-20231112191008812"></p>
+<p>然后点进去，推进到生产。</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191220182.png" alt="image-20231112191220182"></p>
+<p>可以看到最新页面已经到域名地址了</p>
+<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191346558.png" alt="image-20231112191346558"></p>
+]]></content>
+      <categories>
+        <category>网站搭建-hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>hexo</tag>
+        <tag>个人博客</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在Hexo博客中插入图片</title>
     <url>/2023/07/22/%E5%9C%A8Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/</url>
     <content><![CDATA[<h3 id="绝对路径本地引用"><a href="#绝对路径本地引用" class="headerlink" title="绝对路径本地引用"></a>绝对路径本地引用</h3><p>当Hexo项目中只用到少量图片时，可以将图片统一放在source&#x2F;images文件夹中，通过markdown语法访问它们。</p>
@@ -898,44 +1308,6 @@
         <tag>学习笔记</tag>
         <tag>hexo</tag>
         <tag>github</tag>
-        <tag>个人博客</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>日常使用hexo写文章流程梳理</title>
-    <url>/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/</url>
-    <content><![CDATA[<h1 id="日常使用hexo写文章流程梳理"><a href="#日常使用hexo写文章流程梳理" class="headerlink" title="日常使用hexo写文章流程梳理"></a>日常使用hexo写文章流程梳理</h1><p><strong>1. 首先创建文章</strong></p>
-<p>使用命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd 博客目录</span><br><span class="line">hexo n [文章名称]</span><br></pre></td></tr></table></figure>
-
-<p><strong>2. 使用typore打开生产的文章.md文件开始编写文章</strong></p>
-<p>这里主要使用.md的语法，当需要插入图片的时候，需要把typore设置成如下图的地方。</p>
-<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112180625831.png" alt="image-20231112180625831"></p>
-<p>设置之后需要修改语法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 复制之前</span><br><span class="line">![image-20231112180625831](%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112180625831.png)</span><br><span class="line">复制之后</span><br><span class="line">&#123;% asset_img image-20231112180625831.png %&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因此当需要插入图片的时候比较麻烦，我一般都不使用图片。</p>
-<p><strong>3. 写完文章之后使用如下页面生成静态页面然后上传git</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 我们可以写成一条命令</span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-<p><strong>4. 登录部署网站，更新内容</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://vercel.com/</span><br></pre></td></tr></table></figure>
-
-<p>登录之后如下内容</p>
-<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112190856269.png" alt="image-20231112190856269"></p>
-<p>进入项目，然后点击部署，可以看到刚刚上传的最新页面，</p>
-<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191008812.png" alt="image-20231112191008812"></p>
-<p>然后点进去，推进到生产。</p>
-<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191220182.png" alt="image-20231112191220182"></p>
-<p>可以看到最新页面已经到域名地址了</p>
-<p><img src="/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/image-20231112191346558.png" alt="image-20231112191346558"></p>
-]]></content>
-      <categories>
-        <category>网站搭建-hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>hexo</tag>
         <tag>个人博客</tag>
       </tags>
   </entry>

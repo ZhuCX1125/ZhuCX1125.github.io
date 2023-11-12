@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="docker,学习笔记,命令," />
 
 
 
@@ -79,16 +79,19 @@
 
 
 
-<meta name="description" content="欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。">
+<meta name="description" content="docker 常用命令记录镜像相关命令搜索镜像1docker search tomcat  拉取镜像1docker pull tomcat:tag  不加 tag 的情况下, 默认拉取的就是 latest(最新版本) 使用Dockerfile构建镜像12# docker build -t 镜像名:版本号 .  注意最后边的点 &#96;.&#96; 表示当前目录, 别丢了.docker build -t my_i">
 <meta property="og:type" content="article">
-<meta property="og:title" content="你好，这是我的首页。">
-<meta property="og:url" content="http://example.com/2023/04/27/hello-world/index.html">
+<meta property="og:title" content="Docker 常用命令记录">
+<meta property="og:url" content="http://example.com/2023/11/12/Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Hlailai&#39;Blog">
-<meta property="og:description" content="欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。">
+<meta property="og:description" content="docker 常用命令记录镜像相关命令搜索镜像1docker search tomcat  拉取镜像1docker pull tomcat:tag  不加 tag 的情况下, 默认拉取的就是 latest(最新版本) 使用Dockerfile构建镜像12# docker build -t 镜像名:版本号 .  注意最后边的点 &#96;.&#96; 表示当前目录, 别丢了.docker build -t my_i">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-04-27T09:21:43.728Z">
-<meta property="article:modified_time" content="2023-07-24T14:31:19.505Z">
+<meta property="article:published_time" content="2023-11-12T14:39:38.000Z">
+<meta property="article:modified_time" content="2023-11-12T14:55:34.581Z">
 <meta property="article:author" content="Hlailai ZHU">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="命令">
 <meta name="twitter:card" content="summary">
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2023/04/27/hello-world/"/>
+  <link rel="canonical" href="http://example.com/2023/11/12/Docker-常用命令记录/"/>
 
 
 
 
 
-  <title>你好，这是我的首页。 | Hlailai'Blog</title>
+  <title>Docker 常用命令记录 | Hlailai'Blog</title>
   
 
 
@@ -306,7 +309,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/27/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/12/Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -323,7 +326,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">你好，这是我的首页。</h1>
+          <h1 class="post-title" itemprop="name headline">Docker 常用命令记录</h1>
         
 
         <div class="post-meta">
@@ -335,8 +338,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-04-27T17:21:43+08:00">
-                2023-04-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-11-12T22:39:38+08:00">
+                2023-11-12
               </time>
             
 
@@ -346,6 +349,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">docker学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -354,8 +379,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2023/04/27/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2023/04/27/hello-world/" itemprop="commentCount"></span>
+                <a href="/2023/11/12/Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2023/11/12/Docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +407,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  61
+                  1.2k
                 </span>
               
 
@@ -407,7 +432,76 @@
       
 
       
-        <p>欢迎来到我的博客，这是我的第一篇文章，本网站用于记录本人成长的历程，分享我的学习经历，感谢您百忙之中进入我的博客，欢迎您的批评和指正。</p>
+        <h1 id="docker-常用命令记录"><a href="#docker-常用命令记录" class="headerlink" title="docker 常用命令记录"></a>docker 常用命令记录</h1><h2 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h2><h3 id="搜索镜像"><a href="#搜索镜像" class="headerlink" title="搜索镜像"></a>搜索镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search tomcat</span><br></pre></td></tr></table></figure>
+
+<h3 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull tomcat:tag</span><br></pre></td></tr></table></figure>
+
+<p>不加 <code>tag</code> 的情况下, 默认拉取的就是 <code>latest</code>(最新版本)</p>
+<h3 id="使用Dockerfile构建镜像"><a href="#使用Dockerfile构建镜像" class="headerlink" title="使用Dockerfile构建镜像"></a>使用<code>Dockerfile</code>构建镜像</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker build -t 镜像名:版本号 .  注意最后边的点 `.` 表示当前目录, 别丢了.</span></span><br><span class="line">docker build -t my_image:<span class="number">1.0</span> .</span><br></pre></td></tr></table></figure>
+
+<p><code>Docker</code> <code>build</code> 命令可以使用 <code>Dockerfile</code> 来构建镜像。默认情况下，<code>Dockerfile</code> 文件位于构建上下文的根目录下，因此 <code>docker build</code> 命令会自动读取上下文根路径下名为 <code>Dockerfile</code> 的文件。如果 <code>Dockerfile</code> 文件不在根目录下，可以使用 <code>-f</code> 选项来指定 <code>Dockerfile</code> 文件的路径。例如，以下命令将使用 <code>/path/to/Dockerfile</code> 文件构建镜像：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -f /path/to/Dockerfile -t image_name:tag .</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看本地镜像-ID"><a href="#查看本地镜像-ID" class="headerlink" title="查看本地镜像 ID"></a>查看本地镜像 <code>ID</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images -q</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker rmi mysql:5.7</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"></span><br><span class="line">docker rmi 2be84dd575ee</span><br></pre></td></tr></table></figure>
+
+<p>删除<code>tag</code>为<code>none</code>的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi `docker images -f &quot;dangling=true&quot; -q`</span><br></pre></td></tr></table></figure>
+
+<p>全部删除本地镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi `docker images -q`</span><br></pre></td></tr></table></figure>
+
+<h3 id="导出镜像"><a href="#导出镜像" class="headerlink" title="导出镜像"></a>导出镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># docker save -o 给导出的镜像压缩包起个文件名 要导出的镜像名:版本号</span><br><span class="line">docker save -o image.tar target_image:tag</span><br></pre></td></tr></table></figure>
+
+<h3 id="导入镜像"><a href="#导入镜像" class="headerlink" title="导入镜像"></a>导入镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># docker load -i 指定要导入的镜像压缩包文件名</span><br><span class="line">docker load -i image.tar</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>TIP:<br>如果用镜像 <code>ID</code> 导出的镜像在导入之后是没有名字和<code>tag</code>的, 这种情况我们可以使用 <code>docker tag</code> 给镜像改名字</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag image_id new_image_name:tag</span><br></pre></td></tr></table></figure>
+
+<h2 id="容器相关命令"><a href="#容器相关命令" class="headerlink" title="容器相关命令"></a><strong>容器相关命令</strong></h2><h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name=my_container -p 8080:8080 tomcat:latest</span><br></pre></td></tr></table></figure>
+
+<p><code>Docker</code> 创建容器的命令是 <code>docker run</code>。以下是一些常用的参数：</p>
+<ul>
+<li><code>-d</code>: 后台运行容器，并返回容器<code>ID</code>；</li>
+<li><code>-p</code>: 指定端口映射，格式为：主机(宿主)端口:容器端口；</li>
+<li><code>-i</code>: 以交互模式运行容器，通常与 <code>-t</code> 同时使用；</li>
+<li><code>-t</code>: 为容器重新分配一个伪输入终端，通常与 <code>-i</code> 同时使用；</li>
+<li><code>--name=my_container</code>: 为容器指定一个名称；</li>
+<li><code>--dns 8.8.8.8</code>: 指定容器使用的<code>DNS</code>服务器，默认和宿主一致；</li>
+</ul>
+<p>你可以根据你的需求来选择相应的参数。最后是使用的镜像名和版本号</p>
+<blockquote>
+<p>tip:<br>使用交互模式运行容器时, 会直接进入容器内部, 退出交互模式后, 该容器自动停止运行</p>
+</blockquote>
+<h3 id="查看容器列表"><a href="#查看容器列表" class="headerlink" title="查看容器列表"></a>查看容器列表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 查看正在运行的容器列表</span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line"># 查看最近一次创建的容器</span><br><span class="line">docker ps -l</span><br><span class="line"></span><br><span class="line"># 查看正在运行的容器ID列表</span><br><span class="line">docker ps -q</span><br><span class="line"></span><br><span class="line"># 查看全部容器(包括已经停止的容器)</span><br><span class="line">docker ps -a</span><br><span class="line"></span><br><span class="line"># 查看全部容器ID列表</span><br><span class="line">docker ps -aq</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="停止运行的容器"><a href="#停止运行的容器" class="headerlink" title="停止运行的容器"></a>停止运行的容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 使用容器名停止</span><br><span class="line">docker stop my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 使用容器ID停止</span><br><span class="line">docker stop container_id</span><br><span class="line"></span><br><span class="line"># 使用容器ID停止多个正在运行的容器</span><br><span class="line">docker stop `docker ps -q`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="启动已停止的容器"><a href="#启动已停止的容器" class="headerlink" title="启动已停止的容器"></a>启动已停止的容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 容器名</span><br><span class="line">docker start my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 容器ID</span><br><span class="line">docker start container_id</span><br><span class="line"></span><br><span class="line"># 使用容器ID启动多个已停止的容器</span><br><span class="line">docker start `docker ps -aq`</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 用容器名删除</span><br><span class="line">docker rm my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 用容器ID删除</span><br><span class="line">docker rm container_id</span><br><span class="line"></span><br><span class="line"># 删除多个未运行的容器, 运行中的无法删除</span><br><span class="line">docker rm `docker ps -aq`</span><br></pre></td></tr></table></figure>
+
+<h3 id="进入容器-正在运行的容器才可以进入"><a href="#进入容器-正在运行的容器才可以进入" class="headerlink" title="进入容器(正在运行的容器才可以进入)"></a>进入容器(正在运行的容器才可以进入)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 使用容器名</span><br><span class="line">docker exec -it my_container /bin/bash</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 使用容器ID</span><br><span class="line">docker exec -it container_id /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看容器信息"><a href="#查看容器信息" class="headerlink" title="查看容器信息"></a>查看容器信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 容器名</span><br><span class="line">docker inspect my_container</span><br><span class="line"></span><br><span class="line"># or</span><br><span class="line"># 容器ID</span><br><span class="line">docker inspect container_id</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器与宿主机之间的数据拷贝"><a href="#容器与宿主机之间的数据拷贝" class="headerlink" title="容器与宿主机之间的数据拷贝"></a>容器与宿主机之间的数据拷贝</h3><h4 id="将容器中目录或文件拷贝到宿主机"><a href="#将容器中目录或文件拷贝到宿主机" class="headerlink" title="将容器中目录或文件拷贝到宿主机"></a>将容器中目录或文件拷贝到宿主机</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 将容器中 /app/html 目录拷贝到宿主机 /mnt/ 目录中</span><br><span class="line">docker cp container_id:/app/html /mnt/</span><br><span class="line"># 将容器中 /app/html/index.html 文件拷贝到宿主机 /mnt/dist/ 目录中</span><br><span class="line">docker cp container_id:/app/html/index.html /mnt/dist/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="将宿主机目录或文件拷贝到容器中"><a href="#将宿主机目录或文件拷贝到容器中" class="headerlink" title="将宿主机目录或文件拷贝到容器中"></a>将宿主机目录或文件拷贝到容器中</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 将宿主机 /mnt/dist 目录拷贝到容器的 /app 目录中</span><br><span class="line">docker cp /mnt/dist container_id:/app/</span><br><span class="line"># 将宿主机 /mnt/dist/index.html 文件拷贝到容器的 /app/html 目录中</span><br><span class="line">docker cp /mnt/dist/index.html container_id:/app/html/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="将宿主机-mnt-dist目录拷贝到容器中-并重命名为html"><a href="#将宿主机-mnt-dist目录拷贝到容器中-并重命名为html" class="headerlink" title="将宿主机/mnt/dist目录拷贝到容器中, 并重命名为html"></a>将宿主机<code>/mnt/dist</code>目录拷贝到容器中, 并重命名为<code>html</code></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 将宿主机 /mnt/dist 目录拷贝到容器的 /app/ 中重命名为 html</span><br><span class="line">docker cp /mnt/dist container_id:/app/html</span><br><span class="line"># 将宿主机 /mnt/dist/index1.html 文件拷贝到容器的 /app/html/ 中重命名为 index.html</span><br><span class="line">docker cp /mnt/dist/index1.html container_id:/app/html/index.html</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 导出的容器快照文件可以再导入为镜像</span><br><span class="line">docker logs [容器ID]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个命令有以下常用参数 -f : 跟踪日志输出</p>
+<p>–since :显示某个开始时间的所有日志 -t : 显示时间戳 –tail :仅列出最新N条容器日志</p>
+</blockquote>
 
       
     </div>
@@ -423,6 +517,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+          
+            <a href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag"># 命令</a>
+          
+        </div>
+      
 
       
       
@@ -432,15 +536,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/" rel="next" title="Dockerfile 详解01">
+                <i class="fa fa-chevron-left"></i> Dockerfile 详解01
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/04/27/page%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2-%E7%AC%94%E8%AE%B001/" rel="prev" title="hexo+github page搭建自己的个人博客-笔记01">
-                hexo+github page搭建自己的个人博客-笔记01 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -521,8 +625,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -586,6 +699,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#docker-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">docker 常用命令记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">镜像相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">搜索镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.2.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Dockerfile%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用Dockerfile构建镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.4.</span> <span class="nav-text">查看本地镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F-ID"><span class="nav-number">1.1.5.</span> <span class="nav-text">查看本地镜像 ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.6.</span> <span class="nav-text">删除本地镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.7.</span> <span class="nav-text">导出镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E9%95%9C%E5%83%8F"><span class="nav-number">1.1.8.</span> <span class="nav-text">导入镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">容器相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">创建容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E5%88%97%E8%A1%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">查看容器列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">停止运行的容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%B7%B2%E5%81%9C%E6%AD%A2%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">启动已停止的容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="nav-number">1.2.5.</span> <span class="nav-text">删除容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8-%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8%E6%89%8D%E5%8F%AF%E4%BB%A5%E8%BF%9B%E5%85%A5"><span class="nav-number">1.2.6.</span> <span class="nav-text">进入容器(正在运行的容器才可以进入)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.7.</span> <span class="nav-text">查看容器信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B9%8B%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8B%B7%E8%B4%9D"><span class="nav-number">1.2.8.</span> <span class="nav-text">容器与宿主机之间的数据拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9B%AE%E5%BD%95%E6%88%96%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E5%88%B0%E5%AE%BF%E4%B8%BB%E6%9C%BA"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">将容器中目录或文件拷贝到宿主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%AE%BF%E4%B8%BB%E6%9C%BA%E7%9B%AE%E5%BD%95%E6%88%96%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E5%88%B0%E5%AE%B9%E5%99%A8%E4%B8%AD"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">将宿主机目录或文件拷贝到容器中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86%E5%AE%BF%E4%B8%BB%E6%9C%BA-mnt-dist%E7%9B%AE%E5%BD%95%E6%8B%B7%E8%B4%9D%E5%88%B0%E5%AE%B9%E5%99%A8%E4%B8%AD-%E5%B9%B6%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%BAhtml"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">将宿主机&#x2F;mnt&#x2F;dist目录拷贝到容器中, 并重命名为html</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83"><span class="nav-number">1.3.</span> <span class="nav-text">其它</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97"><span class="nav-number">1.3.1.</span> <span class="nav-text">查看日志</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
