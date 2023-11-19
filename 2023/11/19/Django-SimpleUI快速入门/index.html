@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,django,后台开发," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、创建项目1、安装simpleui1pip install django-simpleui   2、修改django后台模块默认的模板1234567891011# 修改project的setting文件，在INSTALLED_APPS 首行引入simple应用  INSTALLED_APPS &#x3D; [      &amp;#x27;simpleui&amp;#x27;,      &amp;#x27;django.con">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django+SimpleUI快速入门">
+<meta property="og:url" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Hlailai&#39;Blog">
+<meta property="og:description" content="一、创建项目1、安装simpleui1pip install django-simpleui   2、修改django后台模块默认的模板1234567891011# 修改project的setting文件，在INSTALLED_APPS 首行引入simple应用  INSTALLED_APPS &#x3D; [      &amp;#x27;simpleui&amp;#x27;,      &amp;#x27;django.con">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-2ed2bdcc1a69899a80e69db5bfb4e0d1_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-c74ab5ebadb0287d9a6a7bce34f167c0_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-72bd33df0b18f1e2e346c41ecdd8f4fd_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-3c9a33a41d09044d7e504a9efa153e02_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-da9fb25e0b0c6b800146cd4a264474f6_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-1d59985ecc174e84a36d2a92f860b4f3_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-31a55bdab11c94e8fe8e368c7804a175_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-6522c58571c566aa4f3258b0848b81fb_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-7f47263e31b815a0873fcab7e93ce799_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-a067f88f218a2fac95446ac0be434f66_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-8a7a2bd9335f96a8f579d98d6d1ed297_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-976df4e9ad9dd1efee3f4a6d2f3dc22d_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-3aab6711fc244b793f943aecaca1e864_720w.png">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-c5fc7f38264436257d0210f41424cd5f_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-5c0e103a8f219f690e63aa72aedc5b8f_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-cfa94434ce78bc2235ed4f5b124bb38d_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-3f782eadecc8ab69dc177a1710ac929c_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-08230449191a9408f5bf6b75e36f6817_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-7bd792665793b70eb6ca0d2f192548ce_720w.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-7bd792665793b70eb6ca0d2f192548ce_720w-170038127073820.webp">
+<meta property="og:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-85f689989699b3ed30c4f9e59b545a44_720w.webp">
+<meta property="article:published_time" content="2023-11-19T07:50:30.000Z">
+<meta property="article:modified_time" content="2023-11-19T08:11:30.369Z">
+<meta property="article:author" content="Hlailai ZHU">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="后台开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-2ed2bdcc1a69899a80e69db5bfb4e0d1_720w.webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2023/11/19/Django-SimpleUI快速入门/"/>
+
+
+
+
+
+  <title>Django+SimpleUI快速入门 | Hlailai'Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hlailai'Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qqq.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hlailai'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Django+SimpleUI快速入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-11-19T15:50:30+08:00">
+                2023-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">django学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.3k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、创建项目"><a href="#一、创建项目" class="headerlink" title="一、创建项目"></a>一、创建项目</h1><h2 id="1、安装simpleui"><a href="#1、安装simpleui" class="headerlink" title="1、安装simpleui"></a>1、安装simpleui</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install django-simpleui </span><br></pre></td></tr></table></figure>
+
+<h2 id="2、修改django后台模块默认的模板"><a href="#2、修改django后台模块默认的模板" class="headerlink" title="2、修改django后台模块默认的模板"></a>2、修改django后台模块默认的模板</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改project的setting文件，在INSTALLED_APPS 首行引入simple应用</span></span><br><span class="line">  INSTALLED_APPS = [</span><br><span class="line">      <span class="string">&#x27;simpleui&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;django.contrib.admin&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;django.contrib.auth&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;django.contrib.contenttypes&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;django.contrib.sessions&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;django.contrib.messages&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;django.contrib.staticfiles&#x27;</span>,</span><br><span class="line">      ...</span><br><span class="line">  ]</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、字符集及时区设置"><a href="#3、字符集及时区设置" class="headerlink" title="3、字符集及时区设置"></a>3、字符集及时区设置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改project的setting文件</span></span><br><span class="line">LANGUAGE_CODE = <span class="string">&#x27;zh-hans&#x27;</span></span><br><span class="line">TIME_ZONE = <span class="string">&#x27;Asia/Shanghai&#x27;</span></span><br><span class="line">USE_TZ = <span class="literal">False</span> <span class="comment"># 这里务必调整为False，否则时区设置无效</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4、静态资源及debug状态设置"><a href="#4、静态资源及debug状态设置" class="headerlink" title="4、静态资源及debug状态设置"></a>4、静态资源及debug状态设置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># django在开发环境提供bug调试功能，同时该设置影响到runserver运行时的静态资源引入，故生产环境关闭debug开关的时候，保障静态资源的正确引入需要显性定义静态资源</span></span><br><span class="line">DEBUG = <span class="literal">True</span></span><br><span class="line"><span class="comment"># 定义静态资源位置</span></span><br><span class="line"> STATICFILES_DIRS = [</span><br><span class="line">     os.path.join(BASE_DIR, <span class="string">&quot;static&quot;</span>),</span><br><span class="line"> ]</span><br><span class="line"></span><br><span class="line"><span class="comment"># or 通过克隆方式将静态资源克隆到项目的静态资源目录，交由ngnix调用</span></span><br><span class="line">python3 manage.py collectstatic</span><br><span class="line"><span class="comment"># 如果克隆报错提示找不到静态目录，请先在settings.py指定静态目录</span></span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, <span class="string">&quot;static&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 由于开发过程中simpleui有限通过cdn进行页面渲染，一般情况下我们需要将其调整成本地资源方式，往往生产环境是无法连接外网的</span></span><br><span class="line">SIMPLEUI_STATIC_OFFLINE = <span class="literal">True</span> <span class="comment"># 离线模式</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5、数据库连接配置"><a href="#5、数据库连接配置" class="headerlink" title="5、数据库连接配置"></a>5、数据库连接配置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里以postgresql数据库为例，通常建议使用mysql数据库，多数据库连接不在此处讨论</span></span><br><span class="line"><span class="comment"># postgresql</span></span><br><span class="line"><span class="comment">## 安装postgresql驱动</span></span><br><span class="line">pip install psycopg2-binary</span><br><span class="line"><span class="comment">#pip install psycopg2</span></span><br><span class="line"><span class="comment">## 这里需要设置postgresql的schema信息，通过options字典指定配置</span></span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;django.db.backends.postgresql_psycopg2&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span> : <span class="string">&#x27;moon&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;USER&#x27;</span>: <span class="string">&#x27;postgres&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PASSWORD&#x27;</span>: <span class="string">&#x27;postgres&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span>:<span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PORT&#x27;</span>: <span class="string">&#x27;5432&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;OPTIONS&#x27;</span>: &#123;</span><br><span class="line">                    <span class="string">&#x27;options&#x27;</span>: <span class="string">&#x27;-c search_path=myapp&#x27;</span></span><br><span class="line">                &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># mysql</span></span><br><span class="line"><span class="comment">## 安装mysql驱动</span></span><br><span class="line">pip install pymysql</span><br><span class="line"><span class="comment">## init文件引入pymysql 用于代理django认可的mysql驱动，同时由于django的版本问题对pymysql的版本存在要求需要增加一个版本欺骗动作</span></span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line">pymysql.version_info = (<span class="number">1</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="string">&quot;final&quot;</span>, <span class="number">0</span>)</span><br><span class="line">pymysql.install_as_MySQLdb()</span><br><span class="line"><span class="comment">## setting增加mysql连接串配置信息</span></span><br><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;django.db.backends.mysql&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span>:<span class="string">&#x27;jay_django_test&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span>:<span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;USER&#x27;</span>:<span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PASSWORD&#x27;</span>:<span class="string">&#x27;qweasd&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PORT&#x27;</span>:<span class="string">&#x27;3306&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、admin模块进行数据库初始化"><a href="#6、admin模块进行数据库初始化" class="headerlink" title="6、admin模块进行数据库初始化"></a>6、admin模块进行数据库初始化</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">执行数据库迁移</span></span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、创建admin模块超级管理员角色"><a href="#7、创建admin模块超级管理员角色" class="headerlink" title="7、创建admin模块超级管理员角色"></a>7、创建admin模块超级管理员角色</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+
+<h2 id="8、检查simple是否正确引入"><a href="#8、检查simple是否正确引入" class="headerlink" title="8、检查simple是否正确引入"></a>8、检查simple是否正确引入</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 浏览器访问 127.0.0.1:8000/admin 使用admin账户登录确认是否生效</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="二、创建APP"><a href="#二、创建APP" class="headerlink" title="二、创建APP"></a>二、创建APP</h1><h2 id="1、创建app"><a href="#1、创建app" class="headerlink" title="1、创建app"></a>1、创建app</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp myapp</span><br><span class="line"><span class="comment"># 将app注册到project</span></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">&#x27;simpleui&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.admin&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.auth&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.contenttypes&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.sessions&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.messages&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.staticfiles&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;myapp&#x27;</span>, <span class="comment"># 添加到末尾</span></span><br><span class="line">]</span><br><span class="line"><span class="comment"># 说明：这里注册app是整个app的起点，包括后续涉及到数据迁移文件的生成都依赖于注册列表</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2、创建model"><a href="#2、创建model" class="headerlink" title="2、创建model"></a>2、创建model</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在app的model创建测试用例的model</span></span><br><span class="line"><span class="keyword">import</span> django.utils.timezone <span class="keyword">as</span> timezone</span><br><span class="line"><span class="comment"># Create your models here.</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_detail</span>(models.Model):</span><br><span class="line">    <span class="comment">## 定义枚举值状态</span></span><br><span class="line">    JOB_TYPE_STATUS_GP = <span class="string">&#x27;01&#x27;</span></span><br><span class="line">    JOB_TYPE_STATUS_DEFAULT = <span class="string">&#x27;02&#x27;</span></span><br><span class="line">    JOB_TYPE_STATUS_CHOICES = (</span><br><span class="line">        (JOB_TYPE_STATUS_GP, <span class="string">&#x27;Greenplum函数&#x27;</span>),</span><br><span class="line">        (JOB_TYPE_STATUS_DEFAULT, <span class="string">&#x27;其他&#x27;</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    CREATED_BY = models.CharField(<span class="string">&#x27;创建人&#x27;</span>,max_length=<span class="number">32</span>) <span class="comment"># 创建人</span></span><br><span class="line">    CREATED_TIME = models.DateTimeField(<span class="string">&#x27;创建时间&#x27;</span>,default=timezone.now) <span class="comment"># 创建时间</span></span><br><span class="line">    UPDATED_BY = models.CharField(<span class="string">&#x27;更新人&#x27;</span>,max_length=<span class="number">32</span>) <span class="comment"># 更新人</span></span><br><span class="line">    UPDATED_TIME = models.DateTimeField(<span class="string">&#x27;更新时间&#x27;</span>,default=timezone.now)  <span class="comment"># 更新时间</span></span><br><span class="line">    JOB_TYPE = models.CharField(<span class="string">&#x27;任务类型&#x27;</span>,max_length=<span class="number">32</span>,</span><br><span class="line">                                choices=JOB_TYPE_STATUS_CHOICES,</span><br><span class="line">                                default=JOB_TYPE_STATUS_DEFAULT</span><br><span class="line">                                ) <span class="comment"># 任务类型 01：gp任务；02：datax任务；03：kafka推送任务；04：http请求任务</span></span><br><span class="line">    JOB_NAME = models.CharField(<span class="string">&#x27;任务名称&#x27;</span>,max_length=<span class="number">128</span>) <span class="comment"># 任务名称</span></span><br><span class="line">    JOB_COMMENT = models.CharField(<span class="string">&#x27;任务描述&#x27;</span>,max_length=<span class="number">128</span>)  <span class="comment"># 任务描述</span></span><br><span class="line">    IN_PARA = models.CharField(<span class="string">&#x27;输入参数定义&#x27;</span>,max_length=<span class="number">32</span>) <span class="comment"># 输入参数定义 参数使用英文逗号分隔</span></span><br><span class="line">    IN_PARA_COMMENT = models.CharField(<span class="string">&#x27;输入参数描述&#x27;</span>,max_length=<span class="number">1024</span>)  <span class="comment"># 输入参数描述</span></span><br><span class="line">    OUT_PARA = models.CharField(<span class="string">&#x27;输出参数定义&#x27;</span>,max_length=<span class="number">32</span>)  <span class="comment"># 输出参数定义 参数使用英文逗号分隔</span></span><br><span class="line">    OUT_PARA_COMMENT = models.CharField(<span class="string">&#x27;输出参数描述&#x27;</span>,max_length=<span class="number">1024</span>)  <span class="comment"># 输出参数描述</span></span><br><span class="line">    VERSION = models.CharField(<span class="string">&#x27;版本号&#x27;</span>,max_length=<span class="number">32</span>) <span class="comment"># 版本号</span></span><br><span class="line">    IS_DELETE = models.CharField(<span class="string">&#x27;是否删除&#x27;</span>,max_length=<span class="number">1</span>, default=<span class="string">&#x27;N&#x27;</span>)  <span class="comment"># 逻辑删除 Y:删除；N:正常</span></span><br><span class="line">    PRO_STATUS = models.CharField(<span class="string">&#x27;发布状态&#x27;</span>,max_length=<span class="number">1</span>,default=<span class="string">&#x27;N&#x27;</span>) <span class="comment"># 发布状态 Y:发布；N:开发</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成数据库迁移文件，生产环境建议指定app进行迁移文件生成，避免未完善功能对已有正常版本的影响</span></span><br><span class="line">python manage.py makemigrations</span><br><span class="line"><span class="comment"># 执行数据库迁移</span></span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、配置路由"><a href="#3、配置路由" class="headerlink" title="3、配置路由"></a>3、配置路由</h2><p>在应用的admin.py中进行model对象注册</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 常规的django的web开发一般需要在各个app中创建urls文件，并且将urls路由引入到project的urls中进行统一管理，这里我们通过admin模块的路由注册功能，注册到admin的路由中</span></span><br><span class="line"><span class="comment"># 应用的admin.py中进行model对象注册</span></span><br><span class="line"><span class="keyword">from</span> myapp.models <span class="keyword">import</span> job_detail</span><br><span class="line">admin.site.register(job_detail)</span><br></pre></td></tr></table></figure>
+
+<h1 id="三、页面布局"><a href="#三、页面布局" class="headerlink" title="三、页面布局"></a>三、页面布局</h1><h2 id="1、增删改查model测试"><a href="#1、增删改查model测试" class="headerlink" title="1、增删改查model测试"></a>1、增删改查model测试</h2><p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-2ed2bdcc1a69899a80e69db5bfb4e0d1_720w.webp" alt="img"></p>
+<blockquote>
+<h1 id="此时登录到页面上可以发现，刚刚创建的数据表已经作为一个类目在页面上展示了，但同时会发现一个问题，详情页面里面显示的并不是字段信息，而是具体的表名称，此处与我们设想的内容并不匹配。通过这一步骤我们成功验证了app的注册方式。具体展示内容，下面的步骤会详细介绍"><a href="#此时登录到页面上可以发现，刚刚创建的数据表已经作为一个类目在页面上展示了，但同时会发现一个问题，详情页面里面显示的并不是字段信息，而是具体的表名称，此处与我们设想的内容并不匹配。通过这一步骤我们成功验证了app的注册方式。具体展示内容，下面的步骤会详细介绍" class="headerlink" title="此时登录到页面上可以发现，刚刚创建的数据表已经作为一个类目在页面上展示了，但同时会发现一个问题，详情页面里面显示的并不是字段信息，而是具体的表名称，此处与我们设想的内容并不匹配。通过这一步骤我们成功验证了app的注册方式。具体展示内容，下面的步骤会详细介绍"></a>此时登录到页面上可以发现，刚刚创建的数据表已经作为一个类目在页面上展示了，但同时会发现一个问题，详情页面里面显示的并不是字段信息，而是具体的表名称，此处与我们设想的内容并不匹配。通过这一步骤我们成功验证了app的注册方式。具体展示内容，下面的步骤会详细介绍</h1></blockquote>
+<h2 id="2、admin首页布局"><a href="#2、admin首页布局" class="headerlink" title="2、admin首页布局"></a>2、admin首页布局</h2><p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-c74ab5ebadb0287d9a6a7bce34f167c0_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如上图所示，首页基础展示项目由三个部分组成，往往我们需要对首页进行定制重写，这里我们先把这几个展示模块先关闭</span></span><br><span class="line"><span class="comment"># project的setting文件最后追加如下设置，即可关闭以上几个模块以及信息采集模块</span></span><br><span class="line">SIMPLEUI_HOME_INFO = <span class="literal">False</span></span><br><span class="line">SIMPLEUI_HOME_QUICK = <span class="literal">False</span></span><br><span class="line">SIMPLEUI_HOME_ACTION = <span class="literal">False</span></span><br><span class="line">SIMPLEUI_ANALYSIS = <span class="literal">False</span></span><br><span class="line"><span class="comment"># SIMPLEUI_HOME_TITLE = &#x27;百度一下你就知道&#x27; # 【首页】按钮文案配置</span></span><br><span class="line">SIMPLEUI_HOME_PAGE = <span class="string">&#x27;https://www.baidu.com&#x27;</span> <span class="comment"># 可用于嵌入其他链接，这里可以直接方便的嵌入报表链接</span></span><br><span class="line">SIMPLEUI_HOME_ICON = <span class="string">&#x27;el el-icon-platform-eleme&#x27;</span></span><br><span class="line"><span class="comment"># ICON 支持element-ui和fontawesome  eg：fa fa-user</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 图标ICON 样式查看</span></span><br><span class="line">https://element.eleme.cn/<span class="comment">#/zh-CN/component/icon</span></span><br><span class="line">http://www.fontawesome.com.cn/cheatsheet/</span><br><span class="line"><span class="comment"># 经过实际测试，饿了么的图标稍微有点小，而且数量少</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来我们一起看下侧边栏设置，simpleui的侧边栏支持菜单排序，动态菜单等功能</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># project的setting文件中增加如下配置，icon信息可以参考http://www.fontawesome.com.cn/cheatsheet/</span></span><br><span class="line">SIMPLEUI_CONFIG = &#123;</span><br><span class="line">    <span class="string">&#x27;system_keep&#x27;</span>: <span class="literal">False</span>, <span class="comment"># 关闭系统菜单</span></span><br><span class="line">    <span class="string">&#x27;menu_display&#x27;</span>: [<span class="string">&#x27;任务管理&#x27;</span>, <span class="string">&#x27;测试&#x27;</span>, <span class="string">&#x27;权限认证&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;dynamic&#x27;</span>: <span class="literal">True</span>,    <span class="comment"># 设置是否开启动态菜单, 默认为False. 如果开启, 则会在每次用户登陆时动态展示菜单内容</span></span><br><span class="line">    <span class="string">&#x27;menus&#x27;</span>: [&#123;</span><br><span class="line">        <span class="string">&#x27;app&#x27;</span>: <span class="string">&#x27;myapp&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;任务管理&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;fas fa-user-shield&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;models&#x27;</span>: [&#123;</span><br><span class="line">            <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;任务管理1&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;fa fa-user&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;url&#x27;</span>: <span class="string">&#x27;job_detail/&#x27;</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        <span class="string">&#x27;app&#x27;</span>: <span class="string">&#x27;auth&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;权限认证&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;fas fa-user-shield&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;models&#x27;</span>: [&#123;</span><br><span class="line">            <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;用户&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;fa fa-user&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;url&#x27;</span>: <span class="string">&#x27;auth/user/&#x27;</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;测试&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;fa fa-file&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;models&#x27;</span>: [&#123;</span><br><span class="line">            <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Baidu&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;url&#x27;</span>: <span class="string">&#x27;http://baidu.com&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;far fa-surprise&#x27;</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;内网穿透&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;url&#x27;</span>: <span class="string">&#x27;https://www.wezoz.com&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;icon&#x27;</span>: <span class="string">&#x27;fab fa-github&#x27;</span></span><br><span class="line">        &#125;]</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-72bd33df0b18f1e2e346c41ecdd8f4fd_720w.webp" alt="img"></p>
+<p>如图所示，新配置的侧边栏已经生效，但点击我们自己创建的app的详情页面提示404错误，从异常信息得知，我们在路由配置上存在问题，系统未能找到我们的路由信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 问题配置</span><br><span class="line">&#x27;url&#x27;: &#x27;job_detail/&#x27;</span><br><span class="line"># 正确配置</span><br><span class="line">&#x27;url&#x27;: &#x27;myapp/job_detail/&#x27;</span><br><span class="line"># 这里大家可以思考下，url的配置与常规的urls.py文件的路由显性引入的异同点</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-3c9a33a41d09044d7e504a9efa153e02_720w.webp" alt="img"></p>
+<h2 id="3、页面标题及侧边栏标题定制"><a href="#3、页面标题及侧边栏标题定制" class="headerlink" title="3、页面标题及侧边栏标题定制"></a>3、页面标题及侧边栏标题定制</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 应用的admin.py文件中</span></span><br><span class="line">admin.site.site_header = <span class="string">&#x27;数据中心&#x27;</span></span><br><span class="line">admin.site.site_title = <span class="string">&#x27;XXX数据中心&#x27;</span></span><br><span class="line">admin.site.index_title = <span class="string">u&#x27;XXXX数据中心&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-da9fb25e0b0c6b800146cd4a264474f6_720w.webp" alt="img"></p>
+<p><em>目前看index_title在simpleui中无效，检查过simpleui的template文件确实没使用到这个参数</em></p>
+<h2 id="4、列表查询页面定制"><a href="#4、列表查询页面定制" class="headerlink" title="4、列表查询页面定制"></a>4、列表查询页面定制</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># admin文件中定义展示页面，后续方便页面管理，可以独立文件，通过import方式引入进行注册</span></span><br><span class="line"><span class="keyword">from</span> myapp.models <span class="keyword">import</span> job_detail</span><br><span class="line"></span><br><span class="line"><span class="meta">@admin.register(<span class="params">job_detail</span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_detail</span>(admin.ModelAdmin):</span><br><span class="line">    <span class="comment"># 设置页面可以展示的字段</span></span><br><span class="line">    list_display = (<span class="string">&#x27;JOB_TYPE&#x27;</span>, <span class="string">&#x27;JOB_NAME&#x27;</span>,<span class="string">&#x27;JOB_COMMENT&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;IN_PARA&#x27;</span>,<span class="string">&#x27;IN_PARA_COMMENT&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;OUT_PARA&#x27;</span>,<span class="string">&#x27;OUT_PARA_COMMENT&#x27;</span>)</span><br><span class="line">    <span class="comment"># 默认不配置的话，第一个字段会存在链接到记录编辑页面</span></span><br><span class="line">    <span class="comment"># list_display_links = None</span></span><br><span class="line">    list_display_links = (<span class="string">&#x27;JOB_NAME&#x27;</span>,)</span><br><span class="line">    <span class="comment"># 设置过滤选项</span></span><br><span class="line">    list_filter = (<span class="string">&#x27;JOB_TYPE&#x27;</span>, <span class="string">&#x27;CREATED_TIME&#x27;</span>,)</span><br><span class="line">    <span class="comment"># 每页显示条目数 缺省值100</span></span><br><span class="line">    list_per_page = <span class="number">1</span></span><br><span class="line">    <span class="comment"># show all页面上的model数目，缺省200</span></span><br><span class="line">    <span class="comment"># list_max_show_all = 200</span></span><br><span class="line">    <span class="comment"># 设置可编辑字段 如果设置了可以编辑字段，页面会自动增加保存按钮</span></span><br><span class="line">    list_editable = (<span class="string">&#x27;IN_PARA_COMMENT&#x27;</span>,)</span><br><span class="line">    <span class="comment"># 按日期月份筛选 该属性一般不用</span></span><br><span class="line">    <span class="comment"># date_hierarchy = &#x27;CREATED_TIME&#x27;</span></span><br><span class="line">    <span class="comment"># 按发布日期降序排序</span></span><br><span class="line">    ordering = (<span class="string">&#x27;-CREATED_TIME&#x27;</span>,)</span><br><span class="line">    <span class="comment"># 搜索条件设置</span></span><br><span class="line">    search_fields = (<span class="string">&#x27;JOB_NAME&#x27;</span>,)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 表头字段显示中文名称，这里需要修改models文件，在定义字段的时候增加别名</span></span><br><span class="line">    <span class="comment"># eg1：JOB_NAME = models.CharField(&#x27;任务名称&#x27;,max_length=128)</span></span><br><span class="line">    <span class="comment"># eg2: name = models.CharField(max_length=30,verbose_name=u&quot;姓名&quot;)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 字段关联展示</span></span><br><span class="line">    <span class="comment">## 场景1、关联其他表的数据展示，此处外键展示不做演示，生产环境尽量减少外键使用</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">## 场景2、枚举信息转义展示</span></span><br><span class="line">    <span class="comment">###  此处需要在model定义页面通过枚举值转义配置对应展示中文信息,参考model模块代码设置</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">      这种禁用编辑链接的放法只是不让它在页面中显示，即把超链接去掉了，</span></span><br><span class="line"><span class="string">      但是还是可以通过手动输入url的方式来进入编辑页面。</span></span><br><span class="line"><span class="string">      不过可以配合设置fieldsets或者readonly_fieldss来达到目的</span></span><br><span class="line"><span class="string">      注意：这里建议删除按钮要禁用掉，否则只有拥有view权限的人员依然可以进行删除动作，或者需要进行人员角色判断</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_add_permission</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="comment"># 禁用添加按钮</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_delete_permission</span>(<span class="params">self, request, obj=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="comment"># 禁用删除按钮</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-1d59985ecc174e84a36d2a92f860b4f3_720w.webp" alt="img"></p>
+<h2 id="5、表单编辑页面配置"><a href="#5、表单编辑页面配置" class="headerlink" title="5、表单编辑页面配置"></a>5、表单编辑页面配置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">这一段主要用于屏蔽 【保存并继续编辑】以及【保存并新建下一个】的按钮，不符合用户习惯</span></span><br><span class="line"><span class="string">同时需要在 类的定义里面要重写</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> django.contrib.admin.templatetags.admin_modify <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> django.contrib.admin.templatetags.admin_modify <span class="keyword">import</span> submit_row <span class="keyword">as</span> original_submit_row</span><br><span class="line"></span><br><span class="line"><span class="meta">@register.inclusion_tag(<span class="params"><span class="string">&#x27;admin/submit_line.html&#x27;</span>, takes_context=<span class="literal">True</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">submit_row</span>(<span class="params">context</span>):</span><br><span class="line">    ctx = original_submit_row(context)</span><br><span class="line">    ctx.update(&#123;</span><br><span class="line">        <span class="string">&#x27;show_save_and_add_another&#x27;</span>: context.get(<span class="string">&#x27;show_save_and_add_another&#x27;</span>, ctx[<span class="string">&#x27;show_save_and_add_another&#x27;</span>]),</span><br><span class="line">        <span class="string">&#x27;show_save_and_continue&#x27;</span>: context.get(<span class="string">&#x27;show_save_and_continue&#x27;</span>, ctx[<span class="string">&#x27;show_save_and_continue&#x27;</span>])</span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">return</span> ctx</span><br><span class="line"><span class="comment"># --- 分割线 ---  </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_detail</span>(admin.ModelAdmin):</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="comment"># fields 用于控制编辑页面内，需要编辑的字段，逐个显示所有的非AutoField和editable=True</span></span><br><span class="line">    <span class="comment">#        这里可以采用二维元组的方式进行设定对应字段是否在一行显示，可通过 浏览器开发者工具进行查看确认</span></span><br><span class="line">    <span class="comment"># fields = ((&#x27;JOB_NAME&#x27;, &#x27;JOB_TYPE&#x27;), &#x27;JOB_COMMENT&#x27;)</span></span><br><span class="line">    <span class="comment"># fieldsets 是二维元组列表，用于对编辑页面的布局，与fields属性互斥</span></span><br><span class="line">    fieldsets = (</span><br><span class="line">        (<span class="literal">None</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;JOB_NAME&#x27;</span>, <span class="string">&#x27;JOB_TYPE&#x27;</span>, <span class="string">&#x27;JOB_COMMENT&#x27;</span>)</span><br><span class="line">        &#125;),</span><br><span class="line">        (<span class="string">&#x27;更多操作&#x27;</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;classes&#x27;</span>: (<span class="string">&#x27;wide&#x27;</span>, <span class="string">&#x27;extrapretty&#x27;</span>,),</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;IN_PARA&#x27;</span>, <span class="string">&#x27;OUT_PARA&#x27;</span>),</span><br><span class="line">        &#125;),</span><br><span class="line">    )</span><br><span class="line">    save_as_continue = <span class="literal">False</span> <span class="comment"># 修改完成之后跳转到元素列表页面</span></span><br><span class="line">    <span class="comment"># 重写方法屏蔽按钮</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">change_view</span>(<span class="params">self, request, object_id, form_url=<span class="string">&#x27;&#x27;</span>, extra_context=<span class="literal">None</span></span>):</span><br><span class="line">        extra_context = extra_context <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">        extra_context[<span class="string">&#x27;show_save_and_add_another&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">        extra_context[<span class="string">&#x27;show_save_and_continue&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(job_detail, self).change_view(request, object_id,</span><br><span class="line">            form_url, extra_context=extra_context)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-31a55bdab11c94e8fe8e368c7804a175_720w.webp" alt="img"></p>
+<h2 id="6、页面按钮权限配置"><a href="#6、页面按钮权限配置" class="headerlink" title="6、页面按钮权限配置"></a>6、页面按钮权限配置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># django admin 的权限模块 默认提供了增删改查的权限配置</span></span><br><span class="line">curr_per_set = &#123;<span class="string">&#x27;myapp.view_job_detail&#x27;</span>,<span class="string">&#x27;myapp.delete_job_detail&#x27;</span>,<span class="string">&#x27;myapp.add_job_detail&#x27;</span>,<span class="string">&#x27;myapp.change_job_detail&#x27;</span>&#125;</span><br><span class="line"><span class="comment"># 而当我们以下图为例：仅仅给某个用户赋权 查询 权限的时候，该用户还存在新增按钮的权限，对已有数据无操作权限，此处启发我们需要去思考页面上面按钮权限如何跟具体角色进行关联</span></span><br><span class="line"><span class="comment"># 当然 django admin 同样支持自定义权限，此处不再讨论</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-6522c58571c566aa4f3258b0848b81fb_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里演示了根据不同用户角色决定是否在页面上显示相应的功能按钮</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_detail</span>(admin.ModelAdmin):</span><br><span class="line">    ... ...</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_add_permission</span>(<span class="params">self, request</span>):</span><br><span class="line">        user_per_set = request.user.get_all_permissions() <span class="comment"># 获取当前用户权限</span></span><br><span class="line">        <span class="comment"># 待判断的权限范围</span></span><br><span class="line">        curr_per_set = &#123;<span class="string">&#x27;myapp.view_job_detail&#x27;</span>,<span class="string">&#x27;myapp.delete_job_detail&#x27;</span>,<span class="string">&#x27;myapp.add_job_detail&#x27;</span>,<span class="string">&#x27;myapp.change_job_detail&#x27;</span>&#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;myapp.add_job_detail&#x27;</span> <span class="keyword">in</span> curr_per_set.intersection(user_per_set):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-7f47263e31b815a0873fcab7e93ce799_720w.webp" alt="img"></p>
+<h2 id="7、编辑页细致说明"><a href="#7、编辑页细致说明" class="headerlink" title="7、编辑页细致说明"></a>7、编辑页细致说明</h2><p>前文中我们已经介绍了简单的编辑页面的排版展示功能，接下来会更加详细的介绍编辑页面的排版，方便大家按照各自功能进行定制化开发</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># filesets的样式及描述文案</span></span><br><span class="line">    fieldsets = (</span><br><span class="line">        (<span class="literal">None</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;JOB_NAME&#x27;</span>, <span class="string">&#x27;JOB_TYPE&#x27;</span>, <span class="string">&#x27;JOB_COMMENT&#x27;</span>)</span><br><span class="line">        &#125;),</span><br><span class="line">        (<span class="string">&#x27;更多操作&#x27;</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;classes&#x27;</span>: (<span class="string">&#x27;wide&#x27;</span>, <span class="string">&#x27;extrapretty&#x27;</span>,),</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;IN_PARA&#x27;</span>, <span class="string">&#x27;OUT_PARA&#x27;</span>),</span><br><span class="line">        &#125;),</span><br><span class="line">    )</span><br><span class="line"><span class="comment"># 这里我们通过classes进行fileset的样式定制，常用的主要有 collaspe和wide，collaspe是将fieldset进行折叠，wide主要是增加水平空间，但这两个参数在simpleui中无用处（可能是我们的姿势不对）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加文案说明</span></span><br><span class="line">fieldsets = (</span><br><span class="line">        (<span class="literal">None</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;JOB_NAME&#x27;</span>, <span class="string">&#x27;JOB_TYPE&#x27;</span>, <span class="string">&#x27;JOB_COMMENT&#x27;</span>)</span><br><span class="line">        &#125;),</span><br><span class="line">        (<span class="string">&#x27;更多操作&#x27;</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;classes&#x27;</span>: (<span class="string">&#x27;collaspe&#x27;</span>,),</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;IN_PARA&#x27;</span>, <span class="string">&#x27;OUT_PARA&#x27;</span>),</span><br><span class="line">            <span class="string">&#x27;description&#x27;</span>: <span class="string">&#x27;&lt;h1&gt;输入输出参数描述文案&lt;/h1&gt;&#x27;</span>,</span><br><span class="line">        &#125;),</span><br><span class="line">    )</span><br><span class="line"><span class="comment"># 这里可以发现 其实我们可以填充html语法，页面同样会直接进行渲染</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 那针对每个单元格的描述应该怎么操作呢？这里我们需要通过对models的help_text的属性添加，一般这个功能用于针对某个具体的字段的使用说明上</span></span><br><span class="line">IN_PARA = models.CharField(<span class="string">&#x27;输入参数定义&#x27;</span>,max_length=<span class="number">32</span>,help_text=<span class="string">u&#x27;例如：按照这个样子&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-a067f88f218a2fac95446ac0be434f66_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 多对多选择框 一般用于增加标签等方式上，但需要注意的是这个针对的many-to-many类型字段</span></span><br><span class="line"><span class="comment">## 这里务必要重写__str__方法，否则页面将不会展示具体内容</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_tags</span>(models.Model):</span><br><span class="line">    title = models.CharField(max_length=<span class="number">30</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.title</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_detail</span>(models.Model):</span><br><span class="line">    ... ...</span><br><span class="line">    TAG = models.ManyToManyField(job_tags)</span><br><span class="line"><span class="comment">## 此时进行数据库迁移操作，系统会同时创建一张关系表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># admin.py中添加</span></span><br><span class="line">filter_horizontal = (<span class="string">&#x27;TAG&#x27;</span>,)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-8a7a2bd9335f96a8f579d98d6d1ed297_720w.webp" alt="img"></p>
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-976df4e9ad9dd1efee3f4a6d2f3dc22d_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表页面如何显示 多对多 这种类型的字段,通过自定义函数进行返回详情以及描述</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">tag_list</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;, &#x27;</span>.join([a.title <span class="keyword">for</span> a <span class="keyword">in</span> self.TAG.<span class="built_in">all</span>()])</span><br><span class="line">    tag_list.short_description = <span class="string">&#x27;标签&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># admin.py</span></span><br><span class="line">list_display = (<span class="string">&#x27;JOB_TYPE&#x27;</span>, <span class="string">&#x27;JOB_NAME&#x27;</span>,<span class="string">&#x27;JOB_COMMENT&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;IN_PARA&#x27;</span>,<span class="string">&#x27;IN_PARA_COMMENT&#x27;</span>,</span><br><span class="line">              <span class="string">&#x27;OUT_PARA&#x27;</span>,<span class="string">&#x27;OUT_PARA_COMMENT&#x27;</span>,<span class="string">&#x27;tag_list&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-3aab6711fc244b793f943aecaca1e864_720w.png" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只读字段</span></span><br><span class="line">readonly_fields = (<span class="string">&quot;CREATED_BY&quot;</span>,<span class="string">&#x27;CREATED_TIME&#x27;</span>,)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-c5fc7f38264436257d0210f41424cd5f_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自动填充字段 eg:修改某条记录时，自动填充修改人为登录用户</span></span><br><span class="line"><span class="comment"># 时间字段处理，需要在model中指定，例如自动更新时间需要增加 auto_now属性,django使用的时间函数 timezone.now</span></span><br><span class="line">    CREATED_BY = models.CharField(<span class="string">&#x27;创建人&#x27;</span>,max_length=<span class="number">32</span>) <span class="comment"># 创建人</span></span><br><span class="line">    CREATED_TIME = models.DateTimeField(<span class="string">&#x27;创建时间&#x27;</span>,default=timezone.now) <span class="comment"># 创建时间</span></span><br><span class="line">    UPDATED_BY = models.CharField(<span class="string">&#x27;更新人&#x27;</span>,max_length=<span class="number">32</span>) <span class="comment"># 更新人</span></span><br><span class="line">    UPDATED_TIME = models.DateTimeField(<span class="string">&#x27;更新时间&#x27;</span>,auto_now = <span class="literal">True</span>)  <span class="comment"># 更新时间</span></span><br><span class="line"><span class="comment"># 获取登录人员信息，进行填充，需要重写save_model方法,同时记得设定成只读字段</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">save_model</span>(<span class="params">self, request, obj, form, change</span>):</span><br><span class="line">        <span class="keyword">if</span> change: <span class="comment"># 判断当前是修改状态还是新增状态</span></span><br><span class="line">            obj.UPDATED_BY = request.user.username</span><br><span class="line">            obj.save()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            obj.CREATED_BY = request.user.username</span><br><span class="line">            obj.UPDATED_BY = request.user.username</span><br><span class="line">            obj.save()</span><br><span class="line">    readonly_fields = (<span class="string">&quot;CREATED_BY&quot;</span>,<span class="string">&#x27;CREATED_TIME&#x27;</span>,<span class="string">&#x27;UPDATED_BY&#x27;</span>,<span class="string">&#x27;UPDATED_TIME&#x27;</span>,) </span><br><span class="line"><span class="comment">## 这里需要注意的是 获取request人员属性的方法</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-5c0e103a8f219f690e63aa72aedc5b8f_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 级联修改 一对多关联 一般用于维度表配置展示</span></span><br><span class="line"><span class="comment">## 利用外键，在多的一方，字段指定外键即可,但定义一对多的关系时候需要指定删除方式</span></span><br><span class="line">new_column = models.ForeignKey(<span class="string">&#x27;Rela_table&#x27;</span>, on_delete=models.PROTECT)</span><br><span class="line"><span class="comment">## models.CASCADE 此为默认值，级联删除，会删除关联数据</span></span><br><span class="line"><span class="comment">## models.PROTECT 只要存在关联数据就不能删除</span></span><br><span class="line"><span class="comment">## models.DO_NOTHING 什么也不做</span></span><br><span class="line"><span class="comment">### 子表中定义外键</span></span><br><span class="line">rela_id = models.ForeignKey(<span class="string">&quot;job_rela&quot;</span>, on_delete=models.DO_NOTHING,default=<span class="number">9999</span>, verbose_name=<span class="string">&quot;选择唯一一个父亲&quot;</span>)</span><br><span class="line"><span class="comment">### 定义依赖的父表</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">job_rela</span>(models.Model):</span><br><span class="line">    rela_name = models.CharField(<span class="string">&#x27;依赖名称&#x27;</span>,max_length=<span class="number">128</span>) <span class="comment"># 任务名称</span></span><br><span class="line">    rela_id = models.CharField(<span class="string">&#x27;任务编号&#x27;</span>, max_length=<span class="number">32</span>)  <span class="comment"># 任务名称</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.rela_name</span><br><span class="line"><span class="comment">### admin中增加显示该字段即可      </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 特殊的一对多，例如：行政区划</span></span><br><span class="line">parent = models.ForeignKey(<span class="string">&#x27;self&#x27;</span>, verbose_name=<span class="string">&#x27;上级行政区划&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-cfa94434ce78bc2235ed4f5b124bb38d_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只显示当前登录用户自己的数据，超出范围不允许查看</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_queryset</span>(<span class="params">self, request</span>):</span><br><span class="line">        qs = <span class="built_in">super</span>(job_detail, self).get_queryset(request)</span><br><span class="line">        <span class="keyword">if</span> request.user.is_superuser:</span><br><span class="line">            <span class="keyword">return</span> qs</span><br><span class="line">        <span class="keyword">return</span> qs.<span class="built_in">filter</span>(CREATED_BY=request.user.username)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-3f782eadecc8ab69dc177a1710ac929c_720w.webp" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列表页部分展示字段显示不同颜色</span></span><br><span class="line"><span class="comment">## model中定义字段颜色，通过函数定义</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">colored_name</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">if</span> self.PRO_STATUS == <span class="string">&#x27;Y&#x27;</span>:</span><br><span class="line">            cl_name = <span class="string">&#x27;red&#x27;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cl_name = <span class="string">&#x27;blue&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> format_html(</span><br><span class="line">            <span class="string">&#x27;&lt;span style=&quot;color: &#123;&#125;;&quot;&gt;&#123;&#125;&lt;/span&gt;&#x27;</span>,</span><br><span class="line">            cl_name,</span><br><span class="line">            self.PRO_STATUS,</span><br><span class="line">        )</span><br><span class="line">    colored_name.short_description = <span class="string">&#x27;状态&#x27;</span></span><br><span class="line"><span class="comment">## admin中直接引入即可 这里一个大括号代表一个入参</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-08230449191a9408f5bf6b75e36f6817_720w.webp" alt="img"></p>
+<h2 id="8、集成富文本编辑器实现数据字典展示功能"><a href="#8、集成富文本编辑器实现数据字典展示功能" class="headerlink" title="8、集成富文本编辑器实现数据字典展示功能"></a>8、集成富文本编辑器实现数据字典展示功能</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建数据字典的model信息，包含主表以及字段表，其中主表跟字段表通过主外键进行一对多的关联</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">dict_table</span>(models.Model):</span><br><span class="line">    table_name = models.CharField(max_length=<span class="number">64</span>,verbose_name=<span class="string">&#x27;表名称&#x27;</span>)</span><br><span class="line">    table_comment = models.CharField(max_length=<span class="number">256</span>,verbose_name=<span class="string">&#x27;描述&#x27;</span>)</span><br><span class="line">    table_short_desc = models.CharField(max_length=<span class="number">128</span>,verbose_name=<span class="string">&#x27;简述&#x27;</span>)</span><br><span class="line">    create_time = models.DateTimeField(verbose_name=<span class="string">&#x27;创建时间&#x27;</span>,default=timezone.now())</span><br><span class="line">    owner = models.CharField(verbose_name=<span class="string">&#x27;归属人&#x27;</span>,default=<span class="string">&#x27;admin&#x27;</span>,max_length=<span class="number">64</span>)</span><br><span class="line">    update_time = models.DateTimeField(verbose_name=<span class="string">&#x27;修改时间&#x27;</span>,auto_now=<span class="literal">True</span>)</span><br><span class="line">    description = models.TextField(verbose_name=<span class="string">&#x27;备注&#x27;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.table_name</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        verbose_name = <span class="string">&#x27;字典表&#x27;</span></span><br><span class="line">        verbose_name_plural = <span class="string">&#x27;字典表&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">dict_columns</span>(models.Model):</span><br><span class="line">    table_id = models.ForeignKey(<span class="string">&#x27;dict_table&#x27;</span>,on_delete=models.CASCADE,verbose_name=<span class="string">&#x27;关联表主键&#x27;</span>)</span><br><span class="line">    column_name = models.CharField(max_length=<span class="number">128</span>,verbose_name=<span class="string">&#x27;字段名称&#x27;</span>)</span><br><span class="line">    column_comment = models.CharField(max_length=<span class="number">128</span>,verbose_name=<span class="string">&#x27;字段含义及说明&#x27;</span>)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__str__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Meta</span>:</span><br><span class="line">        verbose_name = <span class="string">&#x27;字段详情&#x27;</span></span><br><span class="line">        verbose_name_plural = <span class="string">&#x27;字段详情&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加测试记录</span></span><br><span class="line"><span class="comment"># admin文件中创建表名的列表页并且注册到路由中</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">dict_columns</span>(admin.TabularInline):</span><br><span class="line">    model = dict_columns</span><br><span class="line">    can_delete = <span class="literal">False</span></span><br><span class="line">    show_change_link = <span class="literal">False</span></span><br><span class="line">    extra = <span class="number">1</span></span><br><span class="line">    editable_fields = []</span><br><span class="line">    list_display = [<span class="string">&#x27;column_name&#x27;</span>,<span class="string">&#x27;column_comment&#x27;</span>]</span><br><span class="line">    list_display_links = ()</span><br><span class="line">    readonly_fields = [<span class="string">&#x27;column_name&#x27;</span>,<span class="string">&#x27;column_comment&#x27;</span>]</span><br><span class="line">    original = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_add_permission</span>(<span class="params">self, request,obj=<span class="literal">None</span></span>):</span><br><span class="line">        user_per_set = request.user.get_all_permissions() <span class="comment"># 获取当前用户权限</span></span><br><span class="line">        <span class="comment"># 待判断的权限范围</span></span><br><span class="line">        curr_per_set = &#123;<span class="string">&#x27;myapp.view_dict_columns&#x27;</span>,<span class="string">&#x27;myapp.delete_dict_columns&#x27;</span>,<span class="string">&#x27;myapp.add_dict_columns&#x27;</span>,<span class="string">&#x27;myapp.change_dict_columns&#x27;</span>&#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;myapp.add_dict_columns&#x27;</span> <span class="keyword">in</span> curr_per_set.intersection(user_per_set):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@admin.register(<span class="params">dict_table</span>)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">dict_table</span>(admin.ModelAdmin):</span><br><span class="line">    list_display = (<span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;table_short_desc&#x27;</span>, <span class="string">&#x27;create_time&#x27;</span>,</span><br><span class="line">                    <span class="string">&#x27;owner&#x27;</span>)</span><br><span class="line">    list_display_links = (<span class="string">&#x27;table_name&#x27;</span>,)</span><br><span class="line">    list_filter = (<span class="string">&#x27;table_name&#x27;</span>,)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_add_permission</span>(<span class="params">self, request,obj=<span class="literal">None</span></span>):</span><br><span class="line">        user_per_set = request.user.get_all_permissions() <span class="comment"># 获取当前用户权限</span></span><br><span class="line">        <span class="comment"># 待判断的权限范围</span></span><br><span class="line">        curr_per_set = &#123;<span class="string">&#x27;myapp.view_dict_table&#x27;</span>,<span class="string">&#x27;myapp.delete_dict_table&#x27;</span>,<span class="string">&#x27;myapp.add_dict_table&#x27;</span>,<span class="string">&#x27;myapp.change_dict_table&#x27;</span>&#125;</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;myapp.add_dict_table&#x27;</span> <span class="keyword">in</span> curr_per_set.intersection(user_per_set):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">has_delete_permission</span>(<span class="params">self, request, obj=<span class="literal">None</span></span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    save_as_continue = <span class="literal">False</span>  <span class="comment"># 修改完成之后跳转到元素列表页面</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">change_view</span>(<span class="params">self, request, object_id, form_url=<span class="string">&#x27;&#x27;</span>, extra_context=<span class="literal">None</span></span>):</span><br><span class="line">        extra_context = extra_context <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">        extra_context[<span class="string">&#x27;show_save_and_add_another&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">        extra_context[<span class="string">&#x27;show_save_and_continue&#x27;</span>] = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>(dict_table, self).change_view(request, object_id,</span><br><span class="line">                                                   form_url, extra_context=extra_context)</span><br><span class="line"></span><br><span class="line">    fieldsets = (</span><br><span class="line">        (<span class="string">&#x27;基本信息&#x27;</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;create_time&#x27;</span>, <span class="string">&#x27;owner&#x27;</span>,<span class="string">&#x27;update_time&#x27;</span>)</span><br><span class="line">        &#125;),</span><br><span class="line">        (<span class="string">&#x27;说明&#x27;</span>, &#123;</span><br><span class="line">            <span class="string">&#x27;fields&#x27;</span>: (<span class="string">&#x27;description&#x27;</span>, )</span><br><span class="line">        &#125;),</span><br><span class="line">    )</span><br><span class="line">    readonly_fields = (<span class="string">&quot;table_name&quot;</span>, <span class="string">&#x27;create_time&#x27;</span>, <span class="string">&#x27;owner&#x27;</span>, <span class="string">&#x27;update_time&#x27;</span>,)</span><br><span class="line">    inlines = [dict_columns,]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-7bd792665793b70eb6ca0d2f192548ce_720w.webp" alt="img"></p>
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-7bd792665793b70eb6ca0d2f192548ce_720w-170038127073820.webp" alt="img"></p>
+<h2 id="9、自定义按钮实现导入导出功能"><a href="#9、自定义按钮实现导入导出功能" class="headerlink" title="9、自定义按钮实现导入导出功能"></a>9、自定义按钮实现导入导出功能</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 出处：参考simpleui官方文档</span></span><br><span class="line">        <span class="comment"># 增加自定义按钮</span></span><br><span class="line">    actions = [<span class="string">&#x27;custom_button&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">custom_button</span>(<span class="params">self, request, queryset</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 显示的文本，与django admin一致</span></span><br><span class="line">    custom_button.short_description = <span class="string">&#x27;测试按钮&#x27;</span></span><br><span class="line">    <span class="comment"># icon，参考element-ui icon与https://fontawesome.com</span></span><br><span class="line">    custom_button.icon = <span class="string">&#x27;fas fa-audio-description&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 指定element-ui的按钮类型，参考https://element.eleme.cn/#/zh-CN/component/button</span></span><br><span class="line">    custom_button.<span class="built_in">type</span> = <span class="string">&#x27;danger&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 给按钮追加自定义的颜色</span></span><br><span class="line">    custom_button.style = <span class="string">&#x27;color:black;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 链接按钮，设置之后直接访问该链接</span></span><br><span class="line">    <span class="comment"># 3中打开方式</span></span><br><span class="line">    <span class="comment"># action_type 0=当前页内打开，1=新tab打开，2=浏览器tab打开</span></span><br><span class="line">    <span class="comment"># 设置了action_type，不设置url，页面内将报错</span></span><br><span class="line">    <span class="comment"># 设置成链接类型的按钮后，custom_button方法将不会执行。</span></span><br><span class="line"></span><br><span class="line">    custom_button.action_type = <span class="number">1</span></span><br><span class="line">    custom_button.action_url = <span class="string">&#x27;http://www.baidu.com&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/v2-85f689989699b3ed30c4f9e59b545a44_720w.webp" alt="img"></p>
+<h2 id="10、Echart组件引入以及页面个性化调整"><a href="#10、Echart组件引入以及页面个性化调整" class="headerlink" title="10、Echart组件引入以及页面个性化调整"></a>10、Echart组件引入以及页面个性化调整</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># django admin 支持自定义template，大部分情况下我们是需要重新修改 change页面</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RecordAdmin</span>(admin.ModelAdmin):</span><br><span class="line">    change_form_template = <span class="string">&#x27;admin/extras/record_change_form.html&#x27;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="comment"># 这个我们定义的页面需要继承 &#123;% extends &quot;admin/change_form.html&quot; %&#125;</span></span><br><span class="line"><span class="comment"># 在urls.py中添加一条对应的url信息以及对应的view函数进行处理渲染</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="四、应用部署步骤"><a href="#四、应用部署步骤" class="headerlink" title="四、应用部署步骤"></a>四、应用部署步骤</h1><p>Step1、安装ngnix</p>
+<p>Step2、安装uwsgi</p>
+<p>Step3、配置uwsgi</p>
+<p>Step4、配置ngnix</p>
+<p>Step5、启动服务</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><p>摘录文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/113447102?utm_id=0">https://zhuanlan.zhihu.com/p/113447102?utm_id=0</a></li>
+</ul>
+<p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/newpanjing/simpleui%EF%BC%88%E9%A1%B9%E7%9B%AE%E5%9C%B0%E5%9D%80%EF%BC%89">https://github.com/newpanjing/simpleui（项目地址）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mldoo.com/%EF%BC%88%E7%A4%BE%E5%8C%BA%EF%BC%89">https://www.mldoo.com/（社区）</a></li>
+<li><a target="_blank" rel="noopener" href="https://newpanjing.github.io/simpleui_docs/%EF%BC%88%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%EF%BC%89">https://newpanjing.github.io/simpleui_docs/（官方文档）</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/django/" rel="tag"># django</a>
+          
+            <a href="/tags/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/" rel="tag"># 后台开发</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/11/19/NexT%E4%B8%BB%E9%A2%98%E5%88%86%E9%A1%B5%E7%9A%84%E7%BF%BB%E9%A1%B5%E7%AE%AD%E5%A4%B4%E6%98%BE%E7%A4%BA%E9%94%99%E8%AF%AF/" rel="next" title="next主题分页的翻页箭头显示<i class=fafa-angle-right></i>">
+                <i class="fa fa-chevron-left"></i> next主题分页的翻页箭头显示<i class=fafa-angle-right></i>
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/11/19/httpx%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0/" rel="prev" title="httpx命令记录学习">
+                httpx命令记录学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/qqq.gif"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20fa%20fa-archive">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">一、创建项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85simpleui"><span class="nav-number">1.1.</span> <span class="nav-text">1、安装simpleui</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E4%BF%AE%E6%94%B9django%E5%90%8E%E5%8F%B0%E6%A8%A1%E5%9D%97%E9%BB%98%E8%AE%A4%E7%9A%84%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.2.</span> <span class="nav-text">2、修改django后台模块默认的模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%AD%97%E7%AC%A6%E9%9B%86%E5%8F%8A%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3、字符集及时区设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%8F%8Adebug%E7%8A%B6%E6%80%81%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.4.</span> <span class="nav-text">4、静态资源及debug状态设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.</span> <span class="nav-text">5、数据库连接配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81admin%E6%A8%A1%E5%9D%97%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.6.</span> <span class="nav-text">6、admin模块进行数据库初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E5%88%9B%E5%BB%BAadmin%E6%A8%A1%E5%9D%97%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E8%A7%92%E8%89%B2"><span class="nav-number">1.7.</span> <span class="nav-text">7、创建admin模块超级管理员角色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81%E6%A3%80%E6%9F%A5simple%E6%98%AF%E5%90%A6%E6%AD%A3%E7%A1%AE%E5%BC%95%E5%85%A5"><span class="nav-number">1.8.</span> <span class="nav-text">8、检查simple是否正确引入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%9B%E5%BB%BAAPP"><span class="nav-number">2.</span> <span class="nav-text">二、创建APP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%88%9B%E5%BB%BAapp"><span class="nav-number">2.1.</span> <span class="nav-text">1、创建app</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%88%9B%E5%BB%BAmodel"><span class="nav-number">2.2.</span> <span class="nav-text">2、创建model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1"><span class="nav-number">2.3.</span> <span class="nav-text">3、配置路由</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%A1%B5%E9%9D%A2%E5%B8%83%E5%B1%80"><span class="nav-number">3.</span> <span class="nav-text">三、页面布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5model%E6%B5%8B%E8%AF%95"><span class="nav-number">3.1.</span> <span class="nav-text">1、增删改查model测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A4%E6%97%B6%E7%99%BB%E5%BD%95%E5%88%B0%E9%A1%B5%E9%9D%A2%E4%B8%8A%E5%8F%AF%E4%BB%A5%E5%8F%91%E7%8E%B0%EF%BC%8C%E5%88%9A%E5%88%9A%E5%88%9B%E5%BB%BA%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%B7%B2%E7%BB%8F%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9B%AE%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%8A%E5%B1%95%E7%A4%BA%E4%BA%86%EF%BC%8C%E4%BD%86%E5%90%8C%E6%97%B6%E4%BC%9A%E5%8F%91%E7%8E%B0%E4%B8%80%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%8C%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2%E9%87%8C%E9%9D%A2%E6%98%BE%E7%A4%BA%E7%9A%84%E5%B9%B6%E4%B8%8D%E6%98%AF%E5%AD%97%E6%AE%B5%E4%BF%A1%E6%81%AF%EF%BC%8C%E8%80%8C%E6%98%AF%E5%85%B7%E4%BD%93%E7%9A%84%E8%A1%A8%E5%90%8D%E7%A7%B0%EF%BC%8C%E6%AD%A4%E5%A4%84%E4%B8%8E%E6%88%91%E4%BB%AC%E8%AE%BE%E6%83%B3%E7%9A%84%E5%86%85%E5%AE%B9%E5%B9%B6%E4%B8%8D%E5%8C%B9%E9%85%8D%E3%80%82%E9%80%9A%E8%BF%87%E8%BF%99%E4%B8%80%E6%AD%A5%E9%AA%A4%E6%88%91%E4%BB%AC%E6%88%90%E5%8A%9F%E9%AA%8C%E8%AF%81%E4%BA%86app%E7%9A%84%E6%B3%A8%E5%86%8C%E6%96%B9%E5%BC%8F%E3%80%82%E5%85%B7%E4%BD%93%E5%B1%95%E7%A4%BA%E5%86%85%E5%AE%B9%EF%BC%8C%E4%B8%8B%E9%9D%A2%E7%9A%84%E6%AD%A5%E9%AA%A4%E4%BC%9A%E8%AF%A6%E7%BB%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.</span> <span class="nav-text">此时登录到页面上可以发现，刚刚创建的数据表已经作为一个类目在页面上展示了，但同时会发现一个问题，详情页面里面显示的并不是字段信息，而是具体的表名称，此处与我们设想的内容并不匹配。通过这一步骤我们成功验证了app的注册方式。具体展示内容，下面的步骤会详细介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81admin%E9%A6%96%E9%A1%B5%E5%B8%83%E5%B1%80"><span class="nav-number">4.1.</span> <span class="nav-text">2、admin首页布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E9%A1%B5%E9%9D%A2%E6%A0%87%E9%A2%98%E5%8F%8A%E4%BE%A7%E8%BE%B9%E6%A0%8F%E6%A0%87%E9%A2%98%E5%AE%9A%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">3、页面标题及侧边栏标题定制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%88%97%E8%A1%A8%E6%9F%A5%E8%AF%A2%E9%A1%B5%E9%9D%A2%E5%AE%9A%E5%88%B6"><span class="nav-number">4.3.</span> <span class="nav-text">4、列表查询页面定制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E8%A1%A8%E5%8D%95%E7%BC%96%E8%BE%91%E9%A1%B5%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-number">4.4.</span> <span class="nav-text">5、表单编辑页面配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E9%A1%B5%E9%9D%A2%E6%8C%89%E9%92%AE%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE"><span class="nav-number">4.5.</span> <span class="nav-text">6、页面按钮权限配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E7%BC%96%E8%BE%91%E9%A1%B5%E7%BB%86%E8%87%B4%E8%AF%B4%E6%98%8E"><span class="nav-number">4.6.</span> <span class="nav-text">7、编辑页细致说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81%E9%9B%86%E6%88%90%E5%AF%8C%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E5%AD%97%E5%85%B8%E5%B1%95%E7%A4%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">4.7.</span> <span class="nav-text">8、集成富文本编辑器实现数据字典展示功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%E3%80%81%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%89%E9%92%AE%E5%AE%9E%E7%8E%B0%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">4.8.</span> <span class="nav-text">9、自定义按钮实现导入导出功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10%E3%80%81Echart%E7%BB%84%E4%BB%B6%E5%BC%95%E5%85%A5%E4%BB%A5%E5%8F%8A%E9%A1%B5%E9%9D%A2%E4%B8%AA%E6%80%A7%E5%8C%96%E8%B0%83%E6%95%B4"><span class="nav-number">4.9.</span> <span class="nav-text">10、Echart组件引入以及页面个性化调整</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4"><span class="nav-number">5.</span> <span class="nav-text">四、应用部署步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%84%E5%BD%95"><span class="nav-number">6.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hlailai ZHU</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "box";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
