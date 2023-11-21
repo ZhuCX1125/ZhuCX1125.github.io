@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="学习笔记,es,elasticsearch," />
 
 
 
@@ -86,14 +86,19 @@
 
 
 
-<meta name="description" content="夜幕上的星星点点，是一颗颗纯洁晶莹的希望。在人生的奋斗中，不慎跌倒了并不表示永远的失败，惟有在跌倒后不畏失败坚韧不拔者，才是真正的勇者。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hlailai&#39;Blog">
-<meta property="og:url" content="http://example.com/tags/hive/index.html">
+<meta name="description" content="整体流程记录启动单节点集群搭建使用es 8.10.4版本，整体配置流程如下  安装 Docker。访问获取 Docker为您的环境安装 Docker。如果使用 Docker Desktop，请确保分配至少 4GB 内存。您可以通过转到 “设置”&gt;“资源” 来调整 Docker Desktop 中的内存使用情况。 创建一个新的 Docker 网络。  1docker network creat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单服务器配置es集群-8.10.3版本">
+<meta property="og:url" content="http://example.com/2023/11/21/%E5%8D%95%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AEes%E9%9B%86%E7%BE%A4-8-10-3%E7%89%88%E6%9C%AC/index.html">
 <meta property="og:site_name" content="Hlailai&#39;Blog">
-<meta property="og:description" content="夜幕上的星星点点，是一颗颗纯洁晶莹的希望。在人生的奋斗中，不慎跌倒了并不表示永远的失败，惟有在跌倒后不畏失败坚韧不拔者，才是真正的勇者。">
+<meta property="og:description" content="整体流程记录启动单节点集群搭建使用es 8.10.4版本，整体配置流程如下  安装 Docker。访问获取 Docker为您的环境安装 Docker。如果使用 Docker Desktop，请确保分配至少 4GB 内存。您可以通过转到 “设置”&gt;“资源” 来调整 Docker Desktop 中的内存使用情况。 创建一个新的 Docker 网络。  1docker network creat">
 <meta property="og:locale">
+<meta property="article:published_time" content="2023-11-21T13:43:42.000Z">
+<meta property="article:modified_time" content="2023-11-21T13:49:47.012Z">
 <meta property="article:author" content="Hlailai ZHU">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="es">
+<meta property="article:tag" content="elasticsearch">
 <meta name="twitter:card" content="summary">
 
 
@@ -124,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/tags/hive/"/>
+  <link rel="canonical" href="http://example.com/2023/11/21/单服务器配置es集群-8-10-3版本/"/>
 
 
 
 
 
-  <title>标签: hive | Hlailai'Blog</title>
+  <title>单服务器配置es集群-8.10.3版本 | Hlailai'Blog</title>
   
 
 
@@ -149,7 +154,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,60 +288,325 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>hive<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/21/%E5%8D%95%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AEes%E9%9B%86%E7%BE%A4-8-10-3%E7%89%88%E6%9C%AC/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/qqq.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hlailai'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2023/07/24/Hive%E4%BC%98%E5%8C%96-%E4%B8%80/" itemprop="url">
-              
-                <span itemprop="name">Hive优化(一)</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">单服务器配置es集群-8.10.3版本</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-07-24T21:59:02+08:00"
-              content="2023-07-24" >
-          07-24
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-11-21T21:43:42+08:00">
+                2023-11-21
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/es%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">es学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  894
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="整体流程记录"><a href="#整体流程记录" class="headerlink" title="整体流程记录"></a>整体流程记录</h1><h2 id="启动单节点集群"><a href="#启动单节点集群" class="headerlink" title="启动单节点集群"></a>启动单节点集群</h2><p>搭建使用es 8.10.4版本，整体配置流程如下</p>
+<ol>
+<li>安装 Docker。访问<a target="_blank" rel="noopener" href="https://docs.docker.com/get-docker/" title="获取 Docker">获取 Docker</a>为您的环境安装 Docker。<br>如果使用 Docker Desktop，请确保分配至少 4GB 内存。您可以通过转到 <strong>“设置”&gt;“资源”</strong> 来调整 Docker Desktop 中的内存使用情况。</li>
+<li>创建一个新的 Docker 网络。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create elastic</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>拉取 Elasticsearch Docker 镜像</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.elastic.co/elasticsearch/elasticsearch:8.10.4</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>为您的环境安装 <a target="_blank" rel="noopener" href="https://docs.sigstore.dev/system_config/installation/" title="Cosign">Cosign</a>。然后使用 Cosign 验证 Elasticsearch 镜像的签名。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/cosign.pub</span><br><span class="line">cosign verify --key cosign.pub docker.elastic.co/elasticsearch/elasticsearch:8.10.4</span><br></pre></td></tr></table></figure>
+
+<p>cosign 命令以 JSON 格式打印检查结果和签名负载：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Verification for docker.elastic.co/elasticsearch/elasticsearch:8.10.4 --</span><br><span class="line">The following checks were performed on each of these signatures:</span><br><span class="line">  - The cosign claims were validated</span><br><span class="line">  - Existence of the claims in the transparency log was verified offline</span><br><span class="line">  - The signatures were verified against the specified public key</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>启动 Elasticsearch 容器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name es01 --net elastic -p 9200:9200 -it -m 2GB docker.elastic.co/elasticsearch/elasticsearch:8.10.4</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用 -m 标志设置容器的内存限制。这样就无需手动设置 JVM 大小。</p>
+</blockquote>
+<ol>
+<li>复制生成的弹性密码和注册令牌。这些凭据仅在您首次启动 Elasticsearch 时显示。您可以使用以下命令重新生成凭据。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it --user root es01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic</span><br><span class="line">docker <span class="built_in">exec</span> -it --user root es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里有坑点，如果上面限制使用内容是1G的话，这里配置生成的话docker就会关闭，这里设置成2G重置密码或者token就不会意外退出，并且这些这个命令必须是root用户不然也会报错，需要加上<code>--uer root</code></p>
+</blockquote>
+<p>我们建议将弹性密码存储为 shell 中的环境变量。例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ELASTIC_PASSWORD=<span class="string">&quot;your_password&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>将 http_ca.crt SSL 证书从容器复制到本地计算机。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">cp</span> es01:/usr/share/elasticsearch/config/certs/http_ca.crt .</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>对 Elasticsearch 进行 REST API 调用以确保 Elasticsearch 容器正在运行。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> https://localhost:9200</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加更多节点"><a href="#添加更多节点" class="headerlink" title="添加更多节点"></a>添加更多节点</h2><ol>
+<li>使用现有节点为新节点生成注册令牌。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it --user root es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里运行的时候也必须是root用户</li>
+<li>注册令牌的有效期为 30 分钟。</li>
+</ul>
+<ol>
+<li>启动一个新的 Elasticsearch 容器。包含注册令牌作为环境变量。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -e ENROLLMENT_TOKEN=<span class="string">&quot;&lt;token&gt;&quot;</span> --name es02 --net elastic -it -m 1GB docker.elastic.co/elasticsearch/elasticsearch:8.10.4</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>调用 cat 节点 API 来验证节点是否已添加到集群中。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> https://localhost:9200/_cat/nodes</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行Kibana"><a href="#运行Kibana" class="headerlink" title="运行Kibana"></a>运行Kibana</h2><ol>
+<li>拉取 Kibana Docker 镜像。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.elastic.co/kibana/kibana:8.10.4</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>可选：验证 Kibana 镜像的签名。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://artifacts.elastic.co/cosign.pub</span><br><span class="line">cosign verify --key cosign.pub docker.elastic.co/kibana/kibana:8.10.4</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>启动 Kibana 容器。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name kib01 --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.10.4</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>当 Kibana 启动时，它会向终端输出一个唯一生成的链接。要访问 Kibana，请在 Web 浏览器中打开此链接。</p>
+</li>
+<li><p>在浏览器中，输入启动 Elasticsearch 时生成的注册令牌。</p>
+<p>要重新生成令牌，请运行：</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it --user root es01 /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>使用启动 Elasticsearch 时生成的密码以 Elastic 用户身份登录 Kibana。</p>
+<p>要重新生成密码，请运行：</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it es01 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic</span><br></pre></td></tr></table></figure>
+
+<h2 id="移除容器"><a href="#移除容器" class="headerlink" title="移除容器"></a>移除容器</h2><p>要删除容器及其网络，请运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Remove the Elastic network</span><br><span class="line">docker network rm elastic</span><br><span class="line"></span><br><span class="line"># Remove Elasticsearch containers</span><br><span class="line">docker rm es01</span><br><span class="line">docker rm es02</span><br><span class="line"></span><br><span class="line"># Remove the Kibana container</span><br><span class="line">docker rm kib01</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docker.html#remove-containers-docker" title="https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docker.html#remove-containers-docker">https://www.elastic.co/guide/en/elasticsearch/reference/8.10/docker.html#remove-containers-docker</a></li>
+</ul>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+          
+            <a href="/tags/es/" rel="tag"># es</a>
+          
+            <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/11/19/httpx%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0/" rel="next" title="httpx命令记录学习">
+                <i class="fa fa-chevron-left"></i> httpx命令记录学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
 
           </div>
           
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -357,8 +627,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -422,6 +701,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">整体流程记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%8D%95%E8%8A%82%E7%82%B9%E9%9B%86%E7%BE%A4"><span class="nav-number">1.1.</span> <span class="nav-text">启动单节点集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%9B%B4%E5%A4%9A%E8%8A%82%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">添加更多节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CKibana"><span class="nav-number">1.3.</span> <span class="nav-text">运行Kibana</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">移除容器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">2.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -577,6 +872,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
