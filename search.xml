@@ -1,249 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hive优化(一)</title>
-    <url>/2023/07/24/Hive%E4%BC%98%E5%8C%96-%E4%B8%80/</url>
-    <content><![CDATA[<blockquote>
-<p>本文中仅有大题的思路，初步学习，参考用。详细的调优还需要后续遇到问题慢慢学习，我想。</p>
-</blockquote>
-<h1 id="1、影响Hive效率主要原因"><a href="#1、影响Hive效率主要原因" class="headerlink" title="1、影响Hive效率主要原因"></a>1、影响Hive效率主要原因</h1><ol>
-<li><p>最主要是读取数据占用硬盘输入输出IO、网络传输，访问一次表，就产生一次MapReduce，就会产生一次IO</p>
-</li>
-<li><p>其次是大数据计算占用内存</p>
-</li>
-<li><p>计算逻辑相对简单，CPU占用较少</p>
-</li>
-</ol>
-<h1 id="2、Hive问题排查与调优思路"><a href="#2、Hive问题排查与调优思路" class="headerlink" title="2、Hive问题排查与调优思路"></a>2、Hive问题排查与调优思路</h1><h2 id="查看hive性能问题"><a href="#查看hive性能问题" class="headerlink" title="查看hive性能问题"></a>查看hive性能问题</h2><ol>
-<li><p>查看元数据：记录Hive数据库、表、分区、列等统计信息</p>
-</li>
-<li><p>查看执行计划：描述计算引擎的执行逻辑</p>
-</li>
-<li><p>查看YARN日志：有SQL执行完具体的量化数据</p>
-</li>
-</ol>
-<h2 id="Hive优化方式"><a href="#Hive优化方式" class="headerlink" title="Hive优化方式"></a>Hive优化方式</h2><ol>
-<li><p>优化存储：数据块、数据存储格式、分区分桶</p>
-</li>
-<li><p>优化执行过程：SQL优化、hint提示、set命令</p>
-</li>
-<li><p>优化作业调度：</p>
-</li>
-</ol>
-<h2 id="Hive-SQL优化原则"><a href="#Hive-SQL优化原则" class="headerlink" title="Hive SQL优化原则"></a>Hive SQL优化原则</h2><p>（1-5是SQL通用原则，6开始是Hive特殊原则）</p>
-<ol>
-<li><p>坚持简洁的代码，随着Hive SQL语法完善，实现同样的功能，往往越简单的代码越高效</p>
-</li>
-<li><p>先分析数据存储情况再改代码，如存储格式、数据量、数据分布、是否倾斜</p>
-</li>
-<li><p>减少访问同个表次数</p>
-</li>
-<li><p>分步处理，不要一段脚本过于复杂</p>
-</li>
-<li><p>尽量用Hive SQL自带语法，如grouping set、rollup、cube</p>
-</li>
-<li><p>少用Reduce阶段操作：如表连接、group by、distinct、聚集函数、分析函数</p>
-</li>
-<li><p>少用Hint或者不用Hint</p>
-</li>
-<li><p>不要用索引</p>
-</li>
-<li><p>合理使用分区分桶</p>
-</li>
-<li><p>Hive适合处理宽表，适当的冗余有助于Hive的处理性能</p>
-</li>
-<li><p>不怕数据量大，防止数据倾斜</p>
-</li>
-</ol>
-<blockquote>
-<p>数据倾斜即指<strong>在大数据计算任务中某个处理任务的进程（通常是一个JVM 进程）被分配到的任务量过多，进程运行时间超长甚至最终失败，进而导致整个计算任务超长时间运行或者失败</strong>。</p>
-</blockquote>
-<h1 id="3-Hive4大组件"><a href="#3-Hive4大组件" class="headerlink" title="3 Hive4大组件"></a>3 Hive4大组件</h1><p><strong>元数据、分布式文件系统、计算引擎、资源管理和调度</strong></p>
-<p><strong>元数据</strong>：记录Hive数据库、表、分区、列等统计信息</p>
-<p>元数据存在MySQL的metastore库中，Hive3.0可以在Hive的sys库查询。</p>
-<p><strong>数据存储</strong>：HDFS分布式文件系统</p>
-<p><strong>计算引擎</strong>：MapReduce、Tez、Spark</p>
-<p><strong>MapReduce</strong>：Hive2.0不再推荐使用，步骤简单，固定Map、Reduce两个操作，不灵活，计算代码量大，延迟量大</p>
-<p><strong>Tez</strong>：将Map、Reduce两个操作简化为一个概念Vertex，拆分成多个组成，可以减少很多没必要步骤，允许小数据完全在内存中处理</p>
-<p><strong>Spark</strong>：DAG有向无环图，高效、低延迟，提供多种接口实现计算</p>
-<p><strong>作业资源调度</strong>：YARN、Mesos</p>
-<p><strong>YARN</strong>：资源调度系统，可以查看Tracking URL日志链接，有SQL执行完具体的量化数据</p>
-<h1 id="4-MapReduce计算引擎"><a href="#4-MapReduce计算引擎" class="headerlink" title="4 MapReduce计算引擎"></a>4 MapReduce计算引擎</h1><p>是大数据计算引擎，也是编程模型。</p>
-<p>输入输出格式是键值对</p>
-<p>所有作业都拆分成Map和Reduce两个步骤进行处理。</p>
-<p>提供Map和Reduce两个编程接口，可以让用户在此基础上编写自己的业务代码，不用关心整个分布式计算框架的背后原理。</p>
-<h2 id="MapReduce整体环节"><a href="#MapReduce整体环节" class="headerlink" title="MapReduce整体环节"></a>MapReduce整体环节</h2><p>Input-Mapper-Shuffle-Reducer-Output</p>
-<p>Mapper接口：映射分散，输入输出格式为键值对，逻辑会分发到集群各个节点，读取该节点数据进行处理，最后写入本地。不移动数据，只移动计算逻辑。</p>
-<p>Reducer接口：合并缩减，读取Map输出，并按相同键划分到各个Reducer任务</p>
-<p>Shuffle过程：Mapper输出到Reducer输入的过程，一般表连接在这个过程。</p>
-<p>Combiner接口：Map端的Reduce，逻辑同Reduce，在Map端本地计算。</p>
-<h1 id="5-HiveSQL执行计划"><a href="#5-HiveSQL执行计划" class="headerlink" title="5 HiveSQL执行计划"></a>5 HiveSQL执行计划</h1><p>explain select sum(credit_amt) from tmp_cch_001;</p>
-<p>explain extended select sum(credit_amt) from tmp_cch_001; –更详细执行计划</p>
-<p>Hive执行计划都是预估的</p>
-<p>Oracle执行计划可以提供真实的计划，即SQL实际执行完成后才获得的执行计划。</p>
-<p>Hive2.0执行计划加大CBO的支持</p>
-<h2 id="执行计划基本信息"><a href="#执行计划基本信息" class="headerlink" title="执行计划基本信息"></a>执行计划基本信息</h2><p>一个hvie任务包含多个阶段stage，不同stage间存在依赖关系，越复杂的查询越多stage。</p>
-<p>一个stage可以是一个MapReduce任务，也可以是一个抽样、合并、limit。</p>
-<p>默认一次只执行一个stage，开并行可以同时执行多个stage。</p>
-<p>Stage-0：客户端读取执行计划结果</p>
-<p>Map阶段操作：主要涉及select、from、where、本地group by，map join</p>
-<p>Reduce阶段操作：主要涉及表连接、group by、distinct、聚集函数、分析函数</p>
-<p>分区过滤：会在map上一个阶段，即在输入阶段进行路径过滤</p>
-<h2 id="执行计划关键字解释"><a href="#执行计划关键字解释" class="headerlink" title="执行计划关键字解释"></a>执行计划关键字解释</h2><p>STAGE DEPENDENCIES：作业的依赖关系</p>
-<p>STAGE PLANS：每个作业的详细信息</p>
-<p>Map Reduce：执行引擎</p>
-<p>Map Operator Tree</p>
-<p>TableScan：扫描，即from</p>
-<p>Statistics：统计信息，包含行数、文件大小</p>
-<p>Filter Operator：行过滤，即where</p>
-<p>Select Operator：列筛选，即select</p>
-<p>Group By Operator：map端group by，分组聚集</p>
-<p>Reduce Output Operator：map输出，即Shuffle流程，将本地相同键的值合并排序输出到Reduce</p>
-<p>Reduce Operator Tree</p>
-<p>Join Operator：表连接join</p>
-<p>Group By Operator：Reduce端group by</p>
-<p>Select Operator：输出字段</p>
-<p>File Output Operator：Reduce输出文件信息</p>
-<h2 id="MapReduce统计信息"><a href="#MapReduce统计信息" class="headerlink" title="MapReduce统计信息"></a>MapReduce统计信息</h2><p>Total jobs：作业数</p>
-<p>Stage-Stage-n：MapReduce任务</p>
-<p>Total MapReduce CPU Time Spent：程序占用CPU资源时间</p>
-<p>Time taken：用户等待时间</p>
-<h2 id="执行计划实例"><a href="#执行计划实例" class="headerlink" title="执行计划实例"></a>执行计划实例</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">explain </span><br><span class="line">select usr_sts_cd,count(1) cnt</span><br><span class="line">from biee.tb_d_userinfo </span><br><span class="line">where start_dt&gt;=20210101</span><br><span class="line">group by usr_sts_cd</span><br><span class="line">;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">STAGE DEPENDENCIES:</span><br><span class="line"> Stage-1 is a root stage</span><br><span class="line"> Stage-0 depends on stages: Stage-1</span><br><span class="line"> </span><br><span class="line">STAGE PLANS:</span><br><span class="line"> Stage: Stage-1</span><br><span class="line"> Map Reduce</span><br><span class="line"> Map Operator Tree:</span><br><span class="line"> TableScan</span><br><span class="line"> alias: tb_d_userinfo</span><br><span class="line"> Statistics: Num rows: 8656238 Data size: 1129252772 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Filter Operator</span><br><span class="line"> predicate: (start_dt &gt;= 20210101) (type: boolean)</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Select Operator</span><br><span class="line"> expressions: usr_sts_cd (type: string)</span><br><span class="line"> outputColumnNames: usr_sts_cd</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Group By Operator</span><br><span class="line"> aggregations: count(1)</span><br><span class="line"> keys: usr_sts_cd (type: string)</span><br><span class="line"> mode: hash0 </span><br><span class="line"> outputColumnNames: _col0, _col1</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Reduce Output Operator</span><br><span class="line"> key expressions: _col0 (type: string)</span><br><span class="line"> sort order: +</span><br><span class="line">  Map-reduce partition columns: _col0 (type: string)</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> value expressions: _col1 (type: bigint)</span><br><span class="line"> Reduce Operator Tree:</span><br><span class="line"> Group By Operator</span><br><span class="line"> aggregations: count(VALUE._col0)</span><br><span class="line"> keys: KEY._col0 (type: string)</span><br><span class="line"> mode: mergepartial</span><br><span class="line"> outputColumnNames: _col0, _col1</span><br><span class="line"> Statistics: Num rows: 1442706 Data size: 188208751 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Select Operator</span><br><span class="line"> expressions: _col0 (type: string), _col1 (type: bigint)</span><br><span class="line"> outputColumnNames: _col0, _col1</span><br><span class="line"> Statistics: Num rows: 1442706 Data size: 188208751 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> File Output Operator</span><br><span class="line"> compressed: false</span><br><span class="line"> Statistics: Num rows: 1442706 Data size: 188208751 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> table:</span><br><span class="line"> input format: org.apache.hadoop.mapred.TextInputFormat</span><br><span class="line"> output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</span><br><span class="line"> serde: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</span><br><span class="line"> </span><br><span class="line"> Stage: Stage-0</span><br><span class="line"> Fetch Operator</span><br><span class="line"> limit: -1</span><br><span class="line"> Processor Tree:</span><br><span class="line"> ListSink</span><br></pre></td></tr></table></figure>
-
-<h2 id="MapReduce实际执行实例"><a href="#MapReduce实际执行实例" class="headerlink" title="MapReduce实际执行实例"></a>MapReduce实际执行实例</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Query ID = dwjixincheng_20210811151212_94f4d43b-b45b-417f-8e61-86fd1e99fcea</span><br><span class="line">Total jobs = 1</span><br><span class="line">Launching Job 1 out of 1</span><br><span class="line">Number of reduce tasks not specified. Estimated from input data size: 17</span><br><span class="line">In order to change the average load for a reducer (in bytes):</span><br><span class="line"> set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;</span><br><span class="line">In order to limit the maximum number of reducers:</span><br><span class="line"> set hive.exec.reducers.max=&lt;number&gt;</span><br><span class="line">In order to set a constant number of reducers:</span><br><span class="line"> set mapreduce.job.reduces=&lt;number&gt;</span><br><span class="line">Starting Job = job_1622444551352_8842, Tracking URL = http://stbdhadoop-3001.site:8088/proxy/application_1622444551352_8842/</span><br><span class="line">Kill Command = /home/hadoop/hadoop-2.6.0-cdh5.4.0/bin/hadoop job -kill job_1622444551352_8842</span><br><span class="line">Hadoop job information for Stage-1: number of mappers: 5; number of reducers: 17</span><br><span class="line">2021-08-11 15:13:00,870 Stage-1 map = 0%, reduce = 0%</span><br><span class="line">2021-08-11 15:13:09,594 Stage-1 map = 20%, reduce = 0%, Cumulative CPU 4.8 sec</span><br><span class="line">2021-08-11 15:13:11,648 Stage-1 map = 40%, reduce = 0%, Cumulative CPU 7.87 sec</span><br><span class="line">2021-08-11 15:13:13,702 Stage-1 map = 60%, reduce = 0%, Cumulative CPU 12.57 sec</span><br><span class="line">2021-08-11 15:13:14,728 Stage-1 map = 80%, reduce = 0%, Cumulative CPU 26.22 sec</span><br><span class="line">2021-08-11 15:13:17,805 Stage-1 map = 100%, reduce = 0%, Cumulative CPU 37.35 sec</span><br><span class="line">2021-08-11 15:13:19,862 Stage-1 map = 100%, reduce = 53%, Cumulative CPU 49.57 sec</span><br><span class="line">2021-08-11 15:13:20,892 Stage-1 map = 100%, reduce = 65%, Cumulative CPU 52.35 sec</span><br><span class="line">2021-08-11 15:13:22,957 Stage-1 map = 100%, reduce = 71%, Cumulative CPU 54.12 sec</span><br><span class="line">2021-08-11 15:13:23,989 Stage-1 map = 100%, reduce = 82%, Cumulative CPU 57.66 sec</span><br><span class="line">2021-08-11 15:13:25,020 Stage-1 map = 100%, reduce = 88%, Cumulative CPU 59.41 sec</span><br><span class="line">2021-08-11 15:13:27,065 Stage-1 map = 100%, reduce = 100%, Cumulative CPU 62.81 sec</span><br><span class="line">MapReduce Total cumulative CPU time: 1 minutes 2 seconds 810 msec</span><br><span class="line">Ended Job = job_1622444551352_8842</span><br><span class="line">MapReduce Jobs Launched: </span><br><span class="line">Stage-Stage-1: Map: 5 Reduce: 17 Cumulative CPU: 62.81 sec HDFS Read: 1138329113 HDFS Write: 0 SUCCESS</span><br><span class="line">Total MapReduce CPU Time Spent: 1 minutes 2 seconds 810 msec</span><br><span class="line">OK</span><br><span class="line">Time taken: 33.815 seconds</span><br></pre></td></tr></table></figure>
-
-<h1 id="6-Hive数据处理模式"><a href="#6-Hive数据处理模式" class="headerlink" title="6 Hive数据处理模式"></a>6 Hive数据处理模式</h1><h2 id="3种数据处理模式"><a href="#3种数据处理模式" class="headerlink" title="3种数据处理模式"></a>3种数据处理模式</h2><ul>
-<li><p>过滤模式</p>
-</li>
-<li><p>聚合模式</p>
-</li>
-<li><p>连接模式</p>
-</li>
-</ul>
-<h2 id="常用set变量设置"><a href="#常用set变量设置" class="headerlink" title="常用set变量设置"></a>常用set变量设置</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--select显示列名</span></span><br><span class="line"><span class="keyword">SET</span> hive.cli.print.header<span class="operator">=</span><span class="literal">true</span>; </span><br><span class="line"> </span><br><span class="line"><span class="comment">--会话显示当前数据库 </span></span><br><span class="line"><span class="keyword">SET</span> hive.cli.print.current.db<span class="operator">=</span><span class="literal">true</span>; </span><br><span class="line"> </span><br><span class="line"><span class="comment">--动态分区插入</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition<span class="operator">=</span><span class="literal">true</span>; <span class="comment">--开启动态分区</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition.mode<span class="operator">=</span>nonstrict; <span class="comment">--允许所有分区动态</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.max.dynamic.partitions<span class="operator">=</span><span class="number">10000</span>; <span class="comment">--每个语句可以创建的最大分区数 </span></span><br><span class="line"><span class="keyword">set</span> hive.exec.max.dynamic.partitions.pernode<span class="operator">=</span><span class="number">1000</span>; <span class="comment">--每个mapreduce任务节点可以创建的最大分区数</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">--使用spark引擎</span></span><br><span class="line"><span class="keyword">set</span> hive.execution.engine<span class="operator">=</span>spark;</span><br><span class="line"><span class="keyword">set</span> spark.eventLog.enabled<span class="operator">=</span><span class="literal">false</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--并行执行</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.parallel<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"><span class="keyword">set</span> hive.exec.parallel.thread.number<span class="operator">=</span><span class="number">100</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--提高聚集：Map端聚合，相当于combiner</span></span><br><span class="line"><span class="keyword">set</span> hive.map.aggr<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--数据倾斜：为倾斜数据创建单独计划</span></span><br><span class="line"><span class="keyword">set</span> hive.optimize.skewjoin<span class="operator">=</span><span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
-
-<h2 id="union-all改成多次insert"><a href="#union-all改成多次insert" class="headerlink" title="union all改成多次insert"></a>union all改成多次insert</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> tmp_cch_20210803_001 ;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_cch_20210803_001 <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">max</span>(usr_nbr) usr_nbr,<span class="string">&#x27;max&#x27;</span> type</span><br><span class="line"><span class="keyword">from</span> biee.tb_d_userinfo a</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">min</span>(usr_nbr) usr_nbr,<span class="string">&#x27;min&#x27;</span> type</span><br><span class="line"><span class="keyword">from</span> biee.tb_d_userinfo a</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line">;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--多次insert</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> tmp_cch_20210803_001 ;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_cch_20210803_001 </span><br><span class="line">(start_dt string</span><br><span class="line">, usr_nbr string</span><br><span class="line">)</span><br><span class="line">partitioned <span class="keyword">by</span> (type string);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition<span class="operator">=</span><span class="literal">true</span>; </span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition.mode<span class="operator">=</span>nonstrict; </span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> biee.tb_d_userinfo</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> tmp_cch_20210803_001 <span class="keyword">partition</span>(type)</span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">max</span>(usr_nbr) usr_nbr,<span class="string">&#x27;max&#x27;</span> type</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> tmp_cch_20210803_001 <span class="keyword">partition</span>(type)</span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">min</span>(usr_nbr) usr_nbr,<span class="string">&#x27;min&#x27;</span> type</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
-
-<h2 id="空值连接"><a href="#空值连接" class="headerlink" title="空值连接"></a>空值连接</h2><p>防止数据倾斜，空值替换为随机数，分散到多个reduce连接</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> a.usr_id</span><br><span class="line"> ,a.usr_nbr</span><br><span class="line"> ,b.vest_lvl1_cd</span><br><span class="line"><span class="keyword">from</span> tmp_cch_20210813_001 a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> eds.TW_GMCC_USR_VEST_MO_201806 b <span class="keyword">on</span> nvl(a.usr_nbr2,concat(<span class="string">&#x27;空&#x27;</span>,rand()))<span class="operator">=</span>b.usr_nbr</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>hive学习笔记</category>
-      </categories>
-      <tags>
-        <tag>hive</tag>
-        <tag>大数据</tag>
-        <tag>调优</tag>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Dockerfile 详解01</title>
-    <url>/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/</url>
-    <content><![CDATA[<h1 id="常见的指令记录"><a href="#常见的指令记录" class="headerlink" title="常见的指令记录"></a>常见的指令记录</h1><h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>两种形式如下：</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;</span><br><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;:&lt;TAG&gt;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>通过FROM指定的镜像名称必须是一个已经存在的镜像，这个镜像称之为基础镜像，必须位于第一条非注释指令</p>
-</blockquote>
-<h2 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">MAINTAINER</span> &lt;NAME&gt;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>指定镜像的作者信息，包含镜像的所有者和联系人信息</p>
-</blockquote>
-<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>在shell模式下，是使用&#x2F;bin&#x2F;sh -c COMMAND来运行命令的<br>在exec模式下可以指定其他的shell来运行命令RUN [“&#x2F;bin&#x2F;bash”, “-c”, “echo hello”]</p>
-</blockquote>
-<p>多条RUN指令可以合并为一条：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">RUN yum install httpd &amp;&amp; yum install ftp</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这样在构建的时候会减少产生中间层镜像</p>
-</blockquote>
-<h2 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a><strong>EXPOSE</strong></h2><blockquote>
-<p>指定运行该镜像的容器使用的端口，可以是多个。</p>
-</blockquote>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">EXPOSE</span> &lt;PORT&gt;</span><br></pre></td></tr></table></figure>
-
-<p>使用这个指令的目的是告诉应用程序容器内应用程序会使用的端口，在运行时还需要使用-p参数指定映射端口。这是docker处于安全的目的，不会自动打开端口。</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -p 80 -d dockertest/dockerfile_build nginx -g <span class="string">&quot;daemon off&quot;</span></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a><strong>CMD</strong></h2><p>用于提供容器运行的默认命令，如果在<code>docker run</code>时指定了运行的命令，则CMD命令不会执行。CMD有三种模式：</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&#x27;param1&#x27;</span>, <span class="string">&#x27;param2&#x27;</span>] (通常与ENTRYPOINT搭配指定ENTRYPOINT的默认参数)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a><strong>ENTRYPOINT</strong></h2><p>与CMD类似，ENTRYPOINT不会被<code>docker run</code>中指定的命令覆盖，如果想覆盖ENTRYPOINT，则需要在<code>docker run</code>中指定<code>--entrypoint</code>选项</p>
-<p>它有两种模式：</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="ADD和COPY"><a href="#ADD和COPY" class="headerlink" title="ADD和COPY"></a><strong>ADD和COPY</strong></h2><p>作用都是将文件或目录复制到Dockerfile构建的镜像中</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ADD</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>ADD包含了类似tar的解压功能，如果只是单纯复制文件，建议使用COPY，而且，两者的源文件路径使用Dockerfile相对路径，目标路径使用绝对路径。</p>
-</blockquote>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a><strong>VOLUME</strong></h2><p>用于向容器添加卷，可以提供共享存储等功能</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">VOLUME</span><span class="language-bash"> [<span class="string">&#x27;/data&#x27;</span>]</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a><strong>WORKDIR</strong></h2><p>在容器内部设置工作目录，这样ENTRYPOINT和CMD指定的命令都会在容器中这个目录下进行。</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /path/to/workdir</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a><strong>ENV</strong></h2><p>用于设置环境变量</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt; &lt;VALUE&gt;</span><br><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt;=&lt;VALUE&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="USER"><a href="#USER" class="headerlink" title="USER"></a><strong>USER</strong></h2><p>用于指定镜像为什么用户去运行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USER nginx</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>镜像就会以nginx身份运行，可以使用uid，gid等各种组合使用</p>
-</blockquote>
-<h2 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a><strong>ONBUILD</strong></h2><p>为镜像创建触发器，当一个镜像被用作其他镜像的基础镜像时，这个触发器会被执行。当子镜像被构建时会插入触发器中的指令</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ONBUILD</span> <span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Dockerfile的构建过程"><a href="#Dockerfile的构建过程" class="headerlink" title="Dockerfile的构建过程"></a><strong>Dockerfile的构建过程</strong></h2><ol>
-<li>docker会从Dockerfile文件头FROM指定的基础镜像运行一个容器</li>
-<li>然后执行一条指令，对容器修改</li>
-<li>接着执行类似docker commit的操作，创建新的镜像层</li>
-<li>在基于刚创建的镜像运行一个新的容器</li>
-<li>执行Dockerfile下一条指令，直到所有指令执行完毕</li>
-</ol>
-<blockquote>
-<p>docker会删除中间层创建的容器，但不会删除中间层镜像，所以可以使用docker run运行一个中间层容器，从而查看每一步构建后的镜像状态，这样就可以进行调试。</p>
-</blockquote>
-<h2 id="构建缓存"><a href="#构建缓存" class="headerlink" title="构建缓存"></a><strong>构建缓存</strong></h2><p>docker在构建过程中会将之前构建的镜像看做缓存。</p>
-<p>当第一次构建的时候，构建过程会比较慢，而在此进行相同的构建的时候，会看见using cache字样，表示使用了缓存，构建过程也非常快。</p>
-<p>如果不想使用构建缓存，则在docker build中使用—no-cache选项。</p>
-<p>还可以在Dockerfile中使用ENV REFRESH_DATE 2018-01-01来制定缓存刷新时间，更改这个时间，就会让后面的命令不使用缓存。</p>
-<p><code>Dockerfile</code> 简单列举几个指令:</p>
-<ul>
-<li><code>FROM</code> : 指定基础镜像</li>
-<li><code>WORKDIR</code> : 指定工作目录</li>
-<li><code>COPY</code> : 将文件或者目录从构建上下文复制到容器中(推荐)</li>
-<li><code>ADD</code> : 将文件或者目录从构建上下文复制到容器中,并且会将压缩文件解压缩,支持 <code>URL</code></li>
-<li><code>RUN</code> : 在容器中执行命令</li>
-<li><code>CMD</code> : 容器启动时执行的命令</li>
-<li><code>EXPOSE</code> : 指定要监听的端口以实现与外部通信</li>
-</ul>
-<p>简单的例子：</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nodejs server Dockerfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># FROM node</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /nodeApp</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># COPY &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./package.json .</span></span><br><span class="line"><span class="comment"># ADD &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="comment"># ADD ./package.json .</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># shell格式：就像在命令行中输入的Shell脚本命令一样。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./src ./server</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;./server/index.js&quot;</span>]</span></span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>docker学习笔记</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>docker</tag>
-        <tag>Dockerfile</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Django+SimpleUI快速入门</title>
     <url>/2023/11/19/Django-SimpleUI%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h1 id="一、创建项目"><a href="#一、创建项目" class="headerlink" title="一、创建项目"></a>一、创建项目</h1><h2 id="1、安装simpleui"><a href="#1、安装simpleui" class="headerlink" title="1、安装simpleui"></a>1、安装simpleui</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install django-simpleui </span><br></pre></td></tr></table></figure>
@@ -437,9 +194,114 @@
         <category>docker学习笔记</category>
       </categories>
       <tags>
-        <tag>学习笔记</tag>
         <tag>docker</tag>
+        <tag>学习笔记</tag>
         <tag>命令</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dockerfile 详解01</title>
+    <url>/2023/11/12/Dockerfile%20%E8%AF%A6%E8%A7%A301/</url>
+    <content><![CDATA[<h1 id="常见的指令记录"><a href="#常见的指令记录" class="headerlink" title="常见的指令记录"></a>常见的指令记录</h1><h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>两种形式如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;</span><br><span class="line"><span class="keyword">FROM</span> &lt;IMAGE&gt;:&lt;TAG&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>通过FROM指定的镜像名称必须是一个已经存在的镜像，这个镜像称之为基础镜像，必须位于第一条非注释指令</p>
+</blockquote>
+<h2 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">MAINTAINER</span> &lt;NAME&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>指定镜像的作者信息，包含镜像的所有者和联系人信息</p>
+</blockquote>
+<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在shell模式下，是使用&#x2F;bin&#x2F;sh -c COMMAND来运行命令的<br>在exec模式下可以指定其他的shell来运行命令RUN [“&#x2F;bin&#x2F;bash”, “-c”, “echo hello”]</p>
+</blockquote>
+<p>多条RUN指令可以合并为一条：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">RUN yum install httpd &amp;&amp; yum install ftp</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样在构建的时候会减少产生中间层镜像</p>
+</blockquote>
+<h2 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a><strong>EXPOSE</strong></h2><blockquote>
+<p>指定运行该镜像的容器使用的端口，可以是多个。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">EXPOSE</span> &lt;PORT&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用这个指令的目的是告诉应用程序容器内应用程序会使用的端口，在运行时还需要使用-p参数指定映射端口。这是docker处于安全的目的，不会自动打开端口。</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -p 80 -d dockertest/dockerfile_build nginx -g <span class="string">&quot;daemon off&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a><strong>CMD</strong></h2><p>用于提供容器运行的默认命令，如果在<code>docker run</code>时指定了运行的命令，则CMD命令不会执行。CMD有三种模式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CMD</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&#x27;param1&#x27;</span>, <span class="string">&#x27;param2&#x27;</span>] (通常与ENTRYPOINT搭配指定ENTRYPOINT的默认参数)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a><strong>ENTRYPOINT</strong></h2><p>与CMD类似，ENTRYPOINT不会被<code>docker run</code>中指定的命令覆盖，如果想覆盖ENTRYPOINT，则需要在<code>docker run</code>中指定<code>--entrypoint</code>选项</p>
+<p>它有两种模式：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> &lt;<span class="built_in">command</span>&gt; (shell模式)</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [ <span class="string">&quot;executable&quot;</span>, <span class="string">&quot;param1&quot;</span>, <span class="string">&quot;param2&quot;</span> ] (<span class="built_in">exec</span>模式)</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ADD和COPY"><a href="#ADD和COPY" class="headerlink" title="ADD和COPY"></a><strong>ADD和COPY</strong></h2><p>作用都是将文件或目录复制到Dockerfile构建的镜像中</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ADD</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> &lt;src&gt; &lt;dest&gt;</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> [<span class="string">&quot;&lt;src&gt;&quot;</span> <span class="string">&quot;&lt;dest&gt;&quot;</span>] (适用于文件路径包含空格的情况)</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ADD包含了类似tar的解压功能，如果只是单纯复制文件，建议使用COPY，而且，两者的源文件路径使用Dockerfile相对路径，目标路径使用绝对路径。</p>
+</blockquote>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a><strong>VOLUME</strong></h2><p>用于向容器添加卷，可以提供共享存储等功能</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">VOLUME</span><span class="language-bash"> [<span class="string">&#x27;/data&#x27;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a><strong>WORKDIR</strong></h2><p>在容器内部设置工作目录，这样ENTRYPOINT和CMD指定的命令都会在容器中这个目录下进行。</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /path/to/workdir</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a><strong>ENV</strong></h2><p>用于设置环境变量</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt; &lt;VALUE&gt;</span><br><span class="line"><span class="keyword">ENV</span> &lt;KEY&gt;=&lt;VALUE&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="USER"><a href="#USER" class="headerlink" title="USER"></a><strong>USER</strong></h2><p>用于指定镜像为什么用户去运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USER nginx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>镜像就会以nginx身份运行，可以使用uid，gid等各种组合使用</p>
+</blockquote>
+<h2 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a><strong>ONBUILD</strong></h2><p>为镜像创建触发器，当一个镜像被用作其他镜像的基础镜像时，这个触发器会被执行。当子镜像被构建时会插入触发器中的指令</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ONBUILD</span> <span class="keyword">COPY</span><span class="language-bash"> index.html /var/www/html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Dockerfile的构建过程"><a href="#Dockerfile的构建过程" class="headerlink" title="Dockerfile的构建过程"></a><strong>Dockerfile的构建过程</strong></h2><ol>
+<li>docker会从Dockerfile文件头FROM指定的基础镜像运行一个容器</li>
+<li>然后执行一条指令，对容器修改</li>
+<li>接着执行类似docker commit的操作，创建新的镜像层</li>
+<li>在基于刚创建的镜像运行一个新的容器</li>
+<li>执行Dockerfile下一条指令，直到所有指令执行完毕</li>
+</ol>
+<blockquote>
+<p>docker会删除中间层创建的容器，但不会删除中间层镜像，所以可以使用docker run运行一个中间层容器，从而查看每一步构建后的镜像状态，这样就可以进行调试。</p>
+</blockquote>
+<h2 id="构建缓存"><a href="#构建缓存" class="headerlink" title="构建缓存"></a><strong>构建缓存</strong></h2><p>docker在构建过程中会将之前构建的镜像看做缓存。</p>
+<p>当第一次构建的时候，构建过程会比较慢，而在此进行相同的构建的时候，会看见using cache字样，表示使用了缓存，构建过程也非常快。</p>
+<p>如果不想使用构建缓存，则在docker build中使用—no-cache选项。</p>
+<p>还可以在Dockerfile中使用ENV REFRESH_DATE 2018-01-01来制定缓存刷新时间，更改这个时间，就会让后面的命令不使用缓存。</p>
+<p><code>Dockerfile</code> 简单列举几个指令:</p>
+<ul>
+<li><code>FROM</code> : 指定基础镜像</li>
+<li><code>WORKDIR</code> : 指定工作目录</li>
+<li><code>COPY</code> : 将文件或者目录从构建上下文复制到容器中(推荐)</li>
+<li><code>ADD</code> : 将文件或者目录从构建上下文复制到容器中,并且会将压缩文件解压缩,支持 <code>URL</code></li>
+<li><code>RUN</code> : 在容器中执行命令</li>
+<li><code>CMD</code> : 容器启动时执行的命令</li>
+<li><code>EXPOSE</code> : 指定要监听的端口以实现与外部通信</li>
+</ul>
+<p>简单的例子：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># nodejs server Dockerfile</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># FROM node</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line"><span class="keyword">FROM</span> node:<span class="number">16</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /nodeApp</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># COPY &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./package.json .</span></span><br><span class="line"><span class="comment"># ADD &lt;宿主机目录或文件路径&gt; &lt;容器内目录或文件路径&gt;</span></span><br><span class="line"><span class="comment"># ADD ./package.json .</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># shell格式：就像在命令行中输入的Shell脚本命令一样。</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm install</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./src ./server</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;./server/index.js&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>docker学习笔记</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>学习笔记</tag>
+        <tag>Dockerfile</tag>
       </tags>
   </entry>
   <entry>
@@ -482,6 +344,144 @@
       </categories>
       <tags>
         <tag>域名</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hive优化(一)</title>
+    <url>/2023/07/24/Hive%E4%BC%98%E5%8C%96-%E4%B8%80/</url>
+    <content><![CDATA[<blockquote>
+<p>本文中仅有大题的思路，初步学习，参考用。详细的调优还需要后续遇到问题慢慢学习，我想。</p>
+</blockquote>
+<h1 id="1、影响Hive效率主要原因"><a href="#1、影响Hive效率主要原因" class="headerlink" title="1、影响Hive效率主要原因"></a>1、影响Hive效率主要原因</h1><ol>
+<li><p>最主要是读取数据占用硬盘输入输出IO、网络传输，访问一次表，就产生一次MapReduce，就会产生一次IO</p>
+</li>
+<li><p>其次是大数据计算占用内存</p>
+</li>
+<li><p>计算逻辑相对简单，CPU占用较少</p>
+</li>
+</ol>
+<h1 id="2、Hive问题排查与调优思路"><a href="#2、Hive问题排查与调优思路" class="headerlink" title="2、Hive问题排查与调优思路"></a>2、Hive问题排查与调优思路</h1><h2 id="查看hive性能问题"><a href="#查看hive性能问题" class="headerlink" title="查看hive性能问题"></a>查看hive性能问题</h2><ol>
+<li><p>查看元数据：记录Hive数据库、表、分区、列等统计信息</p>
+</li>
+<li><p>查看执行计划：描述计算引擎的执行逻辑</p>
+</li>
+<li><p>查看YARN日志：有SQL执行完具体的量化数据</p>
+</li>
+</ol>
+<h2 id="Hive优化方式"><a href="#Hive优化方式" class="headerlink" title="Hive优化方式"></a>Hive优化方式</h2><ol>
+<li><p>优化存储：数据块、数据存储格式、分区分桶</p>
+</li>
+<li><p>优化执行过程：SQL优化、hint提示、set命令</p>
+</li>
+<li><p>优化作业调度：</p>
+</li>
+</ol>
+<h2 id="Hive-SQL优化原则"><a href="#Hive-SQL优化原则" class="headerlink" title="Hive SQL优化原则"></a>Hive SQL优化原则</h2><p>（1-5是SQL通用原则，6开始是Hive特殊原则）</p>
+<ol>
+<li><p>坚持简洁的代码，随着Hive SQL语法完善，实现同样的功能，往往越简单的代码越高效</p>
+</li>
+<li><p>先分析数据存储情况再改代码，如存储格式、数据量、数据分布、是否倾斜</p>
+</li>
+<li><p>减少访问同个表次数</p>
+</li>
+<li><p>分步处理，不要一段脚本过于复杂</p>
+</li>
+<li><p>尽量用Hive SQL自带语法，如grouping set、rollup、cube</p>
+</li>
+<li><p>少用Reduce阶段操作：如表连接、group by、distinct、聚集函数、分析函数</p>
+</li>
+<li><p>少用Hint或者不用Hint</p>
+</li>
+<li><p>不要用索引</p>
+</li>
+<li><p>合理使用分区分桶</p>
+</li>
+<li><p>Hive适合处理宽表，适当的冗余有助于Hive的处理性能</p>
+</li>
+<li><p>不怕数据量大，防止数据倾斜</p>
+</li>
+</ol>
+<blockquote>
+<p>数据倾斜即指<strong>在大数据计算任务中某个处理任务的进程（通常是一个JVM 进程）被分配到的任务量过多，进程运行时间超长甚至最终失败，进而导致整个计算任务超长时间运行或者失败</strong>。</p>
+</blockquote>
+<h1 id="3-Hive4大组件"><a href="#3-Hive4大组件" class="headerlink" title="3 Hive4大组件"></a>3 Hive4大组件</h1><p><strong>元数据、分布式文件系统、计算引擎、资源管理和调度</strong></p>
+<p><strong>元数据</strong>：记录Hive数据库、表、分区、列等统计信息</p>
+<p>元数据存在MySQL的metastore库中，Hive3.0可以在Hive的sys库查询。</p>
+<p><strong>数据存储</strong>：HDFS分布式文件系统</p>
+<p><strong>计算引擎</strong>：MapReduce、Tez、Spark</p>
+<p><strong>MapReduce</strong>：Hive2.0不再推荐使用，步骤简单，固定Map、Reduce两个操作，不灵活，计算代码量大，延迟量大</p>
+<p><strong>Tez</strong>：将Map、Reduce两个操作简化为一个概念Vertex，拆分成多个组成，可以减少很多没必要步骤，允许小数据完全在内存中处理</p>
+<p><strong>Spark</strong>：DAG有向无环图，高效、低延迟，提供多种接口实现计算</p>
+<p><strong>作业资源调度</strong>：YARN、Mesos</p>
+<p><strong>YARN</strong>：资源调度系统，可以查看Tracking URL日志链接，有SQL执行完具体的量化数据</p>
+<h1 id="4-MapReduce计算引擎"><a href="#4-MapReduce计算引擎" class="headerlink" title="4 MapReduce计算引擎"></a>4 MapReduce计算引擎</h1><p>是大数据计算引擎，也是编程模型。</p>
+<p>输入输出格式是键值对</p>
+<p>所有作业都拆分成Map和Reduce两个步骤进行处理。</p>
+<p>提供Map和Reduce两个编程接口，可以让用户在此基础上编写自己的业务代码，不用关心整个分布式计算框架的背后原理。</p>
+<h2 id="MapReduce整体环节"><a href="#MapReduce整体环节" class="headerlink" title="MapReduce整体环节"></a>MapReduce整体环节</h2><p>Input-Mapper-Shuffle-Reducer-Output</p>
+<p>Mapper接口：映射分散，输入输出格式为键值对，逻辑会分发到集群各个节点，读取该节点数据进行处理，最后写入本地。不移动数据，只移动计算逻辑。</p>
+<p>Reducer接口：合并缩减，读取Map输出，并按相同键划分到各个Reducer任务</p>
+<p>Shuffle过程：Mapper输出到Reducer输入的过程，一般表连接在这个过程。</p>
+<p>Combiner接口：Map端的Reduce，逻辑同Reduce，在Map端本地计算。</p>
+<h1 id="5-HiveSQL执行计划"><a href="#5-HiveSQL执行计划" class="headerlink" title="5 HiveSQL执行计划"></a>5 HiveSQL执行计划</h1><p>explain select sum(credit_amt) from tmp_cch_001;</p>
+<p>explain extended select sum(credit_amt) from tmp_cch_001; –更详细执行计划</p>
+<p>Hive执行计划都是预估的</p>
+<p>Oracle执行计划可以提供真实的计划，即SQL实际执行完成后才获得的执行计划。</p>
+<p>Hive2.0执行计划加大CBO的支持</p>
+<h2 id="执行计划基本信息"><a href="#执行计划基本信息" class="headerlink" title="执行计划基本信息"></a>执行计划基本信息</h2><p>一个hvie任务包含多个阶段stage，不同stage间存在依赖关系，越复杂的查询越多stage。</p>
+<p>一个stage可以是一个MapReduce任务，也可以是一个抽样、合并、limit。</p>
+<p>默认一次只执行一个stage，开并行可以同时执行多个stage。</p>
+<p>Stage-0：客户端读取执行计划结果</p>
+<p>Map阶段操作：主要涉及select、from、where、本地group by，map join</p>
+<p>Reduce阶段操作：主要涉及表连接、group by、distinct、聚集函数、分析函数</p>
+<p>分区过滤：会在map上一个阶段，即在输入阶段进行路径过滤</p>
+<h2 id="执行计划关键字解释"><a href="#执行计划关键字解释" class="headerlink" title="执行计划关键字解释"></a>执行计划关键字解释</h2><p>STAGE DEPENDENCIES：作业的依赖关系</p>
+<p>STAGE PLANS：每个作业的详细信息</p>
+<p>Map Reduce：执行引擎</p>
+<p>Map Operator Tree</p>
+<p>TableScan：扫描，即from</p>
+<p>Statistics：统计信息，包含行数、文件大小</p>
+<p>Filter Operator：行过滤，即where</p>
+<p>Select Operator：列筛选，即select</p>
+<p>Group By Operator：map端group by，分组聚集</p>
+<p>Reduce Output Operator：map输出，即Shuffle流程，将本地相同键的值合并排序输出到Reduce</p>
+<p>Reduce Operator Tree</p>
+<p>Join Operator：表连接join</p>
+<p>Group By Operator：Reduce端group by</p>
+<p>Select Operator：输出字段</p>
+<p>File Output Operator：Reduce输出文件信息</p>
+<h2 id="MapReduce统计信息"><a href="#MapReduce统计信息" class="headerlink" title="MapReduce统计信息"></a>MapReduce统计信息</h2><p>Total jobs：作业数</p>
+<p>Stage-Stage-n：MapReduce任务</p>
+<p>Total MapReduce CPU Time Spent：程序占用CPU资源时间</p>
+<p>Time taken：用户等待时间</p>
+<h2 id="执行计划实例"><a href="#执行计划实例" class="headerlink" title="执行计划实例"></a>执行计划实例</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">explain </span><br><span class="line">select usr_sts_cd,count(1) cnt</span><br><span class="line">from biee.tb_d_userinfo </span><br><span class="line">where start_dt&gt;=20210101</span><br><span class="line">group by usr_sts_cd</span><br><span class="line">;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">STAGE DEPENDENCIES:</span><br><span class="line"> Stage-1 is a root stage</span><br><span class="line"> Stage-0 depends on stages: Stage-1</span><br><span class="line"> </span><br><span class="line">STAGE PLANS:</span><br><span class="line"> Stage: Stage-1</span><br><span class="line"> Map Reduce</span><br><span class="line"> Map Operator Tree:</span><br><span class="line"> TableScan</span><br><span class="line"> alias: tb_d_userinfo</span><br><span class="line"> Statistics: Num rows: 8656238 Data size: 1129252772 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Filter Operator</span><br><span class="line"> predicate: (start_dt &gt;= 20210101) (type: boolean)</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Select Operator</span><br><span class="line"> expressions: usr_sts_cd (type: string)</span><br><span class="line"> outputColumnNames: usr_sts_cd</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Group By Operator</span><br><span class="line"> aggregations: count(1)</span><br><span class="line"> keys: usr_sts_cd (type: string)</span><br><span class="line"> mode: hash0 </span><br><span class="line"> outputColumnNames: _col0, _col1</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Reduce Output Operator</span><br><span class="line"> key expressions: _col0 (type: string)</span><br><span class="line"> sort order: +</span><br><span class="line">  Map-reduce partition columns: _col0 (type: string)</span><br><span class="line"> Statistics: Num rows: 2885412 Data size: 376417503 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> value expressions: _col1 (type: bigint)</span><br><span class="line"> Reduce Operator Tree:</span><br><span class="line"> Group By Operator</span><br><span class="line"> aggregations: count(VALUE._col0)</span><br><span class="line"> keys: KEY._col0 (type: string)</span><br><span class="line"> mode: mergepartial</span><br><span class="line"> outputColumnNames: _col0, _col1</span><br><span class="line"> Statistics: Num rows: 1442706 Data size: 188208751 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> Select Operator</span><br><span class="line"> expressions: _col0 (type: string), _col1 (type: bigint)</span><br><span class="line"> outputColumnNames: _col0, _col1</span><br><span class="line"> Statistics: Num rows: 1442706 Data size: 188208751 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> File Output Operator</span><br><span class="line"> compressed: false</span><br><span class="line"> Statistics: Num rows: 1442706 Data size: 188208751 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line"> table:</span><br><span class="line"> input format: org.apache.hadoop.mapred.TextInputFormat</span><br><span class="line"> output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</span><br><span class="line"> serde: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</span><br><span class="line"> </span><br><span class="line"> Stage: Stage-0</span><br><span class="line"> Fetch Operator</span><br><span class="line"> limit: -1</span><br><span class="line"> Processor Tree:</span><br><span class="line"> ListSink</span><br></pre></td></tr></table></figure>
+
+<h2 id="MapReduce实际执行实例"><a href="#MapReduce实际执行实例" class="headerlink" title="MapReduce实际执行实例"></a>MapReduce实际执行实例</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Query ID = dwjixincheng_20210811151212_94f4d43b-b45b-417f-8e61-86fd1e99fcea</span><br><span class="line">Total jobs = 1</span><br><span class="line">Launching Job 1 out of 1</span><br><span class="line">Number of reduce tasks not specified. Estimated from input data size: 17</span><br><span class="line">In order to change the average load for a reducer (in bytes):</span><br><span class="line"> set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;</span><br><span class="line">In order to limit the maximum number of reducers:</span><br><span class="line"> set hive.exec.reducers.max=&lt;number&gt;</span><br><span class="line">In order to set a constant number of reducers:</span><br><span class="line"> set mapreduce.job.reduces=&lt;number&gt;</span><br><span class="line">Starting Job = job_1622444551352_8842, Tracking URL = http://stbdhadoop-3001.site:8088/proxy/application_1622444551352_8842/</span><br><span class="line">Kill Command = /home/hadoop/hadoop-2.6.0-cdh5.4.0/bin/hadoop job -kill job_1622444551352_8842</span><br><span class="line">Hadoop job information for Stage-1: number of mappers: 5; number of reducers: 17</span><br><span class="line">2021-08-11 15:13:00,870 Stage-1 map = 0%, reduce = 0%</span><br><span class="line">2021-08-11 15:13:09,594 Stage-1 map = 20%, reduce = 0%, Cumulative CPU 4.8 sec</span><br><span class="line">2021-08-11 15:13:11,648 Stage-1 map = 40%, reduce = 0%, Cumulative CPU 7.87 sec</span><br><span class="line">2021-08-11 15:13:13,702 Stage-1 map = 60%, reduce = 0%, Cumulative CPU 12.57 sec</span><br><span class="line">2021-08-11 15:13:14,728 Stage-1 map = 80%, reduce = 0%, Cumulative CPU 26.22 sec</span><br><span class="line">2021-08-11 15:13:17,805 Stage-1 map = 100%, reduce = 0%, Cumulative CPU 37.35 sec</span><br><span class="line">2021-08-11 15:13:19,862 Stage-1 map = 100%, reduce = 53%, Cumulative CPU 49.57 sec</span><br><span class="line">2021-08-11 15:13:20,892 Stage-1 map = 100%, reduce = 65%, Cumulative CPU 52.35 sec</span><br><span class="line">2021-08-11 15:13:22,957 Stage-1 map = 100%, reduce = 71%, Cumulative CPU 54.12 sec</span><br><span class="line">2021-08-11 15:13:23,989 Stage-1 map = 100%, reduce = 82%, Cumulative CPU 57.66 sec</span><br><span class="line">2021-08-11 15:13:25,020 Stage-1 map = 100%, reduce = 88%, Cumulative CPU 59.41 sec</span><br><span class="line">2021-08-11 15:13:27,065 Stage-1 map = 100%, reduce = 100%, Cumulative CPU 62.81 sec</span><br><span class="line">MapReduce Total cumulative CPU time: 1 minutes 2 seconds 810 msec</span><br><span class="line">Ended Job = job_1622444551352_8842</span><br><span class="line">MapReduce Jobs Launched: </span><br><span class="line">Stage-Stage-1: Map: 5 Reduce: 17 Cumulative CPU: 62.81 sec HDFS Read: 1138329113 HDFS Write: 0 SUCCESS</span><br><span class="line">Total MapReduce CPU Time Spent: 1 minutes 2 seconds 810 msec</span><br><span class="line">OK</span><br><span class="line">Time taken: 33.815 seconds</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-Hive数据处理模式"><a href="#6-Hive数据处理模式" class="headerlink" title="6 Hive数据处理模式"></a>6 Hive数据处理模式</h1><h2 id="3种数据处理模式"><a href="#3种数据处理模式" class="headerlink" title="3种数据处理模式"></a>3种数据处理模式</h2><ul>
+<li><p>过滤模式</p>
+</li>
+<li><p>聚合模式</p>
+</li>
+<li><p>连接模式</p>
+</li>
+</ul>
+<h2 id="常用set变量设置"><a href="#常用set变量设置" class="headerlink" title="常用set变量设置"></a>常用set变量设置</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--select显示列名</span></span><br><span class="line"><span class="keyword">SET</span> hive.cli.print.header<span class="operator">=</span><span class="literal">true</span>; </span><br><span class="line"> </span><br><span class="line"><span class="comment">--会话显示当前数据库 </span></span><br><span class="line"><span class="keyword">SET</span> hive.cli.print.current.db<span class="operator">=</span><span class="literal">true</span>; </span><br><span class="line"> </span><br><span class="line"><span class="comment">--动态分区插入</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition<span class="operator">=</span><span class="literal">true</span>; <span class="comment">--开启动态分区</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition.mode<span class="operator">=</span>nonstrict; <span class="comment">--允许所有分区动态</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.max.dynamic.partitions<span class="operator">=</span><span class="number">10000</span>; <span class="comment">--每个语句可以创建的最大分区数 </span></span><br><span class="line"><span class="keyword">set</span> hive.exec.max.dynamic.partitions.pernode<span class="operator">=</span><span class="number">1000</span>; <span class="comment">--每个mapreduce任务节点可以创建的最大分区数</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">--使用spark引擎</span></span><br><span class="line"><span class="keyword">set</span> hive.execution.engine<span class="operator">=</span>spark;</span><br><span class="line"><span class="keyword">set</span> spark.eventLog.enabled<span class="operator">=</span><span class="literal">false</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--并行执行</span></span><br><span class="line"><span class="keyword">set</span> hive.exec.parallel<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"><span class="keyword">set</span> hive.exec.parallel.thread.number<span class="operator">=</span><span class="number">100</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--提高聚集：Map端聚合，相当于combiner</span></span><br><span class="line"><span class="keyword">set</span> hive.map.aggr<span class="operator">=</span><span class="literal">true</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--数据倾斜：为倾斜数据创建单独计划</span></span><br><span class="line"><span class="keyword">set</span> hive.optimize.skewjoin<span class="operator">=</span><span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="union-all改成多次insert"><a href="#union-all改成多次insert" class="headerlink" title="union all改成多次insert"></a>union all改成多次insert</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> tmp_cch_20210803_001 ;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_cch_20210803_001 <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">max</span>(usr_nbr) usr_nbr,<span class="string">&#x27;max&#x27;</span> type</span><br><span class="line"><span class="keyword">from</span> biee.tb_d_userinfo a</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">min</span>(usr_nbr) usr_nbr,<span class="string">&#x27;min&#x27;</span> type</span><br><span class="line"><span class="keyword">from</span> biee.tb_d_userinfo a</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line">;</span><br><span class="line"> </span><br><span class="line"><span class="comment">--多次insert</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> tmp_cch_20210803_001 ;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_cch_20210803_001 </span><br><span class="line">(start_dt string</span><br><span class="line">, usr_nbr string</span><br><span class="line">)</span><br><span class="line">partitioned <span class="keyword">by</span> (type string);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition<span class="operator">=</span><span class="literal">true</span>; </span><br><span class="line"><span class="keyword">set</span> hive.exec.dynamic.partition.mode<span class="operator">=</span>nonstrict; </span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> biee.tb_d_userinfo</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> tmp_cch_20210803_001 <span class="keyword">partition</span>(type)</span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">max</span>(usr_nbr) usr_nbr,<span class="string">&#x27;max&#x27;</span> type</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> tmp_cch_20210803_001 <span class="keyword">partition</span>(type)</span><br><span class="line"><span class="keyword">select</span> start_dt,<span class="built_in">min</span>(usr_nbr) usr_nbr,<span class="string">&#x27;min&#x27;</span> type</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> start_dt</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
+
+<h2 id="空值连接"><a href="#空值连接" class="headerlink" title="空值连接"></a>空值连接</h2><p>防止数据倾斜，空值替换为随机数，分散到多个reduce连接</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> a.usr_id</span><br><span class="line"> ,a.usr_nbr</span><br><span class="line"> ,b.vest_lvl1_cd</span><br><span class="line"><span class="keyword">from</span> tmp_cch_20210813_001 a</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> eds.TW_GMCC_USR_VEST_MO_201806 b <span class="keyword">on</span> nvl(a.usr_nbr2,concat(<span class="string">&#x27;空&#x27;</span>,rand()))<span class="operator">=</span>b.usr_nbr</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>hive学习笔记</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>hive</tag>
+        <tag>大数据</tag>
+        <tag>调优</tag>
       </tags>
   </entry>
   <entry>
@@ -534,6 +534,82 @@
         <tag>hexo</tag>
         <tag>github</tag>
         <tag>个人博客</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>httpx命令记录学习</title>
+    <url>/2023/11/19/httpx%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">INPUT:</span><br><span class="line">   -l, -list string      包含要处理的主机列表的输入文件</span><br><span class="line">   -rr, -request string  包含原始请求的文件</span><br><span class="line">   -u, -target string[]  输入要探测的目标主机</span><br><span class="line"></span><br><span class="line">PROBES:</span><br><span class="line">   -sc, -status-code     显示响应状态码</span><br><span class="line">   -cl, -content-length  显示响应内容长度</span><br><span class="line">   -ct, -content-type    显示响应内容类型</span><br><span class="line">   -location             显示响应重定向位置</span><br><span class="line">   -favicon              显示&#x27;/favicon.ico&#x27;文件的mmh3散列</span><br><span class="line">   -hash string          显示响应体哈希值(支持md5,mmh3,simhash,sha1,sha256,sha512)</span><br><span class="line">   -jarm                 显示告警指纹散列</span><br><span class="line">   -rt, -response-time   显示响应时间</span><br><span class="line">   -lc, -line-count      显示响应体行计数</span><br><span class="line">   -wc, -word-count      显示回复正文字数</span><br><span class="line">   -title                显示页面标题</span><br><span class="line">   -server, -web-server  显示服务器名称</span><br><span class="line">   -td, -tech-detect     基于wappalyzer数据集的显示技术</span><br><span class="line">   -method               显示HTTP请求方法</span><br><span class="line">   -websocket            使用websocket显示服务器</span><br><span class="line">   -ip                   显示主机IP</span><br><span class="line">   -cname                显示主机cname</span><br><span class="line">   -asn                  显示主机asn信息</span><br><span class="line">   -cdn                  显示正在使用的CDN</span><br><span class="line">   -probe                显示探针状态</span><br><span class="line"></span><br><span class="line">HEADLESS:</span><br><span class="line">   -ss, -screenshot  启用使用无头浏览器保存页面截图</span><br><span class="line">   -system-chrome    启用使用本地安装的chrome屏幕截图</span><br><span class="line"></span><br><span class="line">MATCHERS:</span><br><span class="line">   -mc, -match-code string            匹配响应与指定的状态码(-mc 200,302)</span><br><span class="line">   -ml, -match-length string          匹配响应与指定的内容长度(-ml 100,102)</span><br><span class="line">   -mlc, -match-line-count string     匹配响应体与指定的行数(-mlc 423,532)</span><br><span class="line">   -mwc, -match-word-count string     匹配响应体与指定字数(-mwc 43,55)</span><br><span class="line">   -mfc, -match-favicon string[]      匹配响应与指定的图标哈希(-mfc 1494302000)</span><br><span class="line">   -ms, -match-string string          匹配响应与指定字符串(-ms admin)</span><br><span class="line">   -mr, -match-regex string           用指定的正则表达式匹配响应(-mr admin)</span><br><span class="line">   -mcdn, -match-cdn string[]         匹配主机与指定的CDN提供商(cloudfront, fastly，谷歌，leaseweb, stackpath)</span><br><span class="line">   -mrt, -match-response-time string  匹配响应与指定的响应时间(以秒为单位)(-mrt &#x27;&lt; 1&#x27;)</span><br><span class="line">   -mdc, -match-condition string      匹配响应与DSL表达式条件</span><br><span class="line"></span><br><span class="line">EXTRACTOR:</span><br><span class="line">   -er, -extract-regex string[]   用匹配的正则表达式显示响应内容</span><br><span class="line">   -ep, -extract-preset string[]  显示与预定义正则表达式(url,ipv4,mail)匹配的响应内容</span><br><span class="line"></span><br><span class="line">FILTERS:</span><br><span class="line">   -fc, -filter-code string            使用指定状态码筛选响应(-fc 403,401)</span><br><span class="line">   -fep, -filter-error-page            使用基于ML的错误页面检测过滤响应</span><br><span class="line">   -fl, -filter-length string          具有指定内容长度的过滤器响应(-fl 23,33)</span><br><span class="line">   -flc, -filter-line-count string     具有指定行数的过滤器响应体(-flc 423,532)</span><br><span class="line">   -fwc, -filter-word-count string     过滤具有指定字数的响应体(-fwc 423,532)</span><br><span class="line">   -ffc, -filter-favicon string[]      使用指定的favicon哈希过滤响应(-mfc 1494302000)</span><br><span class="line">   -fs, -filter-string string          使用指定字符串过滤响应(-fs admin)</span><br><span class="line">   -fe, -filter-regex string           使用指定的正则表达式过滤响应(-fe admin)</span><br><span class="line">   -fcdn, -filter-cdn string[]         过滤主机与指定的CDN提供商(cloudfront, fastly，谷歌，leaseweb, stackpath)</span><br><span class="line">   -frt, -filter-response-time string  过滤具有指定响应时间(以秒为单位)的响应(- first &#x27;&gt; 1&#x27;)</span><br><span class="line">   -fdc, -filter-condition string      带DSL表达式条件的过滤响应</span><br><span class="line"></span><br><span class="line">RATE-LIMIT:</span><br><span class="line">   -t, -threads int              要使用的线程数(默认为50)</span><br><span class="line">   -rl, -rate-limit int          每秒发送的最大请求数(默认150)</span><br><span class="line">   -rlm, -rate-limit-minute int  每分钟发送的最大请求数</span><br><span class="line"></span><br><span class="line">MISCELLANEOUS:</span><br><span class="line">   -pa, -probe-all-ips        探测与同一主机关联的所有ip</span><br><span class="line">   -p, -ports string[]        要探测的端口(nmap语法:例如http:1,2-10,11,https:80)</span><br><span class="line">   -path string               要探测的路径或路径列表(逗号分隔，文件)</span><br><span class="line">   -tls-probe                 在提取的TLS域(dns_name)上发送http探测</span><br><span class="line">   -csp-probe                 在提取的CSP域上发送http探测</span><br><span class="line">   -tls-grab                  执行TLS(SSL)数据抓取</span><br><span class="line">   -pipeline                  支持HTTP1.1管道的探测和显示服务器</span><br><span class="line">   -http2                     支持HTTP2的探测和显示服务器</span><br><span class="line">   -vhost                     支持VHOST的探测和显示服务器</span><br><span class="line">   -ldv, -list-dsl-variables  列出json输出字段的关键字名称，支持DSL匹配器/过滤器</span><br><span class="line"></span><br><span class="line">UPDATE:</span><br><span class="line">   -up, -update                 更新HTTPX到最新版本</span><br><span class="line">   -duc, -disable-update-check  禁用自动检查HTTPX更新</span><br><span class="line"></span><br><span class="line">OUTPUT:</span><br><span class="line">   -o, -output string                  文件写入输出结果</span><br><span class="line">   -oa, -output-all                    以所有格式写入输出结果的文件名</span><br><span class="line">   -sr, -store-response                将HTTP响应存储到输出目录</span><br><span class="line">   -srd, -store-response-dir string    将 http 响应存储到自定义目录</span><br><span class="line">   -csv                                以 csv 格式存储输出</span><br><span class="line">   -csvo, -csv-output-encoding string  定义输出编码</span><br><span class="line">   -json                               以 jsonl ines 格式存储输出</span><br><span class="line">   -irr, -include-response             仅在 json 输出 json 中包含 http 请求响应</span><br><span class="line">   -irrb, -include-response-base64     仅在 json 输出 json 中包含 Base 64 编码的 http 请求响应</span><br><span class="line">   -include-chain                      仅在 json 输出 json 中包含重定向 http 链</span><br><span class="line">   -store-chain                        仅在响应 sr 中包含 http 重定向链</span><br><span class="line"></span><br><span class="line">配置:</span><br><span class="line">   -config string                httpx 配置文件的路径  (default $HOME/.config/httpx/config.yaml)</span><br><span class="line">   -r, -resolvers string[]       自定义解析器文件列表或逗号分隔</span><br><span class="line">   -allow string[]               允许处理的IP/CIDR列表(文件或逗号分隔)</span><br><span class="line">   -deny string[]                拒绝处理的IP/CIDR列表(文件或逗号分隔)</span><br><span class="line">   -sni, -sni-name string        自定义TLS SNI名称</span><br><span class="line">   -random-agent                 启用随机用户代理使用(默认为true)</span><br><span class="line">   -H, -header string[]          自定义HTTP头与请求一起发送</span><br><span class="line">   -http-proxy, -proxy string    要使用的HTTP代理(例如http://127.0.0.1:8080)</span><br><span class="line">   -unsafe                       发送原始请求跳过 golang 规范化</span><br><span class="line">   -resume                       使用Resume .cfg扫描简历</span><br><span class="line">   -fr, -follow-redirects        遵循 http 重定向</span><br><span class="line">   -maxr, -max-redirects int     每个主机遵循的最大重定向数默认为 10</span><br><span class="line">   -fhr, -follow-host-redirects  遵循同一主机上的重定向</span><br><span class="line">   -vhost-input                  获取虚拟主机列表作为输入</span><br><span class="line">   -x string                     探测的请求方法使用 all 来探测所有 http 方法</span><br><span class="line">   -body string                  发布正文以包含在 http 请求中</span><br><span class="line">   -s, -stream                   流模式开始阐述输入目标而不进行排序</span><br><span class="line">   -sd, -skip-dedupe             禁用仅与流模式一起使用的重复数据删除输入项</span><br><span class="line">   -ldp, -leave-default-ports    在主机标头中保留默认的 http https 端口，例如 http 主机 80 https 主机 443</span><br><span class="line">   -ztls                         使用 ztls 库并自动回退到 tls 13 的标准库</span><br><span class="line">   -no-decode                    避免解码主体</span><br><span class="line">   -tlsi, -tls-impersonate       启用实验性客户端 hello ja 3 tls 随机化</span><br><span class="line">   -no-stdin                     禁用标准输入处理</span><br><span class="line"></span><br><span class="line">DEBUG:</span><br><span class="line">   -health-check, -hc        运行诊断检查</span><br><span class="line">   -debug                    在cli中显示请求响应内容</span><br><span class="line">   -debug-req                在cli中显示请求内容</span><br><span class="line">   -debug-resp               在cli中显示响应内容</span><br><span class="line">   -version                  显示httpx版本</span><br><span class="line">   -stats                    显示扫描统计</span><br><span class="line">   -profile-mem string       可选的 httpx 内存配置文件转储文件</span><br><span class="line">   -silent                   静音模式</span><br><span class="line">   -v, -verbose              详细模式</span><br><span class="line">   -si, -stats-interval int  显示统计信息更新之间等待的秒数 默认 5</span><br><span class="line">   -nc, -no-color            禁用 cli 输出中的颜色</span><br><span class="line"></span><br><span class="line">OPTIMIZATIONS:</span><br><span class="line">   -nf, -no-fallback                  显示探测到的协议 https 和 http</span><br><span class="line">   -nfs, -no-fallback-scheme          使用输入中指定的协议方案进行探测</span><br><span class="line">   -maxhr, -max-host-error int        跳过剩余路径之前每个主机的最大错误计数 默认 30</span><br><span class="line">   -ec, -exclude-cdn                  跳过 cd ns 的全端口扫描 仅检查 80 443</span><br><span class="line">   -retries int                       重试次数</span><br><span class="line">   -timeout int                       超时时间（以秒为单位）默认 10</span><br><span class="line">   -delay value                       每个 http 请求之间的持续时间 例如 200 ms 1 s 默认 1 ns</span><br><span class="line">   -rsts, -response-size-to-save int  要保存的最大响应大小（以字节为单位）默认 2147483647</span><br><span class="line">   -rstr, -response-size-to-read int  读取的最大响应大小（以字节为单位）默认 2147483647</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>工具学习</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>httpx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mariadb数据库 原始数据恢复方法-docker版本</title>
+    <url>/2023/11/25/mariadb%E6%95%B0%E6%8D%AE%E5%BA%93-%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E6%96%B9%E6%B3%95-docker%E7%89%88%E6%9C%AC/</url>
+    <content><![CDATA[<h1 id="步骤一：Docker安装MariaDB"><a href="#步骤一：Docker安装MariaDB" class="headerlink" title="步骤一：Docker安装MariaDB"></a>步骤一：Docker安装MariaDB</h1><h2 id="1、选择MariaDB版本"><a href="#1、选择MariaDB版本" class="headerlink" title="1、选择MariaDB版本"></a>1、选择MariaDB版本</h2><p>如果第一次恢复的时候不清楚数据库版本，可以随机选择一个版本，然后启动的时候，版本不对会提示需要哪个版本重新配置就可以了。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker search mariadb 搜索mariadb镜像（非必须）</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、下载docker镜像"><a href="#2、下载docker镜像" class="headerlink" title="2、下载docker镜像"></a>2、下载docker镜像</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker pull mariadb</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、-查看本地已有的所有镜像"><a href="#3、-查看本地已有的所有镜像" class="headerlink" title="3、 查看本地已有的所有镜像"></a>3、 查看本地已有的所有镜像</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、-建一个目录作为和容器的映射目录，并启动容器"><a href="#4、-建一个目录作为和容器的映射目录，并启动容器" class="headerlink" title="4、 建一个目录作为和容器的映射目录，并启动容器"></a>4、 建一个目录作为和容器的映射目录，并启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /data/mariadb/data</span><br><span class="line"></span><br><span class="line">docker run --name mariadb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=输入数据库root用户的密码 -v /data/mariadb/data:/var/lib/mysql -d mariadb</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>　　–name启动容器设置容器名称为mariadb</li>
+<li>　　-p设置容器的3306端口映射到主机3306端口</li>
+<li>　　-e MYSQL_ROOT_PASSWORD设置环境变量数据库root用户密码为输入数据库root用户的密码</li>
+<li>　　-v设置容器目录&#x2F;var&#x2F;lib&#x2F;mysql映射到本地目录&#x2F;data&#x2F;mariadb&#x2F;data</li>
+<li>　　-d后台运行容器mariadb并返回容器id</li>
+</ul>
+<h2 id="5-、查看容器是否运行"><a href="#5-、查看容器是否运行" class="headerlink" title="5 、查看容器是否运行"></a>5 、查看容器是否运行</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、容器id-修改容器为自启动"><a href="#6、容器id-修改容器为自启动" class="headerlink" title="6、容器id   修改容器为自启动"></a>6、容器id   修改容器为自启动</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker container update --restart=always</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、进入容器"><a href="#7、进入容器" class="headerlink" title="7、进入容器"></a>7、进入容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it 容器Id bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="8、在容器内登录数据"><a href="#8、在容器内登录数据" class="headerlink" title="8、在容器内登录数据"></a>8、在容器内登录数据</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mysql -uroot -proot密码</span><br></pre></td></tr></table></figure>
+
+<h1 id="步骤二、替换原始数据文件"><a href="#步骤二、替换原始数据文件" class="headerlink" title="步骤二、替换原始数据文件"></a>步骤二、替换原始数据文件</h1><p>将<code>/data/mariadb/data</code>目录下面的文件删除掉，然后将要恢复的原始数据文件复制进来</p>
+<h2 id="重启docke容器"><a href="#重启docke容器" class="headerlink" title="重启docke容器"></a>重启docke容器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dokcer restart 容器名称</span><br></pre></td></tr></table></figure>
+
+<h1 id="步骤三、安全模式进入数据库更改密码（如果忘记了原始数据库的密码，进行此步）"><a href="#步骤三、安全模式进入数据库更改密码（如果忘记了原始数据库的密码，进行此步）" class="headerlink" title="步骤三、安全模式进入数据库更改密码（如果忘记了原始数据库的密码，进行此步）"></a>步骤三、安全模式进入数据库更改密码（如果忘记了原始数据库的密码，进行此步）</h1><h2 id="1、将容器内配置文件复制出来"><a href="#1、将容器内配置文件复制出来" class="headerlink" title="1、将容器内配置文件复制出来"></a>1、将容器内配置文件复制出来</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker cp mariadb-10.6.11:/etc/mysql/mariadb.cnf C:/Users/Administrator/Documents/</span><br></pre></td></tr></table></figure>
+
+<h2 id="2、在配置文件中添加一行skip-grant-tables。"><a href="#2、在配置文件中添加一行skip-grant-tables。" class="headerlink" title="2、在配置文件中添加一行skip-grant-tables。"></a>2、在配置文件中添加一行<code>skip-grant-tables</code>。</h2><p><img src="/2023/11/25/mariadb%E6%95%B0%E6%8D%AE%E5%BA%93-%E5%8E%9F%E5%A7%8B%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E6%96%B9%E6%B3%95-docker%E7%89%88%E6%9C%AC/image-20231125221716595.png" alt="image-20231125221716595"></p>
+<h2 id="3、将修改之后的配置文件复制到容器的原目录。"><a href="#3、将修改之后的配置文件复制到容器的原目录。" class="headerlink" title="3、将修改之后的配置文件复制到容器的原目录。"></a>3、将修改之后的配置文件复制到容器的原目录。</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker cp C:/Users/Administrator/Documents/mariadb.cnf  mariadb-10.6.11:/etc/mysql/</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、重新启动容器"><a href="#4、重新启动容器" class="headerlink" title="4、重新启动容器"></a>4、重新启动容器</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker restart 容器名称</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、连接数据库修改密码"><a href="#5、连接数据库修改密码" class="headerlink" title="5、连接数据库修改密码"></a>5、连接数据库修改密码</h2><p>mysql 5.7.6及更高版本或mariadb 10.1.20及更高版本，请运行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ALTER USER &#x27;root&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;MY_NEW_PASSWORD&#x27;;</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+
+<p>mysql 5.7.5及更早版本或mariadb 10.1.20及更早版本，请运行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET PASSWORD FOR &#x27;root&#x27;@&#x27;localhost&#x27; = PASSWORD(&#x27;MY_NEW_PASSWORD&#x27;);</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+
+<p>如果ALTER USER语句不适用于您，请尝试直接修改用户表：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update mysql.user set password=password(&quot;MY_NEW_PASSWORD&quot;) where user=&quot;root&quot;;</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、修改密码之后请将配置文件中添加的skip-grant-tables删除掉（参照1-3），然后重启容器，至此数据就恢复完成了"><a href="#7、修改密码之后请将配置文件中添加的skip-grant-tables删除掉（参照1-3），然后重启容器，至此数据就恢复完成了" class="headerlink" title="7、修改密码之后请将配置文件中添加的skip-grant-tables删除掉（参照1-3），然后重启容器，至此数据就恢复完成了"></a>7、修改密码之后请将配置文件中添加的<code>skip-grant-tables</code>删除掉（参照1-3），然后重启容器，至此数据就恢复完成了</h2><h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><ul>
+<li><a href="https://cloud.tencent.com/developer/article/1687773">https://cloud.tencent.com/developer/article/1687773</a></li>
+<li><a href="https://www.cnblogs.com/lingofstyle/p/17251431.html">https://www.cnblogs.com/lingofstyle/p/17251431.html</a></li>
+<li><a href="https://www.cnblogs.com/WaterGe/p/11067387.html">https://www.cnblogs.com/WaterGe/p/11067387.html</a></li>
+<li><a href="https://juejin.cn/s/mariadb%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE">https://juejin.cn/s/mariadb%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>mariadb学习笔记</category>
+      </categories>
+      <tags>
+        <tag>mariadb</tag>
+        <tag>数据库</tag>
+        <tag>数据恢复</tag>
       </tags>
   </entry>
   <entry>
@@ -976,46 +1052,6 @@
       </tags>
   </entry>
   <entry>
-    <title>httpx命令记录学习</title>
-    <url>/2023/11/19/httpx%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="命令详解"><a href="#命令详解" class="headerlink" title="命令详解"></a>命令详解</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">INPUT:</span><br><span class="line">   -l, -list string      包含要处理的主机列表的输入文件</span><br><span class="line">   -rr, -request string  包含原始请求的文件</span><br><span class="line">   -u, -target string[]  输入要探测的目标主机</span><br><span class="line"></span><br><span class="line">PROBES:</span><br><span class="line">   -sc, -status-code     显示响应状态码</span><br><span class="line">   -cl, -content-length  显示响应内容长度</span><br><span class="line">   -ct, -content-type    显示响应内容类型</span><br><span class="line">   -location             显示响应重定向位置</span><br><span class="line">   -favicon              显示&#x27;/favicon.ico&#x27;文件的mmh3散列</span><br><span class="line">   -hash string          显示响应体哈希值(支持md5,mmh3,simhash,sha1,sha256,sha512)</span><br><span class="line">   -jarm                 显示告警指纹散列</span><br><span class="line">   -rt, -response-time   显示响应时间</span><br><span class="line">   -lc, -line-count      显示响应体行计数</span><br><span class="line">   -wc, -word-count      显示回复正文字数</span><br><span class="line">   -title                显示页面标题</span><br><span class="line">   -server, -web-server  显示服务器名称</span><br><span class="line">   -td, -tech-detect     基于wappalyzer数据集的显示技术</span><br><span class="line">   -method               显示HTTP请求方法</span><br><span class="line">   -websocket            使用websocket显示服务器</span><br><span class="line">   -ip                   显示主机IP</span><br><span class="line">   -cname                显示主机cname</span><br><span class="line">   -asn                  显示主机asn信息</span><br><span class="line">   -cdn                  显示正在使用的CDN</span><br><span class="line">   -probe                显示探针状态</span><br><span class="line"></span><br><span class="line">HEADLESS:</span><br><span class="line">   -ss, -screenshot  启用使用无头浏览器保存页面截图</span><br><span class="line">   -system-chrome    启用使用本地安装的chrome屏幕截图</span><br><span class="line"></span><br><span class="line">MATCHERS:</span><br><span class="line">   -mc, -match-code string            匹配响应与指定的状态码(-mc 200,302)</span><br><span class="line">   -ml, -match-length string          匹配响应与指定的内容长度(-ml 100,102)</span><br><span class="line">   -mlc, -match-line-count string     匹配响应体与指定的行数(-mlc 423,532)</span><br><span class="line">   -mwc, -match-word-count string     匹配响应体与指定字数(-mwc 43,55)</span><br><span class="line">   -mfc, -match-favicon string[]      匹配响应与指定的图标哈希(-mfc 1494302000)</span><br><span class="line">   -ms, -match-string string          匹配响应与指定字符串(-ms admin)</span><br><span class="line">   -mr, -match-regex string           用指定的正则表达式匹配响应(-mr admin)</span><br><span class="line">   -mcdn, -match-cdn string[]         匹配主机与指定的CDN提供商(cloudfront, fastly，谷歌，leaseweb, stackpath)</span><br><span class="line">   -mrt, -match-response-time string  匹配响应与指定的响应时间(以秒为单位)(-mrt &#x27;&lt; 1&#x27;)</span><br><span class="line">   -mdc, -match-condition string      匹配响应与DSL表达式条件</span><br><span class="line"></span><br><span class="line">EXTRACTOR:</span><br><span class="line">   -er, -extract-regex string[]   用匹配的正则表达式显示响应内容</span><br><span class="line">   -ep, -extract-preset string[]  显示与预定义正则表达式(url,ipv4,mail)匹配的响应内容</span><br><span class="line"></span><br><span class="line">FILTERS:</span><br><span class="line">   -fc, -filter-code string            使用指定状态码筛选响应(-fc 403,401)</span><br><span class="line">   -fep, -filter-error-page            使用基于ML的错误页面检测过滤响应</span><br><span class="line">   -fl, -filter-length string          具有指定内容长度的过滤器响应(-fl 23,33)</span><br><span class="line">   -flc, -filter-line-count string     具有指定行数的过滤器响应体(-flc 423,532)</span><br><span class="line">   -fwc, -filter-word-count string     过滤具有指定字数的响应体(-fwc 423,532)</span><br><span class="line">   -ffc, -filter-favicon string[]      使用指定的favicon哈希过滤响应(-mfc 1494302000)</span><br><span class="line">   -fs, -filter-string string          使用指定字符串过滤响应(-fs admin)</span><br><span class="line">   -fe, -filter-regex string           使用指定的正则表达式过滤响应(-fe admin)</span><br><span class="line">   -fcdn, -filter-cdn string[]         过滤主机与指定的CDN提供商(cloudfront, fastly，谷歌，leaseweb, stackpath)</span><br><span class="line">   -frt, -filter-response-time string  过滤具有指定响应时间(以秒为单位)的响应(- first &#x27;&gt; 1&#x27;)</span><br><span class="line">   -fdc, -filter-condition string      带DSL表达式条件的过滤响应</span><br><span class="line"></span><br><span class="line">RATE-LIMIT:</span><br><span class="line">   -t, -threads int              要使用的线程数(默认为50)</span><br><span class="line">   -rl, -rate-limit int          每秒发送的最大请求数(默认150)</span><br><span class="line">   -rlm, -rate-limit-minute int  每分钟发送的最大请求数</span><br><span class="line"></span><br><span class="line">MISCELLANEOUS:</span><br><span class="line">   -pa, -probe-all-ips        探测与同一主机关联的所有ip</span><br><span class="line">   -p, -ports string[]        要探测的端口(nmap语法:例如http:1,2-10,11,https:80)</span><br><span class="line">   -path string               要探测的路径或路径列表(逗号分隔，文件)</span><br><span class="line">   -tls-probe                 在提取的TLS域(dns_name)上发送http探测</span><br><span class="line">   -csp-probe                 在提取的CSP域上发送http探测</span><br><span class="line">   -tls-grab                  执行TLS(SSL)数据抓取</span><br><span class="line">   -pipeline                  支持HTTP1.1管道的探测和显示服务器</span><br><span class="line">   -http2                     支持HTTP2的探测和显示服务器</span><br><span class="line">   -vhost                     支持VHOST的探测和显示服务器</span><br><span class="line">   -ldv, -list-dsl-variables  列出json输出字段的关键字名称，支持DSL匹配器/过滤器</span><br><span class="line"></span><br><span class="line">UPDATE:</span><br><span class="line">   -up, -update                 更新HTTPX到最新版本</span><br><span class="line">   -duc, -disable-update-check  禁用自动检查HTTPX更新</span><br><span class="line"></span><br><span class="line">OUTPUT:</span><br><span class="line">   -o, -output string                  文件写入输出结果</span><br><span class="line">   -oa, -output-all                    以所有格式写入输出结果的文件名</span><br><span class="line">   -sr, -store-response                将HTTP响应存储到输出目录</span><br><span class="line">   -srd, -store-response-dir string    将 http 响应存储到自定义目录</span><br><span class="line">   -csv                                以 csv 格式存储输出</span><br><span class="line">   -csvo, -csv-output-encoding string  定义输出编码</span><br><span class="line">   -json                               以 jsonl ines 格式存储输出</span><br><span class="line">   -irr, -include-response             仅在 json 输出 json 中包含 http 请求响应</span><br><span class="line">   -irrb, -include-response-base64     仅在 json 输出 json 中包含 Base 64 编码的 http 请求响应</span><br><span class="line">   -include-chain                      仅在 json 输出 json 中包含重定向 http 链</span><br><span class="line">   -store-chain                        仅在响应 sr 中包含 http 重定向链</span><br><span class="line"></span><br><span class="line">配置:</span><br><span class="line">   -config string                httpx 配置文件的路径  (default $HOME/.config/httpx/config.yaml)</span><br><span class="line">   -r, -resolvers string[]       自定义解析器文件列表或逗号分隔</span><br><span class="line">   -allow string[]               允许处理的IP/CIDR列表(文件或逗号分隔)</span><br><span class="line">   -deny string[]                拒绝处理的IP/CIDR列表(文件或逗号分隔)</span><br><span class="line">   -sni, -sni-name string        自定义TLS SNI名称</span><br><span class="line">   -random-agent                 启用随机用户代理使用(默认为true)</span><br><span class="line">   -H, -header string[]          自定义HTTP头与请求一起发送</span><br><span class="line">   -http-proxy, -proxy string    要使用的HTTP代理(例如http://127.0.0.1:8080)</span><br><span class="line">   -unsafe                       发送原始请求跳过 golang 规范化</span><br><span class="line">   -resume                       使用Resume .cfg扫描简历</span><br><span class="line">   -fr, -follow-redirects        遵循 http 重定向</span><br><span class="line">   -maxr, -max-redirects int     每个主机遵循的最大重定向数默认为 10</span><br><span class="line">   -fhr, -follow-host-redirects  遵循同一主机上的重定向</span><br><span class="line">   -vhost-input                  获取虚拟主机列表作为输入</span><br><span class="line">   -x string                     探测的请求方法使用 all 来探测所有 http 方法</span><br><span class="line">   -body string                  发布正文以包含在 http 请求中</span><br><span class="line">   -s, -stream                   流模式开始阐述输入目标而不进行排序</span><br><span class="line">   -sd, -skip-dedupe             禁用仅与流模式一起使用的重复数据删除输入项</span><br><span class="line">   -ldp, -leave-default-ports    在主机标头中保留默认的 http https 端口，例如 http 主机 80 https 主机 443</span><br><span class="line">   -ztls                         使用 ztls 库并自动回退到 tls 13 的标准库</span><br><span class="line">   -no-decode                    避免解码主体</span><br><span class="line">   -tlsi, -tls-impersonate       启用实验性客户端 hello ja 3 tls 随机化</span><br><span class="line">   -no-stdin                     禁用标准输入处理</span><br><span class="line"></span><br><span class="line">DEBUG:</span><br><span class="line">   -health-check, -hc        运行诊断检查</span><br><span class="line">   -debug                    在cli中显示请求响应内容</span><br><span class="line">   -debug-req                在cli中显示请求内容</span><br><span class="line">   -debug-resp               在cli中显示响应内容</span><br><span class="line">   -version                  显示httpx版本</span><br><span class="line">   -stats                    显示扫描统计</span><br><span class="line">   -profile-mem string       可选的 httpx 内存配置文件转储文件</span><br><span class="line">   -silent                   静音模式</span><br><span class="line">   -v, -verbose              详细模式</span><br><span class="line">   -si, -stats-interval int  显示统计信息更新之间等待的秒数 默认 5</span><br><span class="line">   -nc, -no-color            禁用 cli 输出中的颜色</span><br><span class="line"></span><br><span class="line">OPTIMIZATIONS:</span><br><span class="line">   -nf, -no-fallback                  显示探测到的协议 https 和 http</span><br><span class="line">   -nfs, -no-fallback-scheme          使用输入中指定的协议方案进行探测</span><br><span class="line">   -maxhr, -max-host-error int        跳过剩余路径之前每个主机的最大错误计数 默认 30</span><br><span class="line">   -ec, -exclude-cdn                  跳过 cd ns 的全端口扫描 仅检查 80 443</span><br><span class="line">   -retries int                       重试次数</span><br><span class="line">   -timeout int                       超时时间（以秒为单位）默认 10</span><br><span class="line">   -delay value                       每个 http 请求之间的持续时间 例如 200 ms 1 s 默认 1 ns</span><br><span class="line">   -rsts, -response-size-to-save int  要保存的最大响应大小（以字节为单位）默认 2147483647</span><br><span class="line">   -rstr, -response-size-to-read int  读取的最大响应大小（以字节为单位）默认 2147483647</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>工具学习</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>httpx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python进度条</title>
-    <url>/2023/07/28/python%E8%BF%9B%E5%BA%A6%E6%9D%A1-alive-progress/</url>
-    <content><![CDATA[<h1 id="python进度条"><a href="#python进度条" class="headerlink" title="python进度条"></a>python进度条</h1><h3 id="一、普通进度条"><a href="#一、普通进度条" class="headerlink" title="一、普通进度条"></a>一、普通进度条</h3><p><strong>示例代码</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">progress_bar</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">101</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\r&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Download progress: &#123;&#125;%: &quot;</span>.<span class="built_in">format</span>(i), <span class="string">&quot;▋&quot;</span> * (i // <span class="number">2</span>), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    progress_bar()</span><br></pre></td></tr></table></figure>
-
-<h3 id="二、带时间的进度条"><a href="#二、带时间的进度条" class="headerlink" title="二、带时间的进度条"></a>二、带时间的进度条</h3><p>导入time模块来计算代码运行的时间，加上代码迭代进度使用格式化字符串来输出代码运行进度</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scale = <span class="number">50</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;执行开始，祈祷不报错&quot;</span>.center(scale // <span class="number">2</span>,<span class="string">&quot;-&quot;</span>))</span><br><span class="line">start = time.perf_counter()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(scale + <span class="number">1</span>):</span><br><span class="line">    a = <span class="string">&quot;*&quot;</span> * i</span><br><span class="line">    b = <span class="string">&quot;.&quot;</span> * (scale - i)</span><br><span class="line">    c = (i / scale) * <span class="number">100</span></span><br><span class="line">    dur = time.perf_counter() - start</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\r&#123;:^3.0f&#125;%[&#123;&#125;-&gt;&#123;&#125;]&#123;:.2f&#125;s&quot;</span>.<span class="built_in">format</span>(c,a,b,dur),end = <span class="string">&quot;&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span>+<span class="string">&quot;执行结束，万幸&quot;</span>.center(scale // <span class="number">2</span>,<span class="string">&quot;-&quot;</span>))</span><br></pre></td></tr></table></figure>
-
-<h3 id="三、TPDM-进度条"><a href="#三、TPDM-进度条" class="headerlink" title="三、TPDM 进度条"></a>三、TPDM 进度条</h3><p>这是一个专门生成进度条的工具包，可以使用pip在终端进行下载，当然还能切换进度条风格</p>
-<p><strong>示例代码</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="comment"># 这里同样的，tqdm就是这个进度条最常用的一个方法</span></span><br><span class="line"><span class="comment"># 里面存一个可迭代对象</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tqdm(<span class="built_in">range</span>(<span class="number">1</span>, <span class="number">500</span>)):</span><br><span class="line">   <span class="comment"># 模拟你的任务</span></span><br><span class="line">   sleep(<span class="number">0.01</span>)</span><br><span class="line">sleep(<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="四、progress-进度条"><a href="#四、progress-进度条" class="headerlink" title="四、progress 进度条"></a>四、progress 进度条</h3><p>只需要定义迭代的次数、进度条类型并在每次迭代时告知进度条即可</p>
-<p>相关文档：<a href="https://pypi.org/project/progress/1.5/" title="https://pypi.org/project/progress/1.5/"><em>https://pypi.org/project/progress/1.5/</em></a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> progress.bar <span class="keyword">import</span> IncrementalBar</span><br><span class="line"></span><br><span class="line">mylist = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">bar = IncrementalBar(<span class="string">&#x27;Countdown&#x27;</span>, <span class="built_in">max</span> = <span class="built_in">len</span>(mylist))</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> mylist:</span><br><span class="line">    bar.<span class="built_in">next</span>()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    bar.finish()</span><br></pre></td></tr></table></figure>
-
-<p>参考文章：<a href="https://www.cnblogs.com/zhuminghui/p/13985315.html" title="https://www.cnblogs.com/zhuminghui/p/13985315.html">https://www.cnblogs.com/zhuminghui/p/13985315.html</a></p>
-]]></content>
-      <categories>
-        <category>python学习</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>poetry 入门完全指南</title>
     <url>/2023/11/12/poetry-%E5%85%A5%E9%97%A8%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/</url>
     <content><![CDATA[<h1 id="poetry-是什么"><a href="#poetry-是什么" class="headerlink" title="poetry 是什么"></a>poetry 是什么</h1><blockquote>
@@ -1194,9 +1230,68 @@
         <category>python三方库学习</category>
       </categories>
       <tags>
-        <tag>学习笔记</tag>
         <tag>python</tag>
+        <tag>学习笔记</tag>
         <tag>poetry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python进度条</title>
+    <url>/2023/07/28/python%E8%BF%9B%E5%BA%A6%E6%9D%A1-alive-progress/</url>
+    <content><![CDATA[<h1 id="python进度条"><a href="#python进度条" class="headerlink" title="python进度条"></a>python进度条</h1><h3 id="一、普通进度条"><a href="#一、普通进度条" class="headerlink" title="一、普通进度条"></a>一、普通进度条</h3><p><strong>示例代码</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">progress_bar</span>():</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">101</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\r&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Download progress: &#123;&#125;%: &quot;</span>.<span class="built_in">format</span>(i), <span class="string">&quot;▋&quot;</span> * (i // <span class="number">2</span>), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">        time.sleep(<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    progress_bar()</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、带时间的进度条"><a href="#二、带时间的进度条" class="headerlink" title="二、带时间的进度条"></a>二、带时间的进度条</h3><p>导入time模块来计算代码运行的时间，加上代码迭代进度使用格式化字符串来输出代码运行进度</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scale = <span class="number">50</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;执行开始，祈祷不报错&quot;</span>.center(scale // <span class="number">2</span>,<span class="string">&quot;-&quot;</span>))</span><br><span class="line">start = time.perf_counter()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(scale + <span class="number">1</span>):</span><br><span class="line">    a = <span class="string">&quot;*&quot;</span> * i</span><br><span class="line">    b = <span class="string">&quot;.&quot;</span> * (scale - i)</span><br><span class="line">    c = (i / scale) * <span class="number">100</span></span><br><span class="line">    dur = time.perf_counter() - start</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\r&#123;:^3.0f&#125;%[&#123;&#125;-&gt;&#123;&#125;]&#123;:.2f&#125;s&quot;</span>.<span class="built_in">format</span>(c,a,b,dur),end = <span class="string">&quot;&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span>+<span class="string">&quot;执行结束，万幸&quot;</span>.center(scale // <span class="number">2</span>,<span class="string">&quot;-&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、TPDM-进度条"><a href="#三、TPDM-进度条" class="headerlink" title="三、TPDM 进度条"></a>三、TPDM 进度条</h3><p>这是一个专门生成进度条的工具包，可以使用pip在终端进行下载，当然还能切换进度条风格</p>
+<p><strong>示例代码</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"><span class="comment"># 这里同样的，tqdm就是这个进度条最常用的一个方法</span></span><br><span class="line"><span class="comment"># 里面存一个可迭代对象</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tqdm(<span class="built_in">range</span>(<span class="number">1</span>, <span class="number">500</span>)):</span><br><span class="line">   <span class="comment"># 模拟你的任务</span></span><br><span class="line">   sleep(<span class="number">0.01</span>)</span><br><span class="line">sleep(<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、progress-进度条"><a href="#四、progress-进度条" class="headerlink" title="四、progress 进度条"></a>四、progress 进度条</h3><p>只需要定义迭代的次数、进度条类型并在每次迭代时告知进度条即可</p>
+<p>相关文档：<a href="https://pypi.org/project/progress/1.5/" title="https://pypi.org/project/progress/1.5/"><em>https://pypi.org/project/progress/1.5/</em></a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> progress.bar <span class="keyword">import</span> IncrementalBar</span><br><span class="line"></span><br><span class="line">mylist = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">bar = IncrementalBar(<span class="string">&#x27;Countdown&#x27;</span>, <span class="built_in">max</span> = <span class="built_in">len</span>(mylist))</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> mylist:</span><br><span class="line">    bar.<span class="built_in">next</span>()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    bar.finish()</span><br></pre></td></tr></table></figure>
+
+<p>参考文章：<a href="https://www.cnblogs.com/zhuminghui/p/13985315.html" title="https://www.cnblogs.com/zhuminghui/p/13985315.html">https://www.cnblogs.com/zhuminghui/p/13985315.html</a></p>
+]]></content>
+      <categories>
+        <category>python学习</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo 为Next主题添加评论功能</title>
+    <url>/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<h1 id="1-创建账号"><a href="#1-创建账号" class="headerlink" title="1 创建账号"></a>1 创建账号</h1><p>这个评论系统是基于 LeanCloud 进行的，先去注册一个账号，点这里进行注册。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://leancloud.cn/</span><br></pre></td></tr></table></figure>
+
+<p>点这里创建应用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://leancloud.cn/dashboard/applist.html#/newapp</span><br></pre></td></tr></table></figure>
+
+<p>应用名看个人喜好。选择刚刚创建的应用，点击设置按钮，再点击应用Key按钮，你就能看到你的APP ID和APP KEY了：</p>
+<p><img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/1.png" alt="1"></p>
+<p>为了您的数据安全，请填写应用&gt;设置&gt;安全设置中的Web 安全域名，如下图：</p>
+<p><img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/2.png" alt="2"></p>
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置</h2><p>修改你主题目录下的_config.yml文件：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">valine:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">appid:</span>  <span class="comment"># 你的 App ID</span></span><br><span class="line">  <span class="attr">appkey:</span> <span class="comment"># 你的 App Key</span></span><br><span class="line">  <span class="attr">notify:</span> <span class="literal">false</span> <span class="comment"># mail notifier , https://github.com/xCss/Valine/wiki</span></span><br><span class="line">  <span class="attr">verify:</span> <span class="literal">false</span> <span class="comment"># Verification code</span></span><br><span class="line">  <span class="attr">placeholder:</span> <span class="string">有什么问题，欢迎留言指正与交流...</span> <span class="comment"># comment box placeholder</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">robohash</span> <span class="comment"># gravatar style</span></span><br><span class="line">  <span class="attr">guest_info:</span> <span class="string">nick,mail,link</span> <span class="comment"># custom comment header</span></span><br><span class="line">  <span class="attr">pageSize:</span> <span class="number">10</span> <span class="comment"># pagination size</span></span><br></pre></td></tr></table></figure>
+
+<p>发布之后，我们看一下效果如何：</p>
+<p><img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/3.png" alt="3"></p>
+<h2 id="3-关闭"><a href="#3-关闭" class="headerlink" title="3 关闭"></a>3 关闭</h2><p>可以单独关闭某个页面的评论，在页面的 Front-matter 中添加 comments 字段，设为 false。比如标签页不想要评论，则在标签页面中做如下设置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: xxxxxxxxx</span><br><span class="line">date: 2022-03-06 17:05:24</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-参考文章"><a href="#4-参考文章" class="headerlink" title="4 参考文章"></a>4 参考文章</h2><p><a href="https://cloud.tencent.com/developer/article/1481858">https://cloud.tencent.com/developer/article/1481858</a></p>
+]]></content>
+      <categories>
+        <category>网站搭建-hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>hexo</tag>
+        <tag>github</tag>
+        <tag>个人博客</tag>
       </tags>
   </entry>
   <entry>
@@ -1339,39 +1434,6 @@
 <p><img src="/2023/07/23/%E4%BD%BF%E7%94%A8github%E3%80%81hexo%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%8D%9A%E5%AE%A2/image_hqvv-JRSpI.png" alt="image_hqvv-JRSpI"></p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://zhuanlan.zhihu.com/p/60578464">https://zhuanlan.zhihu.com/p/60578464</a></p>
 <p><a href="https://www.cnblogs.com/chenlove/p/15058170.html%3E">https://www.cnblogs.com/chenlove/p/15058170.html&gt;</a></p>
-]]></content>
-      <categories>
-        <category>网站搭建-hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>hexo</tag>
-        <tag>github</tag>
-        <tag>个人博客</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo 为Next主题添加评论功能</title>
-    <url>/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<h1 id="1-创建账号"><a href="#1-创建账号" class="headerlink" title="1 创建账号"></a>1 创建账号</h1><p>这个评论系统是基于 LeanCloud 进行的，先去注册一个账号，点这里进行注册。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://leancloud.cn/</span><br></pre></td></tr></table></figure>
-
-<p>点这里创建应用</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://leancloud.cn/dashboard/applist.html#/newapp</span><br></pre></td></tr></table></figure>
-
-<p>应用名看个人喜好。选择刚刚创建的应用，点击设置按钮，再点击应用Key按钮，你就能看到你的APP ID和APP KEY了：</p>
-<p><img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/1.png" alt="1"></p>
-<p>为了您的数据安全，请填写应用&gt;设置&gt;安全设置中的Web 安全域名，如下图：</p>
-<p><img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/2.png" alt="2"></p>
-<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2 配置"></a>2 配置</h2><p>修改你主题目录下的_config.yml文件：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">valine:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">appid:</span>  <span class="comment"># 你的 App ID</span></span><br><span class="line">  <span class="attr">appkey:</span> <span class="comment"># 你的 App Key</span></span><br><span class="line">  <span class="attr">notify:</span> <span class="literal">false</span> <span class="comment"># mail notifier , https://github.com/xCss/Valine/wiki</span></span><br><span class="line">  <span class="attr">verify:</span> <span class="literal">false</span> <span class="comment"># Verification code</span></span><br><span class="line">  <span class="attr">placeholder:</span> <span class="string">有什么问题，欢迎留言指正与交流...</span> <span class="comment"># comment box placeholder</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">robohash</span> <span class="comment"># gravatar style</span></span><br><span class="line">  <span class="attr">guest_info:</span> <span class="string">nick,mail,link</span> <span class="comment"># custom comment header</span></span><br><span class="line">  <span class="attr">pageSize:</span> <span class="number">10</span> <span class="comment"># pagination size</span></span><br></pre></td></tr></table></figure>
-
-<p>发布之后，我们看一下效果如何：</p>
-<p><img src="/2023/07/23/%E4%B8%BANext%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/3.png" alt="3"></p>
-<h2 id="3-关闭"><a href="#3-关闭" class="headerlink" title="3 关闭"></a>3 关闭</h2><p>可以单独关闭某个页面的评论，在页面的 Front-matter 中添加 comments 字段，设为 false。比如标签页不想要评论，则在标签页面中做如下设置</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: xxxxxxxxx</span><br><span class="line">date: 2022-03-06 17:05:24</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">comments: false</span><br></pre></td></tr></table></figure>
-
-<h2 id="4-参考文章"><a href="#4-参考文章" class="headerlink" title="4 参考文章"></a>4 参考文章</h2><p><a href="https://cloud.tencent.com/developer/article/1481858">https://cloud.tencent.com/developer/article/1481858</a></p>
 ]]></content>
       <categories>
         <category>网站搭建-hexo</category>
@@ -1544,37 +1606,6 @@
       </tags>
   </entry>
   <entry>
-    <title>解决next5主题目录无法跳转的问题</title>
-    <url>/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1.问题描述"></a>1.问题描述</h1><p>这个问题的特征是渲染没问题，也就是不会有上面那种情况，但是点击目录链接会在控制台报错：<code>Cannot read property &#39;top&#39; of undefined</code>。</p>
-<p>我们打开控制台，查看目录的的超链接标签，会看到 href 是一串乱码：</p>
-<p><img src="/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/image-20231112231023258.png" alt="image-20231112231023258"></p>
-<p>我们去找他对应的标题：</p>
-<p><img src="/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/image-20231112231116565.png" alt="image-20231112231116565"></p>
-<p>实际上直接点击这个超链接是可以跳转的，但是点目录却不行。这是因为标题 id 是中文，但是目录的连接是中文乱码，代码里头的 JQuery 选择器拿着乱码是没法找到对应 id 的标题的。</p>
-<h1 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2.解决方案"></a>2.解决方案</h1><p>这个错误很明显，因为控制台已经告诉我错误代码在 <code>post-details.js</code>里了，顺着提示找到 <code>themes\next\source\js\src\post-details.js</code>，找到第 73 行为目录绑定点击事件的方法，会看到</p>
-<p><img src="/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/image-20201217170155109.png" alt="image-20201217170155109"></p>
-<p><code>targetSelector</code>就是对应标题的 id，我们在他被塞到选择器之前重新编码一下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 对获取到的url进行重编码</span><br><span class="line">targetSelector = decodeURI(this.getAttribute(&#x27;href&#x27;))</span><br></pre></td></tr></table></figure>
-
-<p>然后 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</code> 重新跑一下，发现目录就正常了。</p>
-<p>另外，在next6 里这个问题被修复了：<a href="https://github.com/theme-next/hexo-theme-next/issues/1547">点击文章中文目录跳转无法实现 #1547</a>。</p>
-<h1 id="参考大佬文章"><a href="#参考大佬文章" class="headerlink" title="参考大佬文章"></a>参考大佬文章</h1><ul>
-<li><a href="https://www.cnblogs.com/Createsequence/p/14150758.html">https://www.cnblogs.com/Createsequence/p/14150758.html</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>网站搭建-hexo</category>
-      </categories>
-      <tags>
-        <tag>学习笔记</tag>
-        <tag>错误记录</tag>
-        <tag>hexo</tag>
-        <tag>next</tag>
-        <tag>github</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>日常使用hexo写文章流程梳理</title>
     <url>/2023/11/12/%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8hexo%E5%86%99%E6%96%87%E7%AB%A0%E6%B5%81%E7%A8%8B%E6%A2%B3%E7%90%86/</url>
     <content><![CDATA[<h1 id="日常使用hexo写文章流程梳理"><a href="#日常使用hexo写文章流程梳理" class="headerlink" title="日常使用hexo写文章流程梳理"></a>日常使用hexo写文章流程梳理</h1><p><strong>1. 首先创建文章</strong></p>
@@ -1610,6 +1641,37 @@
         <tag>学习笔记</tag>
         <tag>hexo</tag>
         <tag>个人博客</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决next5主题目录无法跳转的问题</title>
+    <url>/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1.问题描述"></a>1.问题描述</h1><p>这个问题的特征是渲染没问题，也就是不会有上面那种情况，但是点击目录链接会在控制台报错：<code>Cannot read property &#39;top&#39; of undefined</code>。</p>
+<p>我们打开控制台，查看目录的的超链接标签，会看到 href 是一串乱码：</p>
+<p><img src="/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/image-20231112231023258.png" alt="image-20231112231023258"></p>
+<p>我们去找他对应的标题：</p>
+<p><img src="/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/image-20231112231116565.png" alt="image-20231112231116565"></p>
+<p>实际上直接点击这个超链接是可以跳转的，但是点目录却不行。这是因为标题 id 是中文，但是目录的连接是中文乱码，代码里头的 JQuery 选择器拿着乱码是没法找到对应 id 的标题的。</p>
+<h1 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2.解决方案"></a>2.解决方案</h1><p>这个错误很明显，因为控制台已经告诉我错误代码在 <code>post-details.js</code>里了，顺着提示找到 <code>themes\next\source\js\src\post-details.js</code>，找到第 73 行为目录绑定点击事件的方法，会看到</p>
+<p><img src="/2023/11/12/%E8%A7%A3%E5%86%B3next5%E4%B8%BB%E9%A2%98%E7%9B%AE%E5%BD%95%E6%97%A0%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%97%AE%E9%A2%98/image-20201217170155109.png" alt="image-20201217170155109"></p>
+<p><code>targetSelector</code>就是对应标题的 id，我们在他被塞到选择器之前重新编码一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 对获取到的url进行重编码</span><br><span class="line">targetSelector = decodeURI(this.getAttribute(&#x27;href&#x27;))</span><br></pre></td></tr></table></figure>
+
+<p>然后 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</code> 重新跑一下，发现目录就正常了。</p>
+<p>另外，在next6 里这个问题被修复了：<a href="https://github.com/theme-next/hexo-theme-next/issues/1547">点击文章中文目录跳转无法实现 #1547</a>。</p>
+<h1 id="参考大佬文章"><a href="#参考大佬文章" class="headerlink" title="参考大佬文章"></a>参考大佬文章</h1><ul>
+<li><a href="https://www.cnblogs.com/Createsequence/p/14150758.html">https://www.cnblogs.com/Createsequence/p/14150758.html</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>网站搭建-hexo</category>
+      </categories>
+      <tags>
+        <tag>学习笔记</tag>
+        <tag>错误记录</tag>
+        <tag>hexo</tag>
+        <tag>next</tag>
+        <tag>github</tag>
       </tags>
   </entry>
 </search>
